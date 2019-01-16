@@ -1,0 +1,17 @@
+<div>
+  auth works!
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  
+    <label>
+      First Name:
+      <input type="text" formControlName="userName">
+    </label>
+  
+    <label>
+      Last Name:
+      <input type="text" formControlName="userPassword">
+    </label>
+
+    <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+  </form>
+</div>

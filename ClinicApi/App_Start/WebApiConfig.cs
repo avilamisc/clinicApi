@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ClinicApi.Infrastructure;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ClinicApi
 {
@@ -13,6 +12,10 @@ namespace ClinicApi
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            config.MessageHandlers.Add(new TokenValidationHandler());
+
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
