@@ -4,7 +4,7 @@ namespace Clinic.Core.Entities
 {
     public class Patient : User
     {
-        public string Region { get; set; }
+        public string Location /*Region*/ { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }
 

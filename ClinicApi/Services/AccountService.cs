@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using Clinic.Core;
 using Clinic.Core.Encryption;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Infrastructure.Constants;
+using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Account;
@@ -27,13 +27,13 @@ namespace ClinicApi.Services
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                return ApiResponse.ValidationError("Wrong password or email");
+                return ApiResponse.ValidationError(AuthErrorMessages.FailedAuthorization);
             }
 
             var user = await _unitOfWork.UserRepository.GetFirstAsync(u => u.Email == email);
             if (user == null || !Hashing.VerifyPassword(password, user.PasswordHash))
             {
-                return ApiResponse.ValidationError("Wrong password or email");
+                return ApiResponse.ValidationError(AuthErrorMessages.FailedAuthorization);
             }
 
             var claims = new Claim[]

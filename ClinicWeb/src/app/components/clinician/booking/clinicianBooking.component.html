@@ -1,0 +1,35 @@
+<p>
+  booking works!
+</p>
+
+<table>
+  <thead>
+    <th>Id</th>
+    <th>Reciept</th>
+    <th>Name</th>
+    <th>Documents</th>
+    <th>Clinic Name</th>
+    <th>Patient Name</th>
+    <th>Patient Surname</th>
+    <th>Patient Region</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let booking of bookings">
+      <td>{{ booking.Id }}d</td>
+      <td>{{ booking.Reciept }}</td>
+      <td>{{ booking.Name }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let document of booking.Documents">
+            {{ document.Name +  ' ' }}
+            <a href="document.FilePath">download</a>
+          </li>
+        </ul>
+      </td>
+      <td>{{ booking.ClinicName }}</td>
+      <td>{{ booking.PatientName }}</td>
+      <td>{{ booking.PatientSurname }}</td>
+      <td>{{ booking.PatientLocation }}</td>
+    </tr>
+  </tbody>
+</table>

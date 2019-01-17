@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
-using Clinic.Core.DtoModels;
+using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 
 namespace ClinicApi.Services
 {
@@ -54,7 +54,7 @@ namespace ClinicApi.Services
                     || refreshToken.UserId != userId
                     || refreshToken.ExpiresUtc < DateTime.UtcNow)
             {
-                return ApiResponse.ValidationError("Bad refresh token");
+                return ApiResponse.ValidationError(AuthErrorMessages.InvalidRefreshToken);
             }
 
             var newAccessToken = GenerateAccessToken(userPrincipal.Claims);

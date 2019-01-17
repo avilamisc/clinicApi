@@ -2,6 +2,7 @@
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
+using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Booking;
@@ -61,12 +62,12 @@ namespace ClinicApi.Services
             PatientBookingModel bookingModel = _mapper.SafeMap<PatientBookingModel>(request.Form);
             if (bookingModel == null)
             {
-                return new ApiResponse(HttpStatusCode.BadRequest, "Wrong documents data format");
+                return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
             }
 
             if (!CheckAndPopulateUserIdAndFilesFormRequest(request, userId, bookingModel))
             {
-                return new ApiResponse(HttpStatusCode.NotFound, "Missed or unsupported file");
+                return new ApiResponse(HttpStatusCode.NotFound, BookingErrorMessages.MissedFile);
             }
 
             var clinicClinician = await GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
@@ -95,12 +96,12 @@ namespace ClinicApi.Services
             var bookingModel = _mapper.SafeMap<UpdateBookingModel>(request.Form);
             if (bookingModel == null)
             {
-                return new ApiResponse(HttpStatusCode.BadRequest, "Wrong documents data format");
+                return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
             }
 
             if (!CheckAndPopulateUserIdAndFilesFormRequest(request, userId, bookingModel))
             {
-                return new ApiResponse(HttpStatusCode.NotFound, "Missed or unsupported file");
+                return new ApiResponse(HttpStatusCode.NotFound, BookingErrorMessages.MissedFile);
             }
 
             var booking = await _unitOfWork.BookingRepository.GetWithDocumentsAsync(bookingModel.Id);
@@ -123,11 +124,14 @@ namespace ClinicApi.Services
                 _unitOfWork.BookingRepository.Update(booking);
                 await _unitOfWork.SaveChangesAsync();
 
+                await _unitOfWork.ClinicClinicianRepository.UploadClinicAsync(booking.ClinicClinician);
+                await _unitOfWork.ClinicClinicianRepository.UploadClinicianAsync(booking.ClinicClinician);
+
                 return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(booking));
             }
             catch
             {
-                return new ApiResponse(HttpStatusCode.InternalServerError, "Cannot update this item");
+                return new ApiResponse(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
             }
         }
 
@@ -142,9 +146,9 @@ namespace ClinicApi.Services
             ClinicClinician clinicClinician,
             IEnumerable<Claim> claims)
         {
-            if (!model.IsValid()) return ApiResponse.ValidationError("Wrong booking data");
+            if (!model.IsValid()) return ApiResponse.ValidationError(BookingErrorMessages.ValidationDataError);
 
-            if (clinicClinician == null) return ApiResponse.ValidationError("Such clinic clinician doesn`t exist");
+            if (clinicClinician == null) return ApiResponse.ValidationError(BookingErrorMessages.MissedClinicClinician);
 
             return null;
         }

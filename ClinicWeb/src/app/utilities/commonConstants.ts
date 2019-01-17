@@ -1,3 +1,5 @@
 export const CommonConstants = {
-    returnUrlSnapshot: 'returnUrl'
-}
+    returnUrlSnapshot: 'returnUrl',
+    patientRoleIdentifier: 'Patient',
+    clinicianRoleIdentifier: 'Clinician'
+};

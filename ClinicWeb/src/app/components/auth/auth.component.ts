@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import decode from 'jwt-decode';
 
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { LoginModel } from 'src/app/core/models';
@@ -13,10 +14,7 @@ import { CommonConstants } from 'src/app/utilities/commonConstants';
   styleUrls: ['./auth.component.styl']
 })
 export class AuthComponent implements OnInit {
-  public loginForm: FormGroup = new FormGroup({
-    userName: new FormControl('', [Validators.required]),
-    userPassword: new FormControl('', [Validators.required])
-  });
+  public loginForm: FormGroup;
   private model: LoginModel = new LoginModel();
   private returnUrl: string = null;
 
@@ -27,19 +25,40 @@ export class AuthComponent implements OnInit {
     private tokenService: TokenService) { }
 
   public ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams[CommonConstants.returnUrlSnapshot];
+    this.CreateForm();
+    this.InitializeReturnUrl();
   }
 
   public onSubmit(): void {
     this.setValuesFromFormToModel();
     this.accountService.authenticate(this.model)
       .subscribe(res => {
-        this.tokenService.setAccessToken(res.Result.AccessToken);
+        const token = res.Result.AccessToken;
+        this.tokenService.setAccessToken(token);
         this.tokenService.setRefreshToken(res.Result.RefreshToken);
 
-        console.log(this.returnUrl);
-        this.router.navigate([this.returnUrl || '/booking']);
+        const role = decode(token).role;
+        this.tokenService.setRole(role);
+
+        const redirectTo = role === CommonConstants.patientRoleIdentifier
+          ? '/patient/booking'
+          : '/clinician/booking';
+
+        console.log(redirectTo);
+
+        this.router.navigate([this.returnUrl || redirectTo]);
       });
+  }
+
+  private CreateForm(): void {
+    this.loginForm = new FormGroup({
+      userName: new FormControl('', [Validators.required]),
+      userPassword: new FormControl('', [Validators.required])
+    });
+  }
+
+  private InitializeReturnUrl(): void {
+    this.returnUrl = this.route.snapshot.queryParams[CommonConstants.returnUrlSnapshot];
   }
 
   private setValuesFromFormToModel(): void {

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { UserRole } from '../../enums/UserRoles.enum';
 
 const AccessTokenIdentifier = 'accessToken';
 const RefreshTokenIdentifier = 'refreshToken';
+const UserRoleIdentifier = 'userRole';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,14 @@ export class TokenService {
 
   public setAccessToken(token: string): void {
     return localStorage.setItem(AccessTokenIdentifier, token);
+  }
+
+  public getRole(): string {
+    return localStorage.getItem(UserRoleIdentifier);
+  }
+
+  public setRole(role: string): void {
+    localStorage.setItem(UserRoleIdentifier, role);
   }
 
   public removeTokens(): void {

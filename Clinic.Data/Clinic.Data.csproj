@@ -120,6 +120,10 @@
     <Compile Include="Migrations\201901151447489_AddFilePathRemoveContentsFieldsInDocumentTable.Designer.cs">
       <DependentUpon>201901151447489_AddFilePathRemoveContentsFieldsInDocumentTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901171405260_UpdateRegionToLocationInPatientTable.cs" />
+    <Compile Include="Migrations\201901171405260_UpdateRegionToLocationInPatientTable.Designer.cs">
+      <DependentUpon>201901171405260_UpdateRegionToLocationInPatientTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DocumentRepository.cs" />
@@ -167,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901151447489_AddFilePathRemoveContentsFieldsInDocumentTable.resx">
       <DependentUpon>201901151447489_AddFilePathRemoveContentsFieldsInDocumentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901171405260_UpdateRegionToLocationInPatientTable.resx">
+      <DependentUpon>201901171405260_UpdateRegionToLocationInPatientTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace ClinicApi.Automapper
             CreateMap<BookingDto, ClinicianBookingModel>()
                 .ForMember(p => p.PatientName, options => options.MapFrom(b => b.Patient.Name))
                 .ForMember(p => p.PatientSurname, options => options.MapFrom(b => b.Patient.Surname))
-                .ForMember(p => p.PatientRegion, options => options.MapFrom(b => b.Patient.Region));
+                .ForMember(p => p.PatientLocation, options => options.MapFrom(b => b.Patient.Location));
             CreateMap<ClinicianBookingModel, BookingDto>();
 
             CreateMap<Booking, PatientBookingModel>()

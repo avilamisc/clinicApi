@@ -7,6 +7,6 @@
         public int PatientId { get; set; }
         public string PatientName { get; set; }
         public string PatientSurname { get; set; }
-        public string PatientRegion { get; set; }
+        public string PatientLocation { get; set; }
     }
 }

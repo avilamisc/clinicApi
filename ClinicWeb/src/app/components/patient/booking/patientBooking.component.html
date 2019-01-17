@@ -1,6 +1,12 @@
 <p>
   booking works!
+  <button type="button" (click)="crateNewBooking()">Create</button>
 </p>
+
+<app-edit *ngIf="bookingToUpdate"
+          [model]="bookingToUpdate"
+          [new]="isAddingNewBooking"
+          (editCompleted)="updateEditingModel($event)"></app-edit>
 
 <table>
   <thead>
@@ -14,8 +20,8 @@
     <th>Clinician Rate</th>
   </thead>
   <tbody>
-    <tr *ngFor="let booking of bookings">
-      <td>{{ booking.Id }}d</td>
+    <tr *ngFor="let booking of bookings;let index = index;" (click)="updateBoking(booking, index)">
+      <td>{{ booking.Id }}</td>
       <td>{{ booking.Reciept }}</td>
       <td>{{ booking.Name }}</td>
       <td>

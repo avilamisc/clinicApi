@@ -133,6 +133,8 @@
     <Compile Include="Automapper\BookingProfile.cs" />
     <Compile Include="Infrastructure\Constants\ApiConstants.cs" />
     <Compile Include="Infrastructure\Constants\ConfigKeyConstants.cs" />
+    <Compile Include="Infrastructure\Constants\ValidationErrorMessages\AuthErrorMessages.cs" />
+    <Compile Include="Infrastructure\Constants\ValidationErrorMessages\BookingErrorMessages.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
