@@ -1,0 +1,14 @@
+<div class="modal-container" *ngIf="isVisiable">
+  <div class="header">
+    <div class="header-content">
+      <ng-content select="[m-header]"></ng-content>
+    </div>
+    <div (click)="hideWindow()" class="close-button">
+      <ng-content select="[m-close-button]"></ng-content>
+    </div>
+  </div>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+</div>
+<div *ngIf="isVisiable" (click)="hideWindow()" class="modal-background"></div>

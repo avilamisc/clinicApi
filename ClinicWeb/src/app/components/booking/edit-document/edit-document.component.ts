@@ -13,7 +13,6 @@ import { DocumentModel } from 'src/app/core/models';
 })
 export class EditDocumentComponent implements OnInit {
   public user: User;
-
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
 
   constructor(private userService: UserService) { }

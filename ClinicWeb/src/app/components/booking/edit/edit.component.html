@@ -1,4 +1,9 @@
-<div>
+<app-modal [isVisiable]="visibility" (changed)="changeVisibility($event)">
+  <div class="edit-header" m-header>
+      Edit booking
+  </div>
+  <div m-close-button>CLOSE</div>
+  <div class="edit-container">
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
       <div>
         <label>
@@ -36,4 +41,4 @@
       <button type="submit" [disabled]="!canSubmit()">Submit</button>
     </form>
   </div>
-  
+</app-modal>

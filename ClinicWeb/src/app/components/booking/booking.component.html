@@ -4,9 +4,11 @@
 </p>
 
 <app-edit *ngIf="bookingToUpdate"
+          [visibility]="isEditOpen"
           [model]="bookingToUpdate"
           [new]="isAddingNewBooking"
           [patient]="isPatient"
+          (closeEditWindow)="closeEditWindow()"
           (editCompleted)="updateEditingModel($event)">
 </app-edit>
 

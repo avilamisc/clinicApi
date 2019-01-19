@@ -18,6 +18,7 @@ export class BookingComponent implements OnInit {
   public bookings: BookingModel[] = [];
   public bookingToUpdate: UpdateBookingModel;
   public user: User;
+  public isEditOpen = false;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private isPatient: boolean;
@@ -35,6 +36,7 @@ export class BookingComponent implements OnInit {
   public updateBoking(booking: BookingModel, index: number): void {
     this.editedBookingIndex = index;
     this.isAddingNewBooking = false;
+    this.isEditOpen = true;
     this.bookingToUpdate = new UpdateBookingModel();
     this.bookingToUpdate.id = booking.Id;
     this.bookingToUpdate.reciept = booking.Reciept;
@@ -57,10 +59,12 @@ export class BookingComponent implements OnInit {
     } else {
       this.bookings[this.editedBookingIndex] = newBooking;
     }
+    this.closeEditWindow();
   }
 
   public crateNewBooking(): void {
     this.isAddingNewBooking = true;
+    this.isEditOpen = true;
     this.bookingToUpdate = new UpdateBookingModel();
   }
 
@@ -83,7 +87,11 @@ export class BookingComponent implements OnInit {
   }
 
   public loadDocument(id: number): void {
-    console.log('download ', id);
     this.documentService.downloadDocument(id).subscribe();
+  }
+
+  public closeEditWindow(): void {
+    console.log('close window');
+    this.isEditOpen = false;
   }
 }

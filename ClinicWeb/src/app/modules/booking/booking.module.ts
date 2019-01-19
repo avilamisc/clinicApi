@@ -6,6 +6,7 @@ import { BookingComponent } from 'src/app/components/booking/booking.component';
 import { EditComponent } from 'src/app/components/booking/edit/edit.component';
 import { BookingRoutingModule } from './booking-routing.module';
 import { EditDocumentComponent } from 'src/app/components/booking/edit-document/edit-document.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { EditDocumentComponent } from 'src/app/components/booking/edit-document/
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BookingRoutingModule
+    BookingRoutingModule,
+    SharedModule
   ]
 })
 export class BookingModule { }

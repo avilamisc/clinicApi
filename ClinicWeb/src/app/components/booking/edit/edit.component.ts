@@ -16,10 +16,12 @@ export class EditComponent implements OnInit, OnChanges {
   public editForm: FormGroup;
   public clinics: ClinicModel[];
   public clinicians: ClinicianModel[] = [];
+  @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
   @Input('new') public isNewBooking = false;
   @Input('patient') public isPatient = true;
-  @Output('editCompleted') public onEditCompleted: EventEmitter<any> = new EventEmitter<any>();
+  @Output('closeEditWindow') public closeEditWindow = new EventEmitter<any>();
+  @Output('editCompleted') public onEditCompleted = new EventEmitter<any>();
 
   constructor(
     private clinicianService: ClinicianService,
@@ -29,6 +31,9 @@ export class EditComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
       if (changes.model) {
           this.createForm();
+      }
+      if (changes.visibility) {
+        console.log('visi', this.visibility);
       }
   }
 
@@ -65,6 +70,13 @@ export class EditComponent implements OnInit, OnChanges {
           this.editForm.get('clinician').markAsUntouched();
         }
       });
+  }
+
+  public changeVisibility(visibility: boolean): void {
+    this.visibility = visibility;
+    if (this.visibility === false) {
+      this.closeEditWindow.emit();
+    }
   }
 
   private setValuesFromFormToModel(): void {
