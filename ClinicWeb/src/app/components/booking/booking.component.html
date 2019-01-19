@@ -32,7 +32,7 @@
       <td>
         <ul>
           <li *ngFor="let document of booking.Documents">
-            <a [attr.href]="document.FilePath">{{document.Name}}</a>
+            <a (click)="loadDocument(document.Id)">{{document.Name}}</a>
           </li>
         </ul>
       </td>

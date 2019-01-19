@@ -6,5 +6,6 @@ namespace ClinicApi.Interfaces
     {
         string UploadFile(HttpPostedFile file);
         void DeleteFile(string fullPath);
+        byte[] GetFile(string filePath);
     }
 }

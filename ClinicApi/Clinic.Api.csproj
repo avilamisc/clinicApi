@@ -131,6 +131,7 @@
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\ClinicController.cs" />
     <Compile Include="Controllers\ClinicianController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Automapper\BookingProfile.cs" />
     <Compile Include="Infrastructure\Constants\ApiConstants.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Infrastructure\Constants\ValidationErrorMessages\BookingErrorMessages.cs" />
     <Compile Include="Interfaces\IClinicianService.cs" />
     <Compile Include="Interfaces\IClinicService.cs" />
+    <Compile Include="Interfaces\IDocumentService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Models\User\UserModal.cs" />
     <Compile Include="Services\ClinicianService.cs" />
     <Compile Include="Services\ClinicService.cs" />
+    <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Global.asax.cs">

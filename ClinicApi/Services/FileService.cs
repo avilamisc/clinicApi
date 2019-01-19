@@ -8,6 +8,23 @@ namespace ClinicApi.Services
 {
     public class FileService : IFileService
     {
+        public byte[] GetFile(string filePath)
+        {
+            if (filePath == null || !File.Exists(filePath))
+            {
+                return null;
+            }
+
+            try
+            {
+                return File.ReadAllBytes(filePath);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public string UploadFile(HttpPostedFile file)
         {
             if (file == null) return null;

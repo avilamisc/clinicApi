@@ -7,6 +7,7 @@ import { TokenService } from 'src/app/core/services/auth/token.service';
 import { UserRoles } from 'src/app/utilities/user-roles';
 import { User } from 'src/app/core/models/user/user.model';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { DocumentService } from 'src/app/core/services/document/document.service';
 
 @Component({
   selector: 'app-booking',
@@ -24,6 +25,7 @@ export class BookingComponent implements OnInit {
   constructor(
     private userService: UserService,
     private tokenService: TokenService,
+    private documentService: DocumentService,
     private bookingService: BookingService) { }
 
   public ngOnInit(): void {
@@ -31,7 +33,6 @@ export class BookingComponent implements OnInit {
   }
 
   public updateBoking(booking: BookingModel, index: number): void {
-    console.log('start', booking);
     this.editedBookingIndex = index;
     this.isAddingNewBooking = false;
     this.bookingToUpdate = new UpdateBookingModel();
@@ -41,9 +42,6 @@ export class BookingComponent implements OnInit {
     this.bookingToUpdate.documents = booking.Documents;
     this.bookingToUpdate.clinicId = (booking as PatientBookingModel).ClinicId;
     this.bookingToUpdate.clinicianId = (booking as PatientBookingModel).ClinicianId || this.user.Id;
-    console.log('initialize');
-    console.log((booking as PatientBookingModel).ClinicianId);
-    console.log(this.user.Id);
   }
 
   public updateEditingModel(newBooking: PatientBookingModel): void {
@@ -82,5 +80,10 @@ export class BookingComponent implements OnInit {
             this.bookings = res.Result;
           }
         });
+  }
+
+  public loadDocument(id: number): void {
+    console.log('download ', id);
+    this.documentService.downloadDocument(id).subscribe();
   }
 }

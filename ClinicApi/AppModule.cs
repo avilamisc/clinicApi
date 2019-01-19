@@ -49,7 +49,8 @@ namespace ClinicApi.Infrastructure
                 builder.RegisterType<AccountService>().As<IAccountService>(),
                 builder.RegisterType<FileService>().As<IFileService>(),
                 builder.RegisterType<ClinicService>().As<IClinicService>(),
-                builder.RegisterType<ClinicianService>().As<IClinicianService>()
+                builder.RegisterType<ClinicianService>().As<IClinicianService>(),
+                builder.RegisterType<DocumentService>().As<IDocumentService>()
             };
 
             SetDependenciesInstanceType();

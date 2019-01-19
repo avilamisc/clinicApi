@@ -69,7 +69,6 @@ export class EditComponent implements OnInit, OnChanges {
 
   private setValuesFromFormToModel(): void {
     const values = this.editForm.getRawValue();
-    console.log('submitted: ', values);
     this.model.name = values.name;
     this.model.reciept = values.reciept;
     this.model.clinicId = values.clinic;
@@ -87,12 +86,10 @@ export class EditComponent implements OnInit, OnChanges {
           if (this.model.clinicId !== null) {
             this.clinicianService.getAllClinic(this.model.clinicId)
               .subscribe(clinicianResult => {
-                console.log(clinicianResult);
                 if (clinicianResult.Result !== null) {
                   this.clinicians = clinicianResult.Result;
                 }
                 this.createForm();
-                console.log(this.clinicians);
               });
           }
         });
