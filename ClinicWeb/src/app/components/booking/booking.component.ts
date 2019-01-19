@@ -105,8 +105,9 @@ export class BookingComponent implements OnInit {
   }
   }
 
-  public loadDocument(id: number): void {
+  public loadDocument(event: any, id: number): void {
     this.documentService.downloadDocument(id).subscribe();
+    event.stopPropagation();
   }
 
   public closeEditWindow(): void {

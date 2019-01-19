@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Column } from 'src/app/core/models/table/column.model';
 import * as _ from 'lodash';
 
@@ -7,14 +7,13 @@ import * as _ from 'lodash';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.styl']
 })
-export class TableComponent implements OnInit {
-  @Input() public columns: Column[];
-  @Input() public data: any[];
+export class TableComponent {
+  @Input('columns') public columns: Column[];
+  @Input('data') public data: any[];
+  @Output('rowClicked') public onRowClicked = new EventEmitter<any>();
   public parser = _;
 
-  constructor() { }
-
-  public ngOnInit() {
+  public rowClicked(data: any): void {
+    this.onRowClicked.emit(data);
   }
-
 }

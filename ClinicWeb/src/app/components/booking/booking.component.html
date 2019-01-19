@@ -1,7 +1,20 @@
-<p>
-  booking works!
-  <button type="button" (click)="crateNewBooking()">Create</button>
-</p>
+<div>
+  <div>
+    <button type="button" (click)="crateNewBooking()">Create</button>
+  </div>
+  <app-table [columns]="columns"
+             [data]="bookings"
+             (rowClicked)="updateBoking($event.data, $event.index)">
+  </app-table>
+</div>
+
+<ng-template let-documents="data" #documetsColumn>
+  <div>
+    <ul>
+      <li (click)="loadDocument($event, document.Id)" *ngFor="let document of documents">{{document.Name}}</li>
+    </ul>
+  </div>
+</ng-template>
 
 <app-edit *ngIf="bookingToUpdate"
           [visibility]="isEditOpen"
@@ -11,50 +24,3 @@
           (closeEditWindow)="closeEditWindow()"
           (editCompleted)="updateEditingModel($event)">
 </app-edit>
-
-<app-table [columns]="columns" [data]="bookings">
-</app-table>
-
-<ng-template let-documents="data" #documetsColumn>
-  <div>
-    documents
-  </div>
-</ng-template>
-<!--
-<table>
-  <thead>
-    <th>Id</th>
-    <th>Reciept</th>
-    <th>Name</th>
-    <th>Documents</th>
-    <th>Clinic Name</th>
-    <th *ngIf="isPatient">Clinician Name</th>
-    <th *ngIf="isPatient">Clinician Surname</th>
-    <th *ngIf="isPatient">Clinician Rate</th>
-    <th *ngIf="!isPatient">Patient Name</th>
-    <th *ngIf="!isPatient">Patient Surname</th>
-    <th *ngIf="!isPatient">Patient Region</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let booking of bookings;let index = index;" (click)="updateBoking(booking, index)">
-      <td>{{ booking.Id }}</td>
-      <td>{{ booking.Reciept }}</td>
-      <td>{{ booking.Name }}</td>
-      <td>
-        <ul>
-          <li *ngFor="let document of booking.Documents">
-            <a (click)="loadDocument(document.Id)">{{document.Name}}</a>
-          </li>
-        </ul>
-      </td>
-      <td>{{ booking.ClinicName }}</td>
-      <td *ngIf="isPatient">{{ booking.ClinicianName }}</td>
-      <td *ngIf="isPatient">{{ booking.ClinicianSurname }}</td>
-      <td *ngIf="isPatient">{{ booking.ClinicianRate }}</td>
-      <td *ngIf="!isPatient">{{ booking.PatientName }}</td>
-      <td *ngIf="!isPatient">{{ booking.PatientSurname }}</td>
-      <td *ngIf="!isPatient">{{ booking.PatientLocation }}</td>
-    </tr>
-  </tbody>
-</table>
--->
