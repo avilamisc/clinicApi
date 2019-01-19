@@ -104,7 +104,7 @@ namespace ClinicApi.Services
                 var newRefreshToken = new RefreshToken
                 {
                     Value = Convert.ToBase64String(randomNumber),
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(_appSetings.RefreshTokenExpirationDays),
+                    ExpiresUtc = DateTime.UtcNow.AddDays(_appSetings.RefreshTokenExpirationDays),
                     UserId = userId
                 };
 

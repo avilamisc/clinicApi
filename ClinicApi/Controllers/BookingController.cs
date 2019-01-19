@@ -22,7 +22,7 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Patient")]
-        [Route("api/booking/patient")]
+        [Route("api/bookings/patient")]
         public async Task<IHttpActionResult> PatientBookings()
         {
             var identity = (ClaimsIdentity)User.Identity;
@@ -32,7 +32,7 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Clinician")]
-        [Route("api/booking/clinician")]
+        [Route("api/bookings/clinician")]
         public async Task<IHttpActionResult> ClinicianBookings()
         {
             var identity = (ClaimsIdentity)User.Identity;
@@ -42,7 +42,7 @@ namespace ClinicApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Patient")]
-        [Route("api/booking")]
+        [Route("api/bookings")]
         public async Task<IHttpActionResult> CreateBooking()
         {
             if (!Request.Content.IsMimeMultipartContent()) return Ok(new ApiResponse(HttpStatusCode.UnsupportedMediaType));
@@ -53,8 +53,8 @@ namespace ClinicApi.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Patient")]
-        [Route("api/booking")]
+        [Authorize]
+        [Route("api/bookings")]
         public async Task<IHttpActionResult> UpdateBooking()
         {
             if (!Request.Content.IsMimeMultipartContent()) return Ok(new ApiResponse(HttpStatusCode.UnsupportedMediaType));

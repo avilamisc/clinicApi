@@ -1,0 +1,13 @@
+<div>
+  <div *ngFor="let doc of model.documents">
+    {{doc.Name}}
+    <button *ngIf="canEditDocument(doc)" type="button" (click)="removeDocument(doc.Id)">X</button>
+  </div>
+  <div *ngFor="let file of model.newFiles;let index = index">
+    {{file.name}}
+    <button type="button" (click)="removeFile(index)">X</button>
+  </div>
+  <div>
+    <input type="file" (change)="uploadNewFile($event)">
+  </div>
+</div>

@@ -6,9 +6,8 @@ using Clinic.Core.Entities;
 using Clinic.Core.Repositories;
 using Clinic.Data.Automapper.Infrastructure;
 using Clinic.Data.Context;
-using Clinic.Domain.Repositories.Base;
 
-namespace Clinic.Domain.Repositories.Concrete
+namespace Clinic.Data.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {

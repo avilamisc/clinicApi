@@ -11,6 +11,8 @@ namespace Clinic.Core.UnitOfWork
         IRefreshTokenRepository RefreshTokenRepository { get; }
         IClinicClinicianRepository ClinicClinicianRepository { get; }
         IDocumentRepository DocumentRepository { get; }
+        IClinicRepository ClinicRepository { get; }
+        IClinicianRepository ClinicianRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync();

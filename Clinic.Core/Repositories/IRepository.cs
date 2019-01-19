@@ -11,7 +11,9 @@ namespace Clinic.Core.Repositories
 
         void Update(TEntity entity);
 
-        TEntity Remove(TEntity entity);
+        void Remove(TEntity entity);
+
+        void RemoveRange(IEnumerable<TEntity> entities);
 
         Task<IEnumerable<TEntity>> GetAsync();
 

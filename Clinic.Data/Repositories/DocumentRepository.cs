@@ -1,7 +1,6 @@
 ﻿using Clinic.Core.Entities;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
-using Clinic.Domain.Repositories.Base;
 
 namespace Clinic.Data.Repositories
 {

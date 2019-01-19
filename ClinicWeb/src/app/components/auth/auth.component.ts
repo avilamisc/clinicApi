@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import decode from 'jwt-decode';
 
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { LoginModel } from 'src/app/core/models';
 import { TokenService } from 'src/app/core/services/auth/token.service';
-import { CommonConstants } from 'src/app/utilities/commonConstants';
+import { CommonConstants } from 'src/app/utilities/common-constants';
 
 @Component({
   selector: 'app-auth',
@@ -21,8 +20,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private accountService: AccountService,
-    private tokenService: TokenService) { }
+    private accountService: AccountService) { }
 
   public ngOnInit(): void {
     this.CreateForm();
@@ -33,20 +31,7 @@ export class AuthComponent implements OnInit {
     this.setValuesFromFormToModel();
     this.accountService.authenticate(this.model)
       .subscribe(res => {
-        const token = res.Result.AccessToken;
-        this.tokenService.setAccessToken(token);
-        this.tokenService.setRefreshToken(res.Result.RefreshToken);
-
-        const role = decode(token).role;
-        this.tokenService.setRole(role);
-
-        const redirectTo = role === CommonConstants.patientRoleIdentifier
-          ? '/patient/booking'
-          : '/clinician/booking';
-
-        console.log(redirectTo);
-
-        this.router.navigate([this.returnUrl || redirectTo]);
+        this.router.navigate([this.returnUrl || '/booking']);
       });
   }
 

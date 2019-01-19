@@ -7,5 +7,6 @@ namespace ClinicApi.Models.Account
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpireTime { get; set; }
+        public int UserId { get; set; }
     }
 }

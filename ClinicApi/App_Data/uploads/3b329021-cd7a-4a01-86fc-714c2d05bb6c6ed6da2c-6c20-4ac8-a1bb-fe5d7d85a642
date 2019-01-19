@@ -1,0 +1,2583 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1"><link href="https://i1.code.msdn.s-msft.com/RequestReduceContent/2fefc0afb303de6582d730b3f8d46743-ea678c6d31945343ba7588e18ab77e75-RequestReducedStyle.css" rel="Stylesheet" type="text/css" />
+    <meta name="description" content="The easiest and most powerful way to compile LESS, Scss,, Stylus, JSX and CoffeeScript files directly within Visual Studio or through MSBuild." />
+    <meta name="Search.BRAND" content="Msdn"/>
+    <meta name="Search.IROOT" content="vstudio"/>
+
+    
+        <link rel="shortcut icon" href="https://i1.visualstudiogallery.msdn.s-msft.com/GlobalResources/images/Msdn/favicon.ico" type="image/x-icon" /> 
+    <meta name="CommunityInfo" content=" B=Msdn;A=VisualStudio;L=en-US;" /><meta name="ms.puidhash" content="" />
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.1.min.js" type="text/javascript" language="javascript"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.2.1.min.js" type="text/javascript" language="javascript"></script>
+    <script src="https://i1.code.msdn.s-msft.com/RequestReduceContent/3a24835c982627ed99523f1ff12d228e-d6eec0641b04fae05d3c2affec7db8fd-RequestReducedScript.js" type="text/javascript" ></script>    
+    <title>Web Compiler extension</title>
+    
+    <link href="/site/feeds/searchRss" rel="Alternate"
+        type="application/rss+xml" title="Products and Extensions for Visual Studio" />
+    <link rel="P3Pv1" href="/W3C/p3p.xml" />
+        
+    <style type="text/css">
+        #sideNav
+        {
+            width: 0px;
+        }
+    </style>
+
+
+<!--
+Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx.
+-->
+    
+        <script type="text/javascript" language="javascript">
+            $(document).ready(function () {
+                window.appInsights = {
+                    queue: [],
+                    start: function (n) {
+                        function r(n, t) {
+                            n[t] = function () {
+                                var i = arguments;
+                                n.queue.push(function () { n[t].apply(n, i); });
+                            };
+                        }
+                        var t, i;
+                        this.applicationInsightsId = n;
+                        this.accountId = null;
+                        this.appUserId = null;
+                        r(this, "logEvent");
+                        r(this, "logPageView");
+                        t = document.createElement("script");
+                        t.type = "text/javascript";
+                        t.src = "//az416426.vo.msecnd.net/scripts/ai.js";
+                        t.async = true;
+                        i = document.getElementsByTagName("script")[0];
+                        i.parentNode.insertBefore(t, i);
+                    }
+                };
+                window.appInsights.start("da4169d5-ce7e-4d99-b383-f5de813a9516");
+                window.appInsights.logPageView();
+            });
+        </script>
+    </head>
+<body class=" en-us VisualStudio " dir= "ltr">
+    
+    <div id="BodyBackground" class="ltr">
+        <div id="JelloSizer">    
+            <div id="JelloExpander">
+                <div id="JelloWrapper">
+                    <div class="Clear"> </div>
+                    
+                   
+
+<div data-chameleon-template="epxheader">
+
+
+
+
+
+
+<header class="ux-header" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="header-top-bar">
+    <a class="header-top-bar-brand-logo" href="https://msdn.microsoft.com/vstudio" title="Visual Studio Home"></a>
+
+    <ul class="header-top-bar-links" id="ux-nav-user">
+      <li class="header-top-bar-search-box">
+        
+
+<form name="HeaderSearchForm" id="HeaderSearchForm" method="get" action="https://social.msdn.microsoft.com/search/en-US/">
+    <input type="text" id="HeaderSearchTextBox" name="query" title="Search Visual Studio" class="TextBoxSearch" />
+    <input type="hidden" id="RefinementId" name="refinement" title="195" value="195" />
+    <input type="submit" id="HeaderSearchButton" title="Search Visual Studio" class="header-search-button" value="" />
+    
+</form>
+      </li>
+
+          <li>
+            <a class="createProfileLink" href="" title="">
+              
+            </a>
+          </li>
+
+
+      <li class="last">
+        <a class="scarabLink" id="idPPScarab" href="https://login.live.com/login.srf?wa=wsignin1.0&amp;wtrealm=visualstudiogallery.msdn.microsoft.com&amp;wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%3fstoAI%3d10&amp;wp=MBI_FED_SSL&amp;wlcxt=microsoft%24microsoft%24microsoft" title="Sign in">
+          <span id="idPPScarabSIT">Sign in</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="header-nav-container">
+  <nav class="header-nav">
+    <ul class="header-nav-pri">
+          <li><a href="https://msdn.microsoft.com/en-us/vstudio/aa718325.aspx" title="Home">Home</a></li>
+          <li><a href="http://code.msdn.microsoft.com/vstudio" title="Samples">Samples</a></li>
+          <li><a href="https://msdn.microsoft.com/en-us/vstudio/jj672990.aspx" title="Languages">Languages</a></li>
+          <li class="header-nav-selected"><a href="http://visualstudiogallery.msdn.microsoft.com/" title="Extensions">Extensions</a></li>
+          <li><a href="https://msdn.microsoft.com/library/vstudio" title="Documentation">Documentation</a></li>
+          <li><a href="http://social.msdn.microsoft.com/forums/vstudio/en-us/home?category=visualstudio%2cvslanguages%2cvstfs%2cnetdevelopment%2cvsarch" title="Forums">Forums</a></li>
+
+    </ul>
+  
+      <ul class="header-nav-sec">
+      </ul>
+  </nav>
+  
+    <div class="header-nav-trial">
+      <a href="http://go.microsoft.com/fwlink/?LinkId=309297&amp;clcid=0x409&amp;slcid=0x409" title="Get started for free" class="trialanchor">
+            <span class="trialtext">Get started for free</span>
+            <span class="trialimage"></span>
+        </a>
+    </div>
+  </div>
+</header>
+
+
+<script type="text/javascript" xmlns="http://www.w3.org/1999/xhtml">
+/*<![CDATA[*/
+/**/
+(window.MTPS || (window.MTPS = {})).cdnDomains || (window.MTPS.cdnDomains = { 
+	"image": "https://i-msdn.sec.s-msft.com", 
+	"js": "https://i2-msdn.sec.s-msft.com", 
+	"css": "https://i-msdn.sec.s-msft.com", 
+	"xap": "https://msdn.microsoft.com"
+});
+/**/
+/*]]>*/
+</script><script type="text/javascript" xmlns="http://www.w3.org/1999/xhtml">
+/*<![CDATA[*/
+//
+        var searchWidgetJsUri = 'https://i1.services.social.microsoft.com/search/Widgets/SearchBox.jss?boxid=HeaderSearchTextBox&btnid=HeaderSearchButton&brand=MSDN&loc=en-US&Refinement=195&watermark=Visual%20Studio&focusOnInit=false&iroot=vstudio';
+        //
+/*]]>*/
+</script><script src="https://i1.code.msdn.s-msft.com/RequestReduceContent/ddf3620e634ebe53844dacb3ab65325a-84084375f0a42732de0351f13ff0de81-RequestReducedScript.js" type="text/javascript" ></script></div>
+<div data-chameleon-template="header"></div>
+                    
+                    
+                    <div class="Clear"> </div>
+                          
+                    <div class="topleftcorner"></div>           
+                    <div class="toprightcorner"></div>                                
+                    <div class="alley"> <!-- Left Side -->
+                        <div class="wrapper"> <!-- Right Side -->
+                            <div class="inner">  
+                            
+                                                 
+                                <div class="Clear"></div>   
+
+
+                                
+                                
+                                
+                                
+                                <div id="MainContent" class="Msdn">
+                                    
+        
+            <div id="siteMessage">
+                
+
+
+
+
+
+
+            </div>
+            <div class="clear"></div>
+        
+        
+        
+    <script language="javascript" type="text/javascript">
+        $(function() { Galleries.cookie.setTimezoneOffsetCookie(); })
+    </script>
+    <div id="container">
+        
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $('.internav > a').each(function (index, elem) {
+            if ($(elem).attr('href').toUpperCase().indexOf('VISUALSTUDIOGALLERY') != -1) {
+                $(elem).addClass('active');
+            }
+            if ($(elem).attr('href').toUpperCase().indexOf('VSGDB') != -1) {
+                $(elem).addClass('active');
+            }
+        });
+    });
+</script>
+
+
+<div class="subMenu">
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="EyebrowContainer">
+    
+    
+
+    
+
+    
+    
+    
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="EyebrowElement">
+             <a href="/" itemprop="url">
+                <span itemprop="title">Extensions</span>
+            </a> 
+    </div>
+
+
+
+
+    >
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="EyebrowElement">
+             <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools" itemprop="url">
+                <span itemprop="title">Tools</span>
+            </a> 
+    </div>
+
+    >
+    <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="EyebrowElement">
+             <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c" itemprop="url" class="EyebrowLeafLink">
+                <span itemprop="title">Web Compiler</span>
+            </a> 
+    </div>
+</div>
+</div>
+      
+        <div id="bodyContainer">
+            <table id="mainContentTable" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="sideNav">
+                        
+                        
+                    </td>
+                    <td id="main">
+                        
+    <div id="projectPage">
+
+                <div itemscope itemtype="http://schema.org/softwareapplication">
+                <meta itemprop="downloadUrl" content="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/file/164873/30/Web%20Compiler%20v1.8.270.vsix" />
+                <meta itemprop="softwareVersion" content="1.8.270" />
+                  <div>
+                   <div id="reportAbuse">
+                        <a href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fReportAbuse%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Report abuse to Microsoft</a>
+                    </div>
+                    
+                        <table id="screenshot">
+                            <tr>
+                                <td>
+                                
+                                    <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/showImage/164872" target="_blank"><img itemprop="image" alt="Screenshot" src="https://i1.visualstudiogallery.msdn.s-msft.com/3b329021-cd7a-4a01-86fc-714c2d05bb6c/image/file/164874/30/screenshot.png" /></a>
+                                
+                                </td>
+                            </tr>
+                            
+                                <tr>
+                                    <td class="screenshotViewLarge" onclick="javascript:window.open('\x2f3b329021-cd7a-4a01-86fc-714c2d05bb6c\x2fshowImage\x2f164872');">
+                                        <span class="linkText"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/visualstudio/plussymbol.png" alt="View Large" />View Large</span>
+                                    </td>
+                                </tr>
+                            
+                        </table>
+                        
+                </div>
+                 
+
+                        <div id="gitRepoInfo" data-url="https://github.com/madskristensen/WebCompiler">
+                            <a href="https://github.com/madskristensen/WebCompiler" target="_blank">
+                                <img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/visualstudio/github-mark-16px.png" />
+                                <span>madskristensen/WebCompiler</span>
+                            </a>
+                            <a id="pulls" href="https://github.com/madskristensen/WebCompiler/pulls" target="_blank" style="visibility: hidden">
+                                <img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/visualstudio/github-pulls-16px.png" />
+                            </a>
+                            <a id="issues" href="https://github.com/madskristensen/WebCompiler/issues" target="_blank" style="visibility: hidden">
+                                <img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/visualstudio/github-issues-16px.png" />
+                            </a>
+                        </div>
+                    
+                 <div data-url="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/AuthorProjects" id="authorProjectContainer">
+                    
+                </div>
+            </div>
+
+
+            <div>
+                <div itemscope itemtype="http://schema.org/Product">
+                    
+
+<h1 itemprop="name" class="projectTitle">Web Compiler</h1>
+
+
+   <span id="costCategoryContainer">
+
+<span class="costIconFree">Free</span>
+
+</span>
+<h2 class="errorInfo"></h2>
+<h2 itemprop="description" class="projectSummary">The easiest and most powerful way to compile LESS, Scss,, Stylus, JSX and CoffeeScript files directly within Visual Studio or through MSBuild.</h2> 
+<div class="clear"></div>
+
+
+<div class="clear"></div>
+<div id="projectInfo">
+
+    <div class="section">
+        <div class="itemBar">
+            <label for="CreatedBy">
+                CREATED BY</label>
+            <div id="CreatedBy">
+                
+    <a class="unified-baseball-card-compact-hover" 
+       data-profile-userId="b9ff9627-24a6-48eb-a3a4-47f2dfdd7b3e" 
+       data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Mads Kristensen/extensions","text":"View contributions"}'
+       href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Mads%20Kristensen">Mads Kristensen</a>
+</div>
+        </div>
+        <div class="itemBar">
+            <label for="ReviewValue">
+                REVIEWS</label>
+            <div id="ReviewValue" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                <span>
+                <meta itemprop="ratingValue" content="3.775" />
+                <meta itemprop="reviewCount" content="40" />
+                    <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>
+                    (40)</span>
+                <span id="ReviewThis" style="display:inline">                             
+                    
+                        <a href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fReviews%2f0%3fshowReviewForm%3dTrue%26stoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Review</a>                
+                                                        
+                </span> 
+            </div>
+        </div>
+        
+            <div class="itemBar">
+                <label for="Supports">
+                    SUPPORTS</label>
+                <div style="margin-left: 130px;"><span class="VS">Visual Studio</span>
+                <div class="VSVersion">
+2015
+</div></div>
+            </div>
+        
+        <div class="itemBar">
+            <label for="Downloads">
+                DOWNLOADS</label>
+            <span id="Downloads">
+                <a class="boldbuttons" href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/file/164873/30/Web%20Compiler%20v1.8.270.vsix"><span class="button">
+                    Download</span></a>
+                <span style="padding: 2px 0 0 5px;float:right">(64,762)</span></span>
+        </div>
+        
+
+    </div>
+
+    <div class="section" itemscope itemtype="http://schema.org/CreativeWork">
+              
+
+    <meta itemprop="datePublished" content="6/7/2015"/>
+<meta itemprop="discussionUrl" content="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions" />
+<meta itemprop="keywords" content="less,sass,CoffeeScript,Stylus,JSX,Scss"/>
+<meta itemprop="thumbnailUrl" content="https://i1.visualstudiogallery.msdn.s-msft.com/3b329021-cd7a-4a01-86fc-714c2d05bb6c/image/file/164874/30/screenshot.png" />
+
+        <div class="itemBar">
+            <label for="LastUpdated">
+                UPDATED</label>
+            <span id="LastUpdated" itemprop="dateModified">
+                10/27/2015</span>
+        </div>
+        <div class="itemBar">
+            <label for="Version">
+                VERSION</label>
+            <span id="Version">
+                1.8.270</span>
+        </div>
+        
+        <div class="itemBar">
+            <label for="License">
+                LICENSE</label>
+            <span id="License"><a href="/site/3b329021-cd7a-4a01-86fc-714c2d05bb6c/eula?licenseType=None">View</a></span>
+        </div>
+        
+        <div class="itemBar">
+            <label for="LastUpdated">
+                SHARE</label>
+            <span>
+                
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('.shareThisItem > a').WireTrackerForEvent('click', 'https://visualstudiogallery.msdn.microsoft.com/Content/Common/tracker.gif', 'ShareItClick', '3b329021-cd7a-4a01-86fc-714c2d05bb6c', true);
+    });
+</script>
+
+<div class="shareThisItem">
+ 
+<a href ="mailto:?subject=Web%20Compiler&amp;Body=https://visualstudiogallery.msdn.microsoft.com/3b329021-cd7a-4a01-86fc-714c2d05bb6c" target="_blank"><img alt="E-mail" src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/sharethis/email.gif" /></a>
+
+ 
+<a href ="http://twitter.com/home?status=Web%20Compiler&#32;:&#32;https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c" target="_blank"><img alt="Twitter" src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/sharethis/twitter.gif" /></a>
+
+ 
+<a href ="http://del.icio.us/post?url=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c&amp;title=Web%20Compiler" target="_blank"><img alt="del.icio.us" src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/sharethis/delicious.gif" /></a>
+
+ 
+<a href ="http://digg.com/submit?url=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c&amp;title=Web%20Compiler" target="_blank"><img alt="Digg" src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/sharethis/digg.gif" /></a>
+
+ 
+<a href ="http://www.facebook.com/sharer.php?u=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c&amp;t=Web%20Compiler" target="_blank"><img alt="Facebook" src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/sharethis/facebook.gif" /></a>
+
+
+</div></span>
+        </div>
+        
+            <div class="itemBar">
+                <label for="Favorites">FAVORITES</label>
+                
+<script language="javascript">
+    $(function () { $('a#addFavoriteLink').click(function () { $('form#favoriteform').submit(); }); });
+</script>
+<span id="Collections">
+
+        <a href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft"><span class="button">Add to favorites</span></a>
+
+</span>
+
+            </div>
+        
+    </div>
+
+    
+    <div class="section">
+        <div class="itemBar">
+            <label for="Tags">
+                TAGS</label>
+            <div id="Tags">
+                <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=less">less</a>, <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=sass">sass</a>, <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=CoffeeScript">CoffeeScript</a>, <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=Stylus">Stylus</a>, <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=JSX">JSX</a>, <a href="/site/search?f%5B0%5D.Type=RootCategory&amp;f%5B0%5D.Value=tools&amp;f%5B1%5D.Type=Tag&amp;f%5B1%5D.Value=Scss">Scss</a>
+            </div>
+        </div>
+    </div>
+    <div itemscope itemtype="http://schema.org/Code" style="display:none">
+    <meta itemprop="codeRepository" content="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/SourceCode" />
+    <meta itemprop="url" content="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/file/164873/30/Web%20Compiler%20v1.8.270.vsix" />
+    <meta itemprop="codeSample" content="Full solution" />
+</div>
+</div>
+
+
+<script language="javascript" type="text/javascript">
+
+    function rateItReviewIt() {
+        displayCreateReview();
+        $('#Reviews_Tab').click();
+    }
+
+</script>
+                </div>
+
+
+                <div id="projectContent">                            
+                    <div class="tabHeaders">
+                        <div id="Details_Tab">Description</div>
+                        <div id="Reviews_Tab">Reviews&nbsp;(40)</div>
+                        
+                            <div id="Discussions_Tab">Q and A (60)</div>
+                        
+                    </div>
+                    <div class="tabContents">
+                        
+                                <div id="Details_Content">
+                                    <iframe id="longdescIframe" frameborder="0" width="100%" scrolling="no" marginwidth="0" marginheight="0" src="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/description"></iframe>
+                                </div>
+                        
+                                
+                        <div id="Reviews_Content">
+                            <div id="ReviewsTabPane">
+                                    
+
+<script language="javascript">
+
+
+    $(function () {
+
+        function setupReviewCommentForm() {
+            var commentSection = $(this);
+            var commentsList = $(".reviewCommentList", this);
+            var commentForm = $(".reviewCommentForm", this);
+            var resultContainer = $(".commentResult", commentForm);
+            var form = $("form", commentForm);
+            var originalComment = $("#OriginalComment", commentForm);
+            var text = $("#Text", commentForm);
+            var deleteLink = $(".deleteComment a", this);
+            var cancel = $(".cancel", commentForm);
+            var list = $(".cancel", commentForm);
+
+            function showReviewCommentForm(event) {
+                event.preventDefault();
+                toggleForm();
+            }
+
+            function toggleForm() {
+                commentsList.toggle();
+                commentForm.toggle();
+                if (commentForm.is(':hidden')) {
+                    text.val(originalComment.val());
+                }
+            }
+
+            function submitReviewCallback(data, status, jqXHR) {
+                if (data.Success) {
+                    var refreshLocation = '/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews';
+                    window.location = refreshLocation;
+                }
+                else {
+                    resultContainer.empty();
+                    resultContainer.append(data.ErrorMessage);
+                    $("input", this).prop("disabled", false);
+                }
+            }
+
+            commentSection.parents(".review").find("a.createComment").add("a.editComment", commentSection).click(showReviewCommentForm);
+            cancel.click(toggleForm);
+            form.submit(function () {
+                Galleries.form.submitAsyncWithCallback(this, null, submitReviewCallback);
+                $("input", this).prop("disabled", true);
+                return false;
+            });
+            deleteLink.click(function () {
+                var deleteForm = $(this).parents(".deleteComment>form");
+                Galleries.form.submitAsyncWithCallback(deleteForm, null, function () { commentsList.empty(); });
+                $("input", this).prop("disabled", true);
+                text.val('');
+                return false;
+            });
+        }
+        
+        $("#reviewList .reviewCommentSection").each(setupReviewCommentForm);
+
+        attachSortHandler('SortBy', 'aSortBy', 0); 
+    });
+
+   function SetReviewHidden(reviewId, isHidden) {
+       var form = $('#setReviewForm');
+       $('#reviewId', form).val(reviewId);
+       $('#isHidden', form).val(isHidden);
+
+       form.submit();
+   }
+
+    function onStarMouseOver(id) {
+        var id_prefix = id.substring(0, id.lastIndexOf('_') + 1);
+        var index = parseInt(id.substring(id.lastIndexOf('_') + 1, id.length));
+
+        for (i = 0; i < 5; i++) {
+            var star = $('#' + id_prefix + i);
+            if (i <= index)
+                star.removeClass('EmptyRatingStar').addClass('FilledRatingStar');
+            else
+                star.removeClass('FilledRatingStar').addClass('EmptyRatingStar');
+        }
+    }
+    function onStarsMouseOut() {
+        var id_prefix = "Star_";
+        var currentRating = parseInt($('#Rating').val());
+
+        for (i = 0; i < 5; i++) {
+            var star = $('#' + id_prefix + i.toString());
+            if (i < currentRating)
+                star.removeClass('EmptyRatingStar').addClass('FilledRatingStar');
+            else
+                star.removeClass('FilledRatingStar').addClass('EmptyRatingStar');
+        }
+    }
+    function onStarClick(index) {
+        $('#Rating').val(index + 1);
+    }
+
+    function displayCreateReview() {
+        $('#reviewsTabCreate').hide();
+        $('#newReview').show();
+        $('#reviewList').hide();
+        $('div.sortBy').hide();
+    }
+    function cancelCreateReview() {
+        var refreshLocation = '/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews';
+        window.location = refreshLocation;
+    }
+    function deleteReview() {
+        var refreshLocation = '/3b329021-cd7a-4a01-86fc-714c2d05bb6c/deletereview';
+        window.location = refreshLocation;
+    }
+</script>
+
+        <a class="signInToWrite" href="https://login.live.com/login.srf?wa=wsignin1.0&amp;wtrealm=visualstudiogallery.msdn.microsoft.com&amp;wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fReviews%2f0%3fshowReviewForm%3dTrue%26stoAI%3d10&amp;wp=MBI_FED_SSL&amp;wlcxt=microsoft%24microsoft%24microsoft">Sign in to write a review</a>
+    <div class="sortBy">
+        <span >Sort by: </span>
+        <select id="SortBy" name="SortBy"><option selected="selected" value="DateDescending">Date - new to old</option>
+<option value="DateAscending">Date - old to new</option>
+<option value="RatingDescending">Rating - high to low</option>
+<option value="RatingAscending">Rating - low to high</option>
+</select>
+    </div>
+    <br />
+
+<div id="newReview" style="display:none">
+<form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/createreview" id="reviewForm" method="post">    Your Rating: <span class="required">Required</span><br />
+    <br />
+    <span class="RatingContainer EditStarMode" id="Star_Span" onmouseout="onStarsMouseOut()">
+        <input id="Rating" name="Rating" type="hidden" value="0" />
+        <div id="Star_0" class="RatingStar EmptyRatingStar"
+            onmouseover="onStarMouseOver('Star_0')" onclick="onStarClick(0)"
+            title="1 star rating">
+            &nbsp;</div>
+        <div id="Star_1" class="RatingStar EmptyRatingStar"
+            onmouseover="onStarMouseOver('Star_1')" onclick="onStarClick(1)"
+            title="2 star rating">
+            &nbsp;</div>
+        <div id="Star_2" class="RatingStar EmptyRatingStar"
+            onmouseover="onStarMouseOver('Star_2')" onclick="onStarClick(2)"
+            title="3 star rating">
+            &nbsp;</div>
+        <div id="Star_3" class="RatingStar EmptyRatingStar"
+            onmouseover="onStarMouseOver('Star_3')" onclick="onStarClick(3)"
+            title="4 star rating">
+            &nbsp;</div>
+        <div id="Star_4" class="RatingStar EmptyRatingStar"
+            onmouseover="onStarMouseOver('Star_4')" onclick="onStarClick(4)"
+            title="5 star rating">
+            &nbsp;</div>
+ &nbsp;
+        <br />
+        <br />
+        Review (Maximum of 1200 Characters)
+        <table style="table-layout:fixed">
+            <tr><td>
+                <textarea cols="75" id="Text" name="Text" rows="2">
+</textarea>
+            </td></tr>
+        </table>
+        <br />
+        <br />
+        <div id="Actions">
+            <div class="middle">
+                <input id="uploadButton" class="bevelButton" type="submit" value="Submit" />
+                <input id="cancelButton" class="bevelButton" type="button" value="Cancel" onclick="cancelCreateReview()" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </span>
+</form></div>
+<div id="setHiddenDiv">
+<form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/sethidden" id="setReviewForm" method="post"><input id="pageIndex" name="pageIndex" type="hidden" value="1" /><input id="reviewId" name="reviewId" type="hidden" value="" /><input id="isHidden" name="isHidden" type="hidden" value="" /></form></div>
+<div id="reviewList" style="display:inline">
+        <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews" id="aSortBy" style="display:none;">&nbsp;</a>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=jp+hellemons&amp;size=large&amp;version=f7465810-815e-44e6-911c-d791e4baf93d" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b93ffdcc-5abd-4ab3-b64e-84a8d704e2da" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/JP Hellemons/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=JP%20Hellemons">JP Hellemons</a>
+                            </span>
+                            |
+                            <span>
+                                Tue 2:32 PM
+                            </span>
+                        </div>
+                        <p>I like this a lot! including the task runner. Had web workbench before but moved to this.<br />https://visuals<wbr />tudiogallery.ms<wbr />dn.microsoft.co<wbr />m/2b96d16a-c986<wbr />-4501-8f97-8008<wbr />f9db141a</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32549" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=torabravo&amp;size=large&amp;version=a286b7a1-c7f6-4d86-a40e-949352b5dfaa" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="bdc0840e-033c-4a7d-af72-3ec2b022dc32" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/torabravo/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=torabravo">torabravo</a>
+                            </span>
+                            |
+                            <span>
+                                November 13 2015
+                            </span>
+                        </div>
+                        <p></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32514" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=andre.wiggins&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="f52aed9b-8492-409f-81db-62aea6cf1e72" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/andre.wiggins/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=andre.wiggins">andre.wiggins</a>
+                            </span>
+                            |
+                            <span>
+                                November 10 2015
+                            </span>
+                        </div>
+                        <p></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32457" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=simon+la&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="fffe45cf-11dd-4db9-aaa8-391934517f73" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Simon La/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Simon%20La">Simon La</a>
+                            </span>
+                            |
+                            <span>
+                                October 26 2015
+                            </span>
+                        </div>
+                        <p></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32254" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=j%c3%b3hann+sig&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="da13e197-7bac-487a-884b-96202c7eb231" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Jóhann Sig/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=J%C3%B3hann%20Sig">J&#243;hann Sig</a>
+                            </span>
+                            |
+                            <span>
+                                October 26 2015
+                            </span>
+                        </div>
+                        <p>The context menu to mark it to be compiled doesn't appear when I right click my LESS file. I.e., this plugin doesn't work for me.<br /><br />I'm using the latest version (1.7.265) of BuildWebCompile<wbr />r via NuGet in a .Net 5 web (also tried 4.5) application, Microsoft Visual Studio Community 2015.</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32243" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=andrew+sanostee&amp;size=large&amp;version=86dc83c9-0576-4446-96db-80c5b704ec53" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="f4890c66-4a9b-4f04-8bb6-f58af65ec9c5" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Andrew Sanostee/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Andrew%20Sanostee">Andrew Sanostee</a>
+                            </span>
+                            |
+                            <span>
+                                October 09 2015
+                            </span>
+                        </div>
+                        <p></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="32013" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=sinrise&amp;size=large&amp;version=299a69aa-139a-4561-a039-42007d108ab1" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="e0cda754-f931-472b-b84e-4b1107eb9f82" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Sinrise/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Sinrise">Sinrise</a>
+                            </span>
+                            |
+                            <span>
+                                October 02 2015
+                            </span>
+                        </div>
+                        <p>Works perfectly!</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="31859" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=macaroo&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="ecaa7c7b-f11e-4e4a-aa4d-08e6d6a595a8" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/macaroo/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=macaroo">macaroo</a>
+                            </span>
+                            |
+                            <span>
+                                September 26 2015
+                            </span>
+                        </div>
+                        <p>this would be 5 stars if the split window design comes back like the 2013 version. This is overbuilt now IMO. The work around for split windows for me is to setup the compiler.config (the overbuilt part) so that it does compile on save and then open that .css file and then anchor it vertically to the less one. The less/sass of 2013 was far more useful. <br /> </p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="31776" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=miksh&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="2e820ca0-29d0-47f5-ba7b-d6d2c74e4681" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/miksh/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=miksh">miksh</a>
+                            </span>
+                            |
+                            <span>
+                                September 25 2015
+                            </span>
+                        </div>
+                        <p>Not quite clear how to control relative urls by using relativeUrls &amp; rootPath settings.<br /><br />See full description here http://stackove<wbr />rflow.com/quest<wbr />ions/32764094/v<wbr />isual-studio-20<wbr />15-web-compiler<wbr />-less-relativeu<wbr />rls-and-rootpat<wbr />h</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="31767" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=bille2le&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="da855dbc-f1a0-4481-b322-91bba84a741f" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Bille2le/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Bille2le">Bille2le</a>
+                            </span>
+                            |
+                            <span>
+                                September 23 2015
+                            </span>
+                        </div>
+                        <p>Excellent!</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="31732" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=victor+bonnedun&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="19af8910-507a-495f-8c06-75f324a7a165" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Victor Bonnedun/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Victor%20Bonnedun">Victor Bonnedun</a>
+                            </span>
+                            |
+                            <span>
+                                September 15 2015
+                            </span>
+                        </div>
+                        <p>I really don't understand why I have to &quot;declare&quot; all my .less files in my project to get them compiled !!!<br />Don't you already have the .csproj file for that ???<br />I go back to 2013, where I can edit a .less files and compile it with just CTRL+s instead of having to populate yet another JSON file which ultimately won't be in sync with my project (since the file is not updated upon renaming/deleti<wbr />ng files...)<br />And, in VS2013, all LESS files are compiled when I &quot;build the solution&quot;. I don't have to run yet another command...<br /><br />I'm really confused.<br /><br />Fortunately, Typescript handling has not changed (as far as I can see). Please don't invent another wheel.</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30607" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=alex-angas&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="ff9e34b7-5989-42da-8796-250dd632d323" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Alex-Angas/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Alex-Angas">Alex-Angas</a>
+                            </span>
+                            |
+                            <span>
+                                September 15 2015
+                            </span>
+                        </div>
+                        <p>Very nice, great integration with VS, good customisation options.</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="31615" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=nbistrekov&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="047c5ecb-c696-496e-88d2-f1feb77ed426" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/nbistrekov/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=nbistrekov">nbistrekov</a>
+                            </span>
+                            |
+                            <span>
+                                September 11 2015
+                            </span>
+                        </div>
+                        <p></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30582" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=jpalmer-accenture&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="eb260118-f20e-49ca-9448-da6a4c531d9e" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/jpalmer-accenture/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=jpalmer-accenture">jpalmer-accenture</a>
+                            </span>
+                            |
+                            <span>
+                                September 10 2015
+                            </span>
+                        </div>
+                        <p>Needs to bring back the split windows for *.less like 2013 did.  That was a hugely useful feature.  Lacking that feature in 2015, i'll go back to 2013 to make my changes.  </p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30550" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=stephan-ms&amp;size=large&amp;version=4f6ab9a0-336b-4dfd-98ab-21e50f7abff3" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="bee498c9-de18-41f4-8251-6beb06740593" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Stephan-Ms/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Stephan-Ms">Stephan-Ms</a>
+                            </span>
+                            |
+                            <span>
+                                September 08 2015
+                            </span>
+                        </div>
+                        <p>Thanks for the information<br />I use the version 1.3.144<br />We have dozens of SASS / CSS projects in one VS-project<br /><br />The first problem is:<br />The attributes &quot;includeInProje<wbr />ct&quot;: false, &quot;minify&quot;: {&quot;enabled&quot;: false} will not be supported in the compilerconfig.<wbr />json.defaults file.<br /><br />The second problem is:<br />If I add manually the attribute &quot;includeInProje<wbr />ct&quot;: false  in the filecompilercon<wbr />fig.json, it is automatically removed from the compiler Web.<br /><br />bevor:<br /> {<br />&quot;Output File&quot;: &quot;SiteA / default.css&quot;<br />&quot;Input File&quot;: &quot;SiteA / default.scss&quot;<br />&quot;includeInProje<wbr />ct&quot;: false,<br />&quot;minify&quot;: {<br />&quot;enabled&quot;: false<br />}<br /><br />after:<br /> {<br />&quot;Output File&quot;: &quot;SiteA / default.css&quot;<br />&quot;Input File&quot;: &quot;SiteA / default.scss&quot;<br />&quot;minify&quot;: {<br />&quot;enabled&quot;: false<br />}<br /></p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30337" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=alex-z11&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="87edbacb-5d18-4909-be4a-a0b27814bcb9" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Alex-z11/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Alex-z11">Alex-z11</a>
+                            </span>
+                            |
+                            <span>
+                                September 04 2015
+                            </span>
+                        </div>
+                        <p>Can we still see CSS and it generated LESS file in split windows, one near other like in web essentials 2013?<br />I can't find such option...</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30447" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=kraighamady&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b24fffe0-46f5-4944-94f2-2fc3f44bd94b" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/kraighamady/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=kraighamady">kraighamady</a>
+                            </span>
+                            |
+                            <span>
+                                August 29 2015
+                            </span>
+                        </div>
+                        <p>Poor error reporting, lack of gui settings, and no preview window are deal killers for me.  Until these improve it is either another solution or back to 2013 which worked fine...</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        <div class="reviewComment">
+	            <div class="reviewResponse">
+                <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=mads+kristensen&amp;size=large&amp;version=e8537430-e89e-4616-af78-65d9f9a68a5b" /></div>
+                <span class="displayName">
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b9ff9627-24a6-48eb-a3a4-47f2dfdd7b3e" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Mads Kristensen/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Mads%20Kristensen">Mads Kristensen</a></span>
+                <span>August 31 2015</span>
+                <div class="ownerCommentActions">
+                    | <span><a class="editComment" >Edit</a></span>
+                    | <span class="deleteComment" >
+                        <form method="post" action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment">
+                            <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />
+                            <input id="reviewId" name="reviewId" type="hidden" value="30372" />
+                            <a>Delete</a>
+                        </form>
+                      </span>
+                  </div>
+                 <p>The error reporting should be better than it was in Web Essentials. Do you mind opening a bug here https://github.<wbr />com/madskristen<wbr />sen/WebCompiler<wbr />/issues with the details, please?</p>
+                </div>
+
+</div>
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30372" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="The error reporting should be better than it was in Web Essentials. Do you mind opening a bug here https://github.com/madskristensen/WebCompiler/issues with the details, please?" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+The error reporting should be better than it was in Web Essentials. Do you mind opening a bug here https://github.com/madskristensen/WebCompiler/issues with the details, please?</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=jsd79&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="12573f44-19a4-444b-9565-56d121851cae" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/JSD79/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=JSD79">JSD79</a>
+                            </span>
+                            |
+                            <span>
+                                August 28 2015
+                            </span>
+                        </div>
+                        <p>I had trouble with this extension. After install and following the instructions listed, only one of the .scss files would compile on save, despite the fact all are listed in the config file. All scss content has been checked for errors by pasting into the one file that was compiling on save. Quite frustrating. <br /><br />(That fact we need any extension at all to compile scss, less, etc. is ridiculous. It should be built in.) <br /><br />UPDATE:<br />After deleting the config file and uninstalling the extension, then re-installing, all .scss files seem to be compiling on save (even though some are not listed in the config file). Rating adjusted to 4.</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30346" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="oddRow ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=wilfried+boos&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b7f5e467-1c6e-46ba-9b60-0df4c87928e7" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Wilfried Boos/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Wilfried%20Boos">Wilfried Boos</a>
+                            </span>
+                            |
+                            <span>
+                                August 18 2015
+                            </span>
+                        </div>
+                        <p>Works like a charm.</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30170" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class=" ">
+                    <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=lavablast&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+                    <div class="review">
+                        <div class="rating">
+                            <span class="Rating"><img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="FilledRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+<img src="https://i1.visualstudiogallery.msdn.s-msft.com/content/common/trans.gif" class="EmptyRatingStar" />
+</span>                        
+                            <span class="displayName">
+                                by  
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="77187988-e5ea-4feb-9c54-e90f42d2a6aa" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/LavaBlast/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=LavaBlast">LavaBlast</a>
+                            </span>
+                            |
+                            <span>
+                                August 17 2015
+                            </span>
+                        </div>
+                        <p>Unfortunately for me, Web Essentials was working #1 for compiling our less code base, but now I can't compile any file that reference bootstrap less files.<br /><br />We have a commercial bootstrap theme that we adapted to our existing application, the less code is pretty complicated (a lot of :extend for our existing css classes to behave like bootstrap classes) plus we have themes per clients.  When I try to compile only our main theme, I get this error:<br /><br />Error&#9;&#9;(WebCompiler) extend ' btn' has no matches<br />extend ' btn-success' has no matches<br />extend ' btn' has no matches<br />extend ' btn-success' has no matches<br /><br />This is preventing us to upgrading to visual studio because Web Essentials was really an essential tool to our workflow.<br /><br />From what I understand reading it that Web Compiler doesn't use the same less compiler as with Web Essentials...  We Essentials less compiling was working great, could we have the option in Web Compiler to change which engine is compiling our code maybe?</p>
+                    
+                        
+<div class="reviewCommentSection">
+    <div class="reviewCommentList">
+        
+    </div>
+    <div class="reviewCommentForm">
+        <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/review/comment" method="post">
+            <input id="ReviewId" name="ReviewId" type="hidden" value="30144" />
+            <input id="OriginalComment" name="OriginalComment" type="hidden" value="" />
+            <div><textarea cols="20" id="Text" name="Text" rows="2">
+</textarea></div>
+            <div class="commentResult"></div>
+            <div class="commentActions">
+                <input type="submit" value="Submit" />
+                <input class="cancel" type="button" value="Cancel" />
+            </div>
+        </form>
+    </div>
+</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+       <div class="clear"></div>
+        <div style="text-align: center;">
+<div id="Pager">
+    <div class="summary">
+        1 - 20
+        of
+        40
+        Items
+        &nbsp;&nbsp;
+    </div>
+    <div class="pagerLinks">
+&#171; First        &nbsp;
+&lt; Prev        &nbsp;
+               &nbsp;1&nbsp;
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews/2" class="Link">2</a>&nbsp; 
+        &nbsp;
+            <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews/2" class="Link">Next &gt;</a>
+        &nbsp;
+            <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Reviews/2" class="Link">Last &#187;</a>
+    </div>
+</div>        </div>
+</div>
+
+
+
+                            </div>
+                        </div>
+                        
+                            <div id="Discussions_Content">
+                                
+                                    <a href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fshowDiscussionForm%3dTrue%26stoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Sign in to start a discussion</a>
+                                
+                                <br /><br />
+                                <div id="DiscussionsTabPane">
+                                    
+
+
+<script language="javascript">
+    function displayCreateDiscussion() {
+        $('#newDiscussion').show();
+        $('#defaultDicussionText').hide();
+    }
+    
+    function cancelCreateDiscussion() {
+        $('#newDiscussion').hide();
+        $('#defaultDicussionText').show();
+        $('#Title').val('');
+        $('.discussionFormTable #Text').val('');
+        $('.discussionFormTable .field-validation-error').text('');
+    }
+
+    function ToggleSaveReply(replyLink, threadId) {
+        var saveReplySectionToOpen = $('#postReplyDiv');
+        if (saveReplySectionToOpen.is(":visible")) {
+            $('#saveReplyErrorMessage').text('');
+            saveReplySectionToOpen.hide();
+        }
+        if (replyLink != null) {
+            var parentLoc = $('.postSaveReplyLocation', $(replyLink).parents('.thread'));
+            $('#PostReply').val('');
+            $('#PostReplyThreadId').val(threadId);
+            saveReplySectionToOpen.appendTo(parentLoc).slideToggle("normal");
+            saveReplySectionToOpen[0].scrollIntoView();
+        }
+    }
+
+    function SetDiscussionHidden(id, discussionType, isHidden) {
+        var form = $('#setDiscussionForm');
+        $('#id', form).val(id);
+        $('#discussionType', form).val(discussionType);
+        $('#isHidden', form).val(isHidden);
+        form.submit();
+    }
+
+    function saveReply() {
+        var replyText = $("#PostReply").val();
+        var threadId = $('#PostReplyThreadId').val();
+        
+        var hasErrors = false;
+        var errorMessage = "";
+        if (!replyText || replyText.length == 0) {
+            errorMessage = $('#postReplyDiv').attr("requiredMessage");
+            hasErrors = true;
+        }
+        else if(replyText.length > 2000) {
+             errorMessage = $('#postReplyDiv').attr("maxLengthMessage");
+             hasErrors = true;
+        }
+
+        if(hasErrors)
+        {
+            $('#saveReplyErrorMessage').text(errorMessage);
+            $('#saveReplyErrorMessage').show();
+            return;
+        }
+
+        $('#saveReplyErrorMessage').hide();
+        $('#PostReply').val('');
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "/site/discussion/reply?name=3b329021-cd7a-4a01-86fc-714c2d05bb6c",
+            data: {threadId : threadId, threadText : replyText},
+            dataType: "json",
+            success: function(result) {
+                if (result.success) {
+                    window.location = "/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions";
+                }
+                else {
+                    var errorMessage = result.errorMessage;
+                    $('#saveReplyErrorMessage').text(errorMessage);
+                    $('#saveReplyErrorMessage').show();
+                }
+            },
+            error: function(req, status, Error) {
+                var errorMessage = $('#postReplyDiv').attr("unexpectedErrorMessage");
+                $('#saveReplyErrorMessage').text(errorMessage);
+                $('#saveReplyErrorMessage').show();
+            }
+        });
+    }
+</script>
+
+<div id="newDiscussion" style="display:none">
+    <form action="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/creatediscussion?name=3b329021-cd7a-4a01-86fc-714c2d05bb6c" id="reviewsForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="6yhFwojBfDMcselUK08ikTNwhgq6C2BZ5QGFsOG8WVCLnGc2lZC2gbZJLZdKkBDoMdfLTI8jrgqnwy1AbjZwb/O/aiDiVNJU6XPsSCL5KTYP41nUdXZ1nt+iAZpiuoepA6F9Fw==" />
+       <table class="discussionFormTable">
+            <tr>
+                <td>
+                    Title: <span class="required">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="Title" maxlength="250" name="Title" type="text" value="" />
+                    <br />
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Post ( Maximum of 2000 Characters ): <span class="required">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea cols="20" id="Text" maxlength="2000" name="Text" rows="2">
+</textarea>
+                    <br />
+                    
+                </td>
+            </tr>
+    </table>
+    <div id="Actions">
+        <div class="middle">
+            <input id="uploadButton" class="bevelButton" type="submit" value="Submit" />
+            <input id="cancelButton" class="bevelButton" type="button" value="Cancel" onclick="cancelCreateDiscussion()" />
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    </form>
+</div>
+<div id="setHiddenDiv">
+    <form action="/site/discussion/SetHidden?name=3b329021-cd7a-4a01-86fc-714c2d05bb6c&amp;host=project" id="setDiscussionForm" method="post"><input id="pageIndex" name="pageIndex" type="hidden" value="1" />
+        <input id="id" name="id" type="hidden" value="" />
+        <input id="discussionType" name="discussionType" type="hidden" value="" />
+        <input id="isHidden" name="isHidden" type="hidden" value="" />
+    </form>
+</div>
+<div id="postReplyDiv" class="postSaveReply" unexpectederrormessage="An unexpected error occurred."
+    requiredmessage="The reply text is required." maxlengthmessage="Post has a maximum of 2000 characters">
+    <hr />
+    <table class="discussionFormTable">
+        <tr>
+            <td>
+                <div>
+                    <input id="PostReplyThreadId" name="PostReplyThreadId" type="hidden" value="" />
+                    <textarea cols="20" id="PostReply" maxlength="2000" name="PostReply" rows="2">
+</textarea>
+                </div>
+                <div id="saveReplyErrorMessage" class="saveReplyErrorMessage">
+                </div>
+                <div>
+                    <input id="SaveReply" class="bevelButton" type="button" value="Save reply" onclick="saveReply()" />
+                    <input id="CancelReply" class="bevelButton" type="button" value="Cancel" onclick="ToggleSaveReply(null, null)" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+    <ul class="threads">
+                    <li class="thread " threadid="18783">
+                <a id="18783"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Stop the output of two files</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">Thu 10:16 PM</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45773">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=vital+works&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    Thu 10:16 PM
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="035a8b36-15a4-4de4-8690-5b75befe48f9" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Vital Works/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Vital%20Works">Vital Works</a>
+                </div>
+                <pre class="postItem">How do I stop the compiler outputting two files (the compiled CSS and a min file)?  I only want the min file, not the min file and non-minified version.</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18721">
+                <a id="18721"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Integrate WebCompiler into Publish for Azure</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">Sat 10:47 AM</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45625">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=christian+metz&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    Sat 10:47 AM
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="1d0fa40a-2508-472d-8f40-6122f1dea2da" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Christian Metz/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Christian%20Metz">Christian Metz</a>
+                </div>
+                <pre class="postItem">I would like to integrate the LESS compilation in my publishing task.&#13;&#10;From Visual Studio I use the Publish to Windows Azure to upload all files from my MVC 6 project.&#13;&#10;Right now with default settings the less files are uploaded to Azure. All gulp tasks run right before the upload, but not the tasks from the WebCompiler.exe&#13;&#10;How can I ensure that the less files are compile before the upload to Azure starts and that only the compiled (and minified version) of css files are transfered.&#13;&#10;&#13;&#10;Is it possible to add the WebCompile.exe command / task in my project.json / script section? And if so how and within which step (postinstall, prepublish?)&#13;&#10;I could use a gulp task for that, but then I have different compilations. One within Visual Studio and another during the publishing, which often leads to different results.&#13;&#10;&#13;&#10;&#13;&#10;BTW the same issue for .ts files.&#13;&#10;&#13;&#10;Thanks for your help&#13;&#10;</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18383">
+                <a id="18383"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Error when saving .less files</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">3</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">November 11, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="44779">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=gerardf&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 12, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="1674bd20-2f26-4aad-a770-a1854babfe19" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/GerardF/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=GerardF">GerardF</a>
+                </div>
+                <pre class="postItem">Hi,&#13;&#10;&#13;&#10;I'm using WebCompiler with VS 2015 (ASP.NET MVC4 project). My project has many .less files. Whenever I save a less file, I get a message: &quot;There is an error in the compilerconfig.<wbr />json file...&quot;, although the save and compilation are done. The compilerconfig.<wbr />json file contains a list of items like:&#13;&#10;&#13;&#10;[&#13;&#10;  {&#13;&#10;    &quot;outputFile&quot;: &quot;BpContent/Area<wbr />s/Admin.css&quot;,&#13;&#10;    &quot;inputFile&quot;: &quot;BpContent/Area<wbr />s/Admin.less&quot;&#13;&#10;  }&#13;&#10; (many more)&#13;&#10;]&#13;&#10;&#13;&#10;I tried to regenerate the file, but same issue.&#13;&#10;&#13;&#10;Any idea?&#13;&#10;&#13;&#10;Thnaks.</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="44995">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=mads+kristensen&amp;size=large&amp;version=e8537430-e89e-4616-af78-65d9f9a68a5b" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 21, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b9ff9627-24a6-48eb-a3a4-47f2dfdd7b3e" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Mads Kristensen/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Mads%20Kristensen">Mads Kristensen</a>
+                </div>
+                <pre class="postItem">I think this was fixed in the newer builds. Try this one http://vsixgall<wbr />ery.com/extensi<wbr />on/148ffa77-d70<wbr />a-407f-892b-9ee<wbr />542346862/</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="45537">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=gerardf&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    November 11, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="1674bd20-2f26-4aad-a770-a1854babfe19" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/GerardF/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=GerardF">GerardF</a>
+                </div>
+                <pre class="postItem">Yes it works, thanks. The minimize option in the .json file also works now.</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18653">
+                <a id="18653"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">SCSS Library installation suport (i.e. Singularitygs)</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">2</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">November 06, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45406">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=franasmmsdn&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    November 06, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="ab93fdf3-0fb8-4639-ad4c-605574ecab0b" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/franasmMSDN/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=franasmMSDN">franasmMSDN</a>
+                </div>
+                <pre class="postItem">I have tried to import the Singularitygs grid system (and later breakpoint) to use with SCSS. All the varied tutorials on how to add these are based on a Linux or mac and require ruby gems, compass, something called globbing and whatnot.&#13;&#10;&#13;&#10;I have read somewhere on my journey (an older post 2013), that in the background, this tool (or perhaps back then its web essentials counterpart) used compass and ruby gems which were installed and configured in the background automatically.&#13;&#10;&#13;&#10;Is this still the case, and if so, how do I get access to said config.rb file so I can add the Singularitygs extension. I searched my solution but could not find any .rb files. So if this is false, can you advise how to install SCSS extension libraries like Singularitygs and others if possible?&#13;&#10;&#13;&#10;Thanks in advance, and great set of extensions. I use them all.&#13;&#10;</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="45407">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=franasmmsdn&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    November 06, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="ab93fdf3-0fb8-4639-ad4c-605574ecab0b" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/franasmMSDN/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=franasmMSDN">franasmMSDN</a>
+                </div>
+                <pre class="postItem">Actually I figured it out for the most part so you can ignore this.&#10;&#10;Just don't ignore the part at the end, still a great set of extensions and thanks for putting it out there.</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18618">
+                <a id="18618"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Compile without adding to csproj</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">November 03, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45335">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=joakim+bugge&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    November 03, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="c70875d1-0ee8-4ff2-a1e4-b058df0e264b" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Joakim Bugge/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Joakim%20Bugge">Joakim Bugge</a>
+                </div>
+                <pre class="postItem">Is it possible to compile Sass-files without adding the compiled CSS files to .csproj?</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="17232">
+                <a id="17232"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Wildcard settings</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">4</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">November 03, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="41847">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=andy+doyle&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    July 20, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="25115e0d-9219-403c-9df0-92770d5c5fca" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Andy Doyle/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Andy%20Doyle">Andy Doyle</a>
+                </div>
+                <pre class="postItem">We have over a hundred SCSS files in one of our projects and we really want them all to build at once.&#13;&#10;Many of these are nested SCSS files so if we edit the master SCSS, we need these changes to trickle throughout all other SCSS files that reference it.&#13;&#10;&#13;&#10;So far, it's taking a lot of time to manually &quot;Compile file...&quot; on each SCSS file, browse back to the original folder it was in (I'd like the Save As dialog to default to the directory containing the SCSS file).&#13;&#10;&#13;&#10;Is there also a way to set defaults for all new entries in compilerconfig.<wbr />json? I'd like minification to be disabled by default as we bundle and minify our CSS at runtime.&#13;&#10;&#13;&#10;Thanks.</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="44957">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=darrel+kleynhans&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 20, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="928ebe7a-0ec9-4d7e-9a9a-da09ef0e0ebc" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Darrel kleynhans/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Darrel%20kleynhans">Darrel kleynhans</a>
+                </div>
+                <pre class="postItem">Any solutions for this?</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="44993">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=mads+kristensen&amp;size=large&amp;version=e8537430-e89e-4616-af78-65d9f9a68a5b" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 21, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="b9ff9627-24a6-48eb-a3a4-47f2dfdd7b3e" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Mads Kristensen/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Mads%20Kristensen">Mads Kristensen</a>
+                </div>
+                <pre class="postItem">The latest build allows you to modify global minification options for your project. It's inside the `compilerconfig<wbr />.json.defaults` file. &#10;&#10;Latest CI build is here http://vsixgall<wbr />ery.com/extensi<wbr />on/148ffa77-d70<wbr />a-407f-892b-9ee<wbr />542346862/</pre>
+            </div>
+        </div>
+    </li>
+    <li class="post " postid="45330">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=joakim+bugge&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    November 03, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="c70875d1-0ee8-4ff2-a1e4-b058df0e264b" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Joakim Bugge/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Joakim%20Bugge">Joakim Bugge</a>
+                </div>
+                <pre class="postItem">Mads, can you please provide an example compilerconfig.<wbr />json.defaults file, or at least a snippet with this global minification option? I can figure out how to disable minifacation globally.</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18590">
+                <a id="18590"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">LESS compilation</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">October 30, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45251">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=nstanard&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 30, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="641a184b-88be-467b-8ceb-f203ec8c41c4" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/nstanard/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=nstanard">nstanard</a>
+                </div>
+                <pre class="postItem">What does Web Compiler use to compile less files? Lessc?</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18588">
+                <a id="18588"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">compilerconfig.<wbr />json.defaults misspellings</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">October 30, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45246">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=hullah&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 30, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="d896e3d8-be81-4a36-8bef-10cb20bbc61c" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Hullah/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Hullah">Hullah</a>
+                </div>
+                <pre class="postItem">I noticed in the compilerconfig.<wbr />json.defaults file that gets created there seems to be some misspellings with soruceMapRoot and soruceMapBasePa<wbr />th.  Is that an oversight or the required spelling?</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18527">
+                <a id="18527"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">Javascript and debug code</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">October 26, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45094">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=tim+charters&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 26, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="8f3bc735-5daf-48a4-abaa-52f7d145fb0d" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Tim Charters/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Tim%20Charters">Tim Charters</a>
+                </div>
+                <pre class="postItem">Hello and thank you for the extension - it's a critical tool!&#13;&#10;&#13;&#10;I'm a javascript novice, and I end up including a lot of debug code.  Lines like console.log or console.debug.  It would be great if this tool was capable of stripping out debug lines (log ones are probably still useful in production) at least when it is minified.  Perhaps having this configurable would be fancy too.&#13;&#10;&#13;&#10;If this is already an existing feature, then I'm afraid I failed to find it and I did look... thanks for the attention!</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+            <li class="thread " threadid="18489">
+                <a id="18489"></a>
+                <div class="threadHeader">
+                    <div class="threadActions">
+                        <a class="reply" class="postReply" href="https://login.live.com/login.srf?wa=wsignin1.0&wtrealm=visualstudiogallery.msdn.microsoft.com&wreply=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c%2fview%2fDiscussions%2f0%3fstoAI%3d10&wp=MBI_FED_SSL&wlcxt=microsoft%24microsoft%24microsoft">Reply to discussion</a> |
+                        <a class="toggleDiscussion" onclick="Galleries.project.toggleThread(this)" toggletext="View">Hide</a>
+                    </div>
+                    <div class="title">How to create new compilerconfig.<wbr />json Web compiler</div>
+                    <div style="color: Black;">
+                        <span class="value" style="color: Black;">1</span> <span class="label">Posts</span> | 
+                        <span class="label">Last post</span>
+                        <span class="value">October 22, 2015</span>
+                    </div>
+                </div>
+                <ul class="posts">
+                        <li class="post " postid="45016">
+        <div id="discussionListItem">
+            <div class="avatar"><img width="44" height="44" src="https://i1.social.s-msft.com:443/profile//u/avatar.jpg?displayname=liran+obl&amp;size=large&amp;version=00000000-0000-0000-0000-000000000000" /></div>
+            <div class="discussion">
+                <div class="postMeta">
+                    Written
+                    October 22, 2015
+                </div>
+                <div>
+                    
+<a class="unified-baseball-card-compact-hover" 
+    data-profile-userId="05a861ae-0f8d-4d95-9ba8-8e3e3cb41546" 
+    data-profile-usercard-customLink='{"href":"https://social.Msdn.microsoft.com/profile/Liran OBL/extensions","text":"View contributions"}'
+    href="/site/search?f%5B0%5D.Type=User&amp;f%5B0%5D.Value=Liran%20OBL">Liran OBL</a>
+                </div>
+                <pre class="postItem">I have project with a lot of less files, I'm used in Web compiler Extension for visual studio 2015.&#13;&#10;&#13;&#10;my way to create compilerconfig.<wbr />json is to compile single file and then edit manually the file, to work with all the other less files in the project. I'm sure it's wrong way...&#13;&#10;&#13;&#10;I don't understand, how I can to create new compilerconfig.<wbr />json file that include all the less files in existing project?&#13;&#10;&#13;&#10;because in this situation when I added new less file the only way to add file is go to compilerconfig.<wbr />json and add it manually.&#13;&#10;&#13;&#10;we don't have option to create new compilerconfig.<wbr />json with all the less files included in automatically way?</pre>
+            </div>
+        </div>
+    </li>
+
+                </ul>
+                <div class="postSaveReplyLocation"></div>
+            </li>
+
+    </ul>
+    <div style="text-align: center;">
+<div id="Pager">
+    <div class="summary">
+        1 - 10
+        of
+        60
+        Items
+        &nbsp;&nbsp;
+    </div>
+    <div class="pagerLinks">
+&#171; First        &nbsp;
+&lt; Prev        &nbsp;
+               &nbsp;1&nbsp;
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/2" class="Link">2</a>&nbsp; 
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/3" class="Link">3</a>&nbsp; 
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/4" class="Link">4</a>&nbsp; 
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/5" class="Link">5</a>&nbsp; 
+                <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/6" class="Link">6</a>&nbsp; 
+        &nbsp;
+            <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/2" class="Link">Next &gt;</a>
+        &nbsp;
+            <a href="/3b329021-cd7a-4a01-86fc-714c2d05bb6c/view/Discussions/6" class="Link">Last &#187;</a>
+    </div>
+</div>    </div>
+
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function() {
+            if (StreamEvents) {
+                window.gTracker = StreamEvents.tracker.create(null, {
+                    beaconUrl: 'setrack.gif',
+                    pageEventType: 'GalleriesPage',
+                    pageActionEventType: 'GalleriesPageAction',
+                    pageEventArg: {
+                        Brand: 'VisualStudio',
+                        Page: 'ProjectDetails',
+                        Section: null,
+                        PageContent: '3b329021-cd7a-4a01-86fc-714c2d05bb6c',
+                        PageContentType: 'Project'
+                    }
+                });
+            }
+            registerPageView();
+             $('.tabHeaders > div').Tabify('current', 'Details', function(tabId) {
+                Galleries.project.resizeDesc();
+                if ($('#' + tabId).data('pageLoad') !== true) {
+                    Galleries.url.recordAdditionalPageView(tabId, '\x2f3b329021-cd7a-4a01-86fc-714c2d05bb6c\x2fstats\x2fRegisterPageView');
+                 }
+             });
+
+             var reportAbuseFormUrl = '\x2f3b329021-cd7a-4a01-86fc-714c2d05bb6c\x2freportabuse';
+             $("#reportAbuse a[href='']").click(function() {
+                    $('#projectContent').load(reportAbuseFormUrl);
+                    return false;
+                });
+            
+
+            Galleries.project.getGitInfo();
+            Galleries.project.getAuthorProjects();
+             
+        });
+        
+        function registerPageView() {
+            $.post('\x2f3b329021-cd7a-4a01-86fc-714c2d05bb6c\x2fstats\x2fRegisterPageView');
+        }
+    </script>
+
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+ 
+
+                                    <div class="Clear"></div>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="Clearbottom"></div>          
+                    <div class="bottomleftcorner"></div>            
+                    <div class="bottomrightcorner"></div> 
+                    
+                     
+
+<div data-chameleon-template="epxfooter" >
+<footer class="ux-footer" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="nav">
+    <div class="footerLinksContainer"> 
+          <ul class="footerLinks" style="width: 24.99%;">
+            <li class="footerLinksTitle">
+              <a href="" title="Dev Centers">Dev Centers</a>
+            </li>
+
+                <li>
+                  <a href="https://dev.windows.com/" title="Windows">Windows</a>
+                </li>
+                <li>
+                  <a href="http://dev.office.com/" title="Office">Office</a>
+                </li>
+                <li>
+                  <a href="https://msdn.microsoft.com/aa937802" title="More...">More...</a>
+                </li>
+          </ul>
+          <ul class="footerLinks" style="width: 24.99%;">
+            <li class="footerLinksTitle">
+              <a href="" title="Related Sites">Related Sites</a>
+            </li>
+
+                <li>
+                  <a href="https://www.visualstudio.com/" title="Visual Studio">Visual Studio</a>
+                </li>
+                <li>
+                  <a href="https://www.visualstudio.com/integrate/" title="Visual Studio Integrate">Visual Studio Integrate</a>
+                </li>
+                <li>
+                  <a href="http://www.vsipprogram.com/" title="VSIP Program">VSIP Program</a>
+                </li>
+                <li>
+                  <a href="https://www.microsoft.com/net" title="Microsoft .NET">Microsoft .NET</a>
+                </li>
+                <li>
+                  <a href="http://azure.microsoft.com/" title="Microsoft Azure">Microsoft Azure</a>
+                </li>
+          </ul>
+          <ul class="footerLinks" style="width: 24.99%;">
+            <li class="footerLinksTitle">
+              <a href="" title="Connect">Connect</a>
+            </li>
+
+                <li>
+                  <a href="http://social.msdn.microsoft.com/forums/vstudio/en-us/home?category=visualstudio%2cvslanguages%2cvstfs%2cnetdevelopment%2cvsarch" title="Forums">Forums</a>
+                </li>
+                <li>
+                  <a href="http://blogs.msdn.com/b/developer-tools/" title="Blog">Blog</a>
+                </li>
+                <li>
+                  <a href="https://www.facebook.com/visualstudio.us?brand_redir=1" title="Facebook">Facebook</a>
+                </li>
+                <li>
+                  <a href="https://www.linkedin.com/company/microsoft-visual-studio" title="LinkedIn">LinkedIn</a>
+                </li>
+                <li>
+                  <a href="http://stackoverflow.com/questions/tagged/visual-studio" title="Stack Overflow">Stack Overflow</a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/visualstudio" title="Twitter">Twitter</a>
+                </li>
+                <li>
+                  <a href="http://events.visualstudio.com/" title="Visual Studio Events">Visual Studio Events</a>
+                </li>
+                <li>
+                  <a href="http://www.youtube.com/user/visualstudio" title="YouTube">YouTube</a>
+                </li>
+          </ul>
+          <ul class="footerLinks" style="width: 24.99%;">
+            <li class="footerLinksTitle">
+              <a href="" title="Developer Resources">Developer Resources</a>
+            </li>
+
+                <li>
+                  <a href="https://msdn.microsoft.com/library/se881ay9(v=vs.120).aspx" title="Code samples">Code samples</a>
+                </li>
+                <li>
+                  <a href="https://msdn.microsoft.com/en-us/library/vstudio" title="Documentation">Documentation</a>
+                </li>
+                <li>
+                  <a href="https://www.visualstudio.com/downloads/download-visual-studio-vs" title="Downloads">Downloads</a>
+                </li>
+                <li>
+                  <a href="http://visualstudiogallery.msdn.microsoft.com/" title="Products &amp; extensions for Visual Studio">Products &amp; extensions for Visual Studio</a>
+                </li>
+                <li>
+                  <a href="https://www.visualstudio.com/integrate/get-started/get-started-rest-basics-vsi" title="REST APIs">REST APIs</a>
+                </li>
+                <li>
+                  <a href="http://www.modern.ie/" title="Testing tools for web developers">Testing tools for web developers</a>
+                </li>
+                <li>
+                  <a href="https://msdn.microsoft.com/en-us/vstudio/ff459609" title="Videos and tutorials">Videos and tutorials</a>
+                </li>
+                <li>
+                  <a href="https://msdn.microsoft.com/vstudio/ff640662" title="Virtual Labs">Virtual Labs</a>
+                </li>
+          </ul>
+    </div>
+    </div>
+  <div class="footerSubLinksContainer">
+    <span class="localePickerLink"><a href="https://msdn.microsoft.com/en-US/vstudio/SelectLocale?fromPage=https%3a%2f%2fvisualstudiogallery.msdn.microsoft.com%2f3b329021-cd7a-4a01-86fc-714c2d05bb6c" title=" United States (English)"> United States (English)</a></span>
+    <ul class="footerSubLinks">
+      <li class="subFooterLink">© 2015 Microsoft</li>
+          <li class="subFooterLink">
+            <a href="https://msdn.microsoft.com/cc300389.aspx" title="Terms of Use">Terms of Use</a>
+          </li>
+          <li class="subFooterLink">
+            <a href="https://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx" title="Trademarks">Trademarks</a>
+          </li>
+          <li class="subFooterLink">
+            <a href="http://go.microsoft.com/fwlink/?linkid=248681" title="Privacy Statement">Privacy Statement</a>
+          </li>
+          <li class="subFooterLink">
+            <a href="https://lab.msdn.microsoft.com/mailform/contactus.aspx?refurl=http%3a%2f%2fmsdn.microsoft.com%2fen-us%2fvstudio%2faa718325.aspx&amp;amp;loc=en-us" title="Site Feedback">Site Feedback</a>
+          </li>
+      <li>
+        <a class="microsoftlogo" href="https://www.microsoft.com" title="Microsoft"></a>
+      </li>
+    </ul>
+  </div>
+</footer><script type="text/javascript" xmlns="http://www.w3.org/1999/xhtml">
+/*<![CDATA[*/
+/**/
+(window.MTPS || (window.MTPS = {})).cdnDomains || (window.MTPS.cdnDomains = { 
+	"image": "https://i-msdn.sec.s-msft.com", 
+	"js": "https://i2-msdn.sec.s-msft.com", 
+	"css": "https://i-msdn.sec.s-msft.com", 
+	"xap": "https://msdn.microsoft.com"
+});
+/**/
+/*]]>*/
+</script></div>
+<div data-chameleon-template="footer" ></div>
+                    
+
+                           
+                </div>
+            </div>
+        </div>
+    </div>
+      
+    <div data-chameleon-template="megablade" ></div>
+    
+        <script type="text/javascript">
+            Galleries.utility.loadJavaScript("https://widgets.membership.s-msft.com/v1/loader.js?brand=Msdn&lang=en-US", true);
+            Galleries.utility.loadJavaScript('https://www.microsoft.com/library/svy/sto/broker.js', true);
+    </script>  
+
+    
+    <script src="https://i1.visualstudiogallery.msdn.s-msft.com/GlobalResources/scripts/common.js?cver=0001" type="text/javascript" language="javascript"></script>
+    <script src="https://i1.visualstudiogallery.msdn.s-msft.com/GlobalResources/scripts/localepop.js?cver=0001" type="text/javascript" language="javascript"></script>
+    
+        <script src="https://i1.visualstudiogallery.msdn.s-msft.com/GlobalResources/scripts/omni_rsid_social.js?cver=0001" type="text/javascript" language="javascript"></script>
+        <script src="https://i1.code.msdn.s-msft.com/RequestReduceContent/907ed666e06158a76d655e9566044865-288f09195a447aee6da1d0e3259aa273-RequestReducedScript.js" type="text/javascript" ></script>        <noscript><a href="https://www.omniture.com" title="Web Analytics">
+        <img src="https://msstonojssocial.112.2O7.net/b/ss/msstonojssocial/1/H.20.2--NS/0" height="1" width="1" alt="" />
+        </a></noscript>
+    
+</body>
+</html>

@@ -1,14 +1,13 @@
 ﻿using Autofac;
-using Clinic.Core.Automapper;
 using Clinic.Core.UnitOfWork;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
-using Clinic.Domain.Repositories.Concrete;
 using Clinic.Core;
 using System.Collections.Generic;
 using Autofac.Builder;
 using Clinic.Core.Enums;
 using Clinic.Data.Automapper.Infrastructure;
+using Clinic.Data.Repositories;
 
 namespace Clinic.Data
 {
@@ -36,6 +35,8 @@ namespace Clinic.Data
                 builder.RegisterType<ClinicClinicianRepository>().As<IClinicClinicianRepository>(),
                 builder.RegisterType<RefreshTokenRepository>().As<IRefreshTokenRepository>(),
                 builder.RegisterType<UserRepository>().As<IUserRepository>(),
+                builder.RegisterType<ClinicRepository>().As<IClinicRepository>(),
+                builder.RegisterType<ClinicianRepository>().As<IClinicianRepository>(),
                 builder.RegisterType<UnitOfWork.UnitOfWork>().As<IUnitOfWork>()
             };
 

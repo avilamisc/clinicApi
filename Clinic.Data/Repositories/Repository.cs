@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
 
-namespace Clinic.Domain.Repositories.Base
+namespace Clinic.Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class
@@ -29,9 +29,14 @@ namespace Clinic.Domain.Repositories.Base
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public TEntity Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
-            return _context.Set<TEntity>().Remove(entity);
+            _context.Set<TEntity>().Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            _context.Set<TEntity>().RemoveRange(entities);
         }
 
         public async Task<IEnumerable<TEntity>> GetAsync()

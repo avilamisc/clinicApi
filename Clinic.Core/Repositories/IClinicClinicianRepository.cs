@@ -7,5 +7,6 @@ namespace Clinic.Core.Repositories
     {
         Task UploadClinicAsync(ClinicClinician entity);
         Task UploadClinicianAsync(ClinicClinician entity);
+        Task<ClinicClinician> GetClinicClinicianAsync(int clinicId, int clinicianId);
     }
 }

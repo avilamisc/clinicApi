@@ -75,6 +75,8 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\DependencyLifetimeType.cs" />
     <Compile Include="Enums\UserRole.cs" />
+    <Compile Include="Repositories\IClinicianRepository.cs" />
+    <Compile Include="Repositories\IClinicRepository.cs" />
     <Compile Include="Repositories\IDocumentRepository.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="DtoModels\BookingDto.cs" />

@@ -1,4 +1,4 @@
-import { DocumentModel } from './documentModel.model';
+import { DocumentModel } from './document.model';
 
 export class UpdateBookingModel {
     id: number;
@@ -7,4 +7,5 @@ export class UpdateBookingModel {
     documents: DocumentModel[];
     clinicId: number;
     clinicianId: number;
+    newFiles: any[] = [];
 }

@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
         if (this.tokenService.getAccessToken()) {
             const expectedRole = route.data.expectedRole;
 
-            if (this.tokenService.getRole() === expectedRole) {
+            if (!expectedRole || this.tokenService.getUserRole() === expectedRole) {
                 return true;
             }
         }

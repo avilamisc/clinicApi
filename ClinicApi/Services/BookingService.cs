@@ -6,7 +6,6 @@ using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Booking;
-using ClinicApi.Models.Document;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,12 +64,7 @@ namespace ClinicApi.Services
                 return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
             }
 
-            if (!CheckAndPopulateUserIdAndFilesFormRequest(request, userId, bookingModel))
-            {
-                return new ApiResponse(HttpStatusCode.NotFound, BookingErrorMessages.MissedFile);
-            }
-
-            var clinicClinician = await GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
+            var clinicClinician = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
 
             var validatioErrorResult = CheckPatientBookingModel(userId, bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
@@ -78,12 +72,18 @@ namespace ClinicApi.Services
             var newBooking = _mapper.Mapper.Map<Booking>(bookingModel);
             newBooking.PatientId = userId;
             newBooking.ClinicClinicianId = clinicClinician.Id;
+            newBooking.Documents = CreateNewDocuments(request, userId).ToList();
 
             var result = _unitOfWork.BookingRepository.Create(newBooking);
-            await _unitOfWork.SaveChangesAsync();
 
-            await _unitOfWork.ClinicClinicianRepository.UploadClinicAsync(newBooking.ClinicClinician);
-            await _unitOfWork.ClinicClinicianRepository.UploadClinicianAsync(newBooking.ClinicClinician);
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch
+            {
+                return new ApiResponse(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
+            }
 
             return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
         }
@@ -99,33 +99,28 @@ namespace ClinicApi.Services
                 return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
             }
 
-            if (!CheckAndPopulateUserIdAndFilesFormRequest(request, userId, bookingModel))
-            {
-                return new ApiResponse(HttpStatusCode.NotFound, BookingErrorMessages.MissedFile);
-            }
-
             var booking = await _unitOfWork.BookingRepository.GetWithDocumentsAsync(bookingModel.Id);
-            if (booking == null || booking.PatientId != userId) return new ApiResponse(HttpStatusCode.NotFound);
+            if (booking == null) return new ApiResponse(HttpStatusCode.NotFound);
 
-            var clinicClinician = await GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
+            var clinicClinician = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
 
             var validatioErrorResult = CheckPatientBookingModel(userId, bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
-            var existingIds = booking.Documents;
+            var existings = booking.Documents;
+            var newDocumets = CreateNewDocuments(request, userId).ToList();
+            var documentsToDelete = UpdateBookingDocuments(bookingModel, newDocumets, existings);
 
             _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
-            booking.Documents = UpdateAndGetNewDocuments(bookingModel, existingIds).ToList();
+            booking.Documents = newDocumets;
 
             try
             {
                 _unitOfWork.BookingRepository.Update(booking);
+                _unitOfWork.DocumentRepository.RemoveRange(documentsToDelete);
                 await _unitOfWork.SaveChangesAsync();
-
-                await _unitOfWork.ClinicClinicianRepository.UploadClinicAsync(booking.ClinicClinician);
-                await _unitOfWork.ClinicClinicianRepository.UploadClinicianAsync(booking.ClinicClinician);
 
                 return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(booking));
             }
@@ -153,53 +148,47 @@ namespace ClinicApi.Services
             return null;
         }
 
-        private async Task<ClinicClinician> GetClinicClinicianAsync(int clinicId, int clinicianId)
-        {
-            return await _unitOfWork.ClinicClinicianRepository.GetSingleAsync(c => c.ClinicId == clinicId
-                && c.ClinicianId == clinicianId);
-        }
-
-        private bool CheckAndPopulateUserIdAndFilesFormRequest(HttpRequest request, int userId, BookingModel model)
-        {            
-            var files = request.Files;
-
-            foreach (var document in model.Documents)
-            {
-                var file = files.Get(document.FileKey);
-                if (file == null) return false;
-
-                var filePath = _fileService.UploadFile(file);
-                if (filePath == null) return false;
-
-                document.FilePath = filePath;
-                document.UserId = userId;
-            }
-
-            return true;
-        }
-
-        private IEnumerable<Document> UpdateAndGetNewDocuments(UpdateBookingModel model, IEnumerable<Document> existing)
+        private IEnumerable<Document> CreateNewDocuments(HttpRequest request, int userId)
         {
             var newDocuments = new List<Document>();
-
-            foreach (var doc in model.Documents)
+            var files = request.Files;
+            for (int i = 0; i < files.Count; i++)
             {
-                var existingEntity = existing.FirstOrDefault(d => d.Id == doc.Id);
+                var filePath = _fileService.UploadFile(files[i]);
+                if (filePath == null) continue;
 
-                if (existingEntity != null)
+                newDocuments.Add(new Document
                 {
-                    _fileService.DeleteFile(existingEntity.FilePath);
-                    _mapper.Mapper.Map<DocumentModel, Document>(doc, existingEntity);
-                    _unitOfWork.DocumentRepository.Update(existingEntity);
-                    newDocuments.Add(existingEntity);
-                }
-                else
-                {
-                    newDocuments.Add(_mapper.Mapper.Map<Document>(doc));
-                }
+                    UserId = userId,
+                    Name = (files[i]).FileName,
+                    FilePath = filePath
+                });
             }
 
             return newDocuments;
+        }
+
+        private IEnumerable<Document> UpdateBookingDocuments(
+            BookingModel model,
+            List<Document> documents,
+            IEnumerable<Document> existing)
+        {
+            var documentsToDelete = new List<Document>();
+
+            foreach (var doc in existing)
+            {
+                if (model.Documents.FirstOrDefault(d => doc.Id == d.Id) != null)
+                {
+                    documents.Add(doc);
+                }
+                else
+                {
+                    _fileService.DeleteFile(doc.FilePath);
+                    documentsToDelete.Add(doc);
+                }
+            }
+
+            return documentsToDelete;
         }
     }
 }
