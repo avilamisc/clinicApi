@@ -12,6 +12,15 @@
           (editCompleted)="updateEditingModel($event)">
 </app-edit>
 
+<app-table [columns]="columns" [data]="bookings">
+</app-table>
+
+<ng-template let-documents="data" #documetsColumn>
+  <div>
+    documents
+  </div>
+</ng-template>
+<!--
 <table>
   <thead>
     <th>Id</th>
@@ -48,3 +57,4 @@
     </tr>
   </tbody>
 </table>
+-->

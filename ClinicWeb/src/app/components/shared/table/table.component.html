@@ -1,0 +1,21 @@
+<div class="table-container">
+  <table>
+    <thead>
+      <th *ngFor="let column of columns">
+        <span *ngIf="!column.HeaderContent">{{column.Header}}</span>
+        <ng-template *ngTemplateOutlet="column.HeaderContent">
+        </ng-template>
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td *ngFor="let column of columns">
+          <span *ngIf="!column.RowContent">{{parser.get(item, column.DataPath)}}</span>
+          <ng-template [ngTemplateOutlet]="column.RowContent"
+                       [ngTemplateOutletContext]="{ data: parser.get(item, column.DataPath) }">
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

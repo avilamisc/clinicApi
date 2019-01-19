@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 
 import { BookingService } from 'src/app/core/services/booking/booking.service';
 import { BookingModel, PatientBookingModel } from 'src/app/core/models';
@@ -8,6 +8,8 @@ import { UserRoles } from 'src/app/utilities/user-roles';
 import { User } from 'src/app/core/models/user/user.model';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { DocumentService } from 'src/app/core/services/document/document.service';
+import { PatientBookingTableConfiguration,
+         ClinicianBookingTableConfiguration } from './booking-table';
 
 @Component({
   selector: 'app-booking',
@@ -16,12 +18,15 @@ import { DocumentService } from 'src/app/core/services/document/document.service
 })
 export class BookingComponent implements OnInit {
   public bookings: BookingModel[] = [];
+  public columns = [];
   public bookingToUpdate: UpdateBookingModel;
   public user: User;
   public isEditOpen = false;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private isPatient: boolean;
+
+  @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
@@ -31,6 +36,7 @@ export class BookingComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initializeBookings();
+    this.initializeTableColumns();
   }
 
   public updateBoking(booking: BookingModel, index: number): void {
@@ -51,8 +57,7 @@ export class BookingComponent implements OnInit {
       this.bookingService.createBookings(newBooking)
         .subscribe(result => {
           if (result.Result !== null) {
-            this.bookings.push(newBooking);
-            this.bookings = [...this.bookings];
+            this.bookings.push(result.Result);
             this.bookingToUpdate = null;
           }
         });
@@ -86,12 +91,25 @@ export class BookingComponent implements OnInit {
         });
   }
 
+  public initializeTableColumns(): void {
+    const config = this.isPatient
+    ? PatientBookingTableConfiguration
+    : ClinicianBookingTableConfiguration;
+
+  config.Documents.RowContent = this.documentsColumn;
+
+  for (const key in config) {
+    if (config.hasOwnProperty(key)) {
+      this.columns.push(config[key]);
+    }
+  }
+  }
+
   public loadDocument(id: number): void {
     this.documentService.downloadDocument(id).subscribe();
   }
 
   public closeEditWindow(): void {
-    console.log('close window');
     this.isEditOpen = false;
   }
 }
