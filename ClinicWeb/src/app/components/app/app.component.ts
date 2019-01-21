@@ -1,18 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-
-import { UserService } from 'src/app/core/services/user/user.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.styl']
 })
-export class AppComponent implements OnInit {
-  public UserName: string;
+export class AppComponent {
 
-  constructor(private userService: UserService) { }
+  constructor() { }
 
-  public ngOnInit(): void {
-    this.UserName = this.userService.getUserFromLocalStorage().UserName;
-  }
 }

@@ -10,7 +10,6 @@ export class ModalComponent {
   @Output('changed')   public visibleChange = new EventEmitter<boolean>();
 
   public hideWindow(): void {
-    console.log('hide');
     this.isVisiable = false;
     this.visibleChange.emit(this.isVisiable);
   }
