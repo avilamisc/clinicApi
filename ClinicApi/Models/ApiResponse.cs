@@ -23,5 +23,17 @@ namespace ClinicApi.Models
 
         public static ApiResponse ValidationError(string validationMessage) =>
             new ApiResponse { StatusCode = (int)HttpStatusCode.OK, ErrorMessage = validationMessage };
+
+        public static ApiResponse UnsupportedMediaType() =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.UnsupportedMediaType };
+
+        public static ApiResponse BadRequest(string errorMessage = null) =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.BadRequest, ErrorMessage = errorMessage };
+
+        public static ApiResponse InternalError(string errorMessage = null) =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.InternalServerError, ErrorMessage = errorMessage };
+
+        public static ApiResponse NotFound() =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.NotFound };
     }
 }

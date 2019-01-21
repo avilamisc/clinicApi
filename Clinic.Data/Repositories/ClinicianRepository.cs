@@ -21,16 +21,15 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ClinicianDto>> GetCliniciansAsync(int clinicId = -1)
+        public async Task<IEnumerable<ClinicianDto>> GetCliniciansAsync(int clinicId)
         {
-            var query = clinicId == -1
-                ? _context.Clinicians
-                : _context.ClinicClinicians
+            var result = await _context.ClinicClinicians
                     .Include(cc => cc.Clinician)
                     .Where(cc => cc.ClinicId == clinicId)
-                    .Select(cc => cc.Clinician);
+                    .Select(cc => cc.Clinician)
+                    .ToListAsync();
 
-            return _mapper.Mapper.Map<IEnumerable<ClinicianDto>>(await query.ToListAsync());
+            return _mapper.Mapper.Map<IEnumerable<ClinicianDto>>(result);
         }
     }
 }

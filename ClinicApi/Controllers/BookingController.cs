@@ -23,32 +23,22 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Patient")]
-        [Route("api/bookings/patient/{pageNumber}/{pageSize}")]
-        public async Task<IHttpActionResult> PatientBookings(int pageNumber, int pageSize)
+        [Route("api/bookings/patient")]
+        public async Task<IHttpActionResult> PatientBookings([FromUri]PaginationModel model)
         {
             var identity = (ClaimsIdentity)User.Identity;
-            var pagingModel = new PaginationModel
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
 
-            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims, pagingModel));
+            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims, model));
         }
 
         [HttpGet]
         [Authorize(Roles = "Clinician")]
-        [Route("api/bookings/clinician/{pageNumber}/{pageSize}")]
-        public async Task<IHttpActionResult> ClinicianBookings(int pageNumber, int pageSize)
+        [Route("api/bookings/clinician")]
+        public async Task<IHttpActionResult> ClinicianBookings([FromUri]PaginationModel model)
         {
             var identity = (ClaimsIdentity)User.Identity;
-            var pagingModel = new PaginationModel
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
 
-            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims, pagingModel));
+            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims, model));
         }
 
         [HttpPost]
@@ -56,10 +46,11 @@ namespace ClinicApi.Controllers
         [Route("api/bookings")]
         public async Task<IHttpActionResult> CreateBooking()
         {
-            if (!Request.Content.IsMimeMultipartContent()) return Ok(new ApiResponse(HttpStatusCode.UnsupportedMediaType));
+            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse.UnsupportedMediaType());
 
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.CreateBookingAsync(identity.Claims, HttpContext.Current.Request);
+
             return Ok(result);
         }
 
@@ -68,7 +59,7 @@ namespace ClinicApi.Controllers
         [Route("api/bookings")]
         public async Task<IHttpActionResult> UpdateBooking()
         {
-            if (!Request.Content.IsMimeMultipartContent()) return Ok(new ApiResponse(HttpStatusCode.UnsupportedMediaType));
+            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse.UnsupportedMediaType());
 
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.UpdateBookingAsync(identity.Claims, HttpContext.Current.Request);

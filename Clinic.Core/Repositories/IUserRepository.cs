@@ -7,6 +7,5 @@ namespace Clinic.Core.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<IEnumerable<DocumentDto>> GetUserDocumentDtosAsync(int id);
     }
 }

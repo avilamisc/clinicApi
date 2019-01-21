@@ -42,7 +42,6 @@ namespace ClinicApi.Services
             if (!CheckUserIdInClaims(claims, out int userId)) return new ApiResponse(HttpStatusCode.BadRequest);
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
-
             var bookings = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
             var result = new PagingResult<IEnumerable<PatientBookingModel>>
             {
@@ -72,17 +71,17 @@ namespace ClinicApi.Services
         public async Task<ApiResponse> CreateBookingAsync(IEnumerable<Claim> claims, HttpRequest request)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
-                return new ApiResponse(HttpStatusCode.BadRequest);
+                return ApiResponse.BadRequest();
 
             PatientBookingModel bookingModel = _mapper.SafeMap<PatientBookingModel>(request.Form);
             if (bookingModel == null)
             {
-                return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
+                return ApiResponse.BadRequest(BookingErrorMessages.WrongBookingDataFormat);
             }
 
             var clinicClinician = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
 
-            var validatioErrorResult = CheckPatientBookingModel(userId, bookingModel, clinicClinician, claims);
+            var validatioErrorResult = CheckPatientBookingModel(bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
             var newBooking = _mapper.Mapper.Map<Booking>(bookingModel);
@@ -98,7 +97,7 @@ namespace ClinicApi.Services
             }
             catch
             {
-                return new ApiResponse(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
+                return ApiResponse.InternalError(BookingErrorMessages.UpdateError);
             }
 
             return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
@@ -112,15 +111,15 @@ namespace ClinicApi.Services
             var bookingModel = _mapper.SafeMap<UpdateBookingModel>(request.Form);
             if (bookingModel == null)
             {
-                return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongDocumentsDataFormat);
+                return new ApiResponse(HttpStatusCode.BadRequest, BookingErrorMessages.WrongBookingDataFormat);
             }
 
             var booking = await _unitOfWork.BookingRepository.GetWithDocumentsAsync(bookingModel.Id);
-            if (booking == null) return new ApiResponse(HttpStatusCode.NotFound);
+            if (booking == null) return ApiResponse.NotFound();
 
             var clinicClinician = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
 
-            var validatioErrorResult = CheckPatientBookingModel(userId, bookingModel, clinicClinician, claims);
+            var validatioErrorResult = CheckPatientBookingModel(bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
             var existings = booking.Documents;
@@ -152,7 +151,6 @@ namespace ClinicApi.Services
         }
 
         private ApiResponse CheckPatientBookingModel(
-            int userId,
             BookingModel model,
             ClinicClinician clinicClinician,
             IEnumerable<Claim> claims)
@@ -176,7 +174,7 @@ namespace ClinicApi.Services
                 newDocuments.Add(new Document
                 {
                     UserId = userId,
-                    Name = (files[i]).FileName,
+                    Name = files[i].FileName,
                     FilePath = filePath
                 });
             }

@@ -18,12 +18,12 @@ export class BookingService {
 
   public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel[]>>> {
     return this.http.get<ApiResponse<PagingResult<PatientBookingModel[]>>>
-          (`${ApiRoutes.patientBookings}/${paging.pageNumber}/${paging.pageCount}`);
+          (`${ApiRoutes.patientBookings}/?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}`);
   }
 
   public getClinicianBookings(paging: Pagination): Observable<ApiResponse<PagingResult<ClinicianBookingModel[]>>> {
     return this.http.get<ApiResponse<PagingResult<ClinicianBookingModel[]>>>
-          (`${ApiRoutes.clinicianBookings}/${paging.pageNumber}/${paging.pageCount}`);
+          (`${ApiRoutes.clinicianBookings}/?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}`);
   }
 
   public updateBookings(model: UpdateBookingModel): Observable<ApiResponse<PatientBookingModel>> {

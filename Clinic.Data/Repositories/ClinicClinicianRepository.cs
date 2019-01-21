@@ -12,16 +12,6 @@ namespace Clinic.Data.Repositories
         {
         }
 
-        public async Task UploadClinicAsync(ClinicClinician entity)
-        {
-            await _context.Entry(entity).Reference(e => e.Clinic).LoadAsync();
-        }
-
-        public async Task UploadClinicianAsync(ClinicClinician entity)
-        {
-            await _context.Entry(entity).Reference(e => e.Clinician).LoadAsync();
-        }
-
         public async Task<ClinicClinician> GetClinicClinicianAsync(int clinicId, int clinicianId)
         {
             return await _context.ClinicClinicians

@@ -38,13 +38,7 @@ namespace ClinicApi.Controllers
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             response.Content = new ByteArrayContent(fileBytes);
-            var fileName = System.IO.Path.GetFileName(document.FilePath);
-
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(MimeMapping.GetMimeMapping(document.FilePath));
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = fileName
-            };
 
             return response;
         }

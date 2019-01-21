@@ -10,7 +10,7 @@ namespace ClinicApi.Automapper
         {
             CreateMap<PaginationModel, PagingDto>()
                 .ForMember(dto => dto.PageNumber, options => options.MapFrom(m => m.PageNumber >= 0 ? m.PageNumber : 0))
-                .ForMember(dto => dto.PageSize, options => options.MapFrom(m => m.PageSize <= 50 ? m.PageSize : 50));
+                .ForMember(dto => dto.PageSize, options => options.MapFrom(m => m.PageSize));
         }
     }
 }

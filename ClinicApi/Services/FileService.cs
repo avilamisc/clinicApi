@@ -10,10 +10,7 @@ namespace ClinicApi.Services
     {
         public byte[] GetFile(string filePath)
         {
-            if (filePath == null || !File.Exists(filePath))
-            {
-                return null;
-            }
+            if (filePath == null || !File.Exists(filePath)) return null;
 
             try
             {
@@ -30,10 +27,10 @@ namespace ClinicApi.Services
             if (file == null) return null;
 
             var ext = Path.GetExtension(file.FileName);
-            var fileName = Path.GetFileName($"{file.FileName + Guid.NewGuid().ToString()}{ext}");
+            var fileName = Path.GetFileName($"{file.FileName}_{Guid.NewGuid().ToString()}{ext}");
             var filePath = Path.Combine(ApiConstants.UploadedFilesFolderPath, fileName);
 
-            file.SaveAs(filePath);
+            file.SaveAs(filePath); 
 
             return filePath;
         }

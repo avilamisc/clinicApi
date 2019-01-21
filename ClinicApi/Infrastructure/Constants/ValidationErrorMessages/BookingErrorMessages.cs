@@ -2,7 +2,7 @@
 {
     public static class BookingErrorMessages
     {
-        public const string WrongDocumentsDataFormat = "Wrong documents data format";
+        public const string WrongBookingDataFormat = "Wrong booking data format";
         public const string MissedFile = "Missed or unsupported file";
         public const string UpdateError = "Cannot update this item";
         public const string ValidationDataError = "Wrong booking data";
