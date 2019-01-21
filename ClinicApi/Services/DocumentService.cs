@@ -26,16 +26,16 @@ namespace ClinicApi.Services
 
         public async Task<DocumentModel> GetDocumentByIdAsync(IEnumerable<Claim> claims, int id)
         {
-            var document = await _unitOfWork.DocumentRepository.GetAsync(id);
-
             if (!Int32.TryParse(claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value, out int userId))
             {
                 return null;
             }
 
-            return document.UserId == userId
-                ? _mapper.Mapper.Map<DocumentModel>(document)
-                : null;
+            var document = await _unitOfWork.DocumentRepository.GetWithClinicClinicianByIdAsync(id);
+
+            return document.Booking.PatientId == userId || document.Booking.ClinicClinician.ClinicianId == userId
+                    ? _mapper.Mapper.Map<DocumentModel>(document)
+                    : null;
 
         }
     }

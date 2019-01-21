@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { ApiResponse, PatientBookingModel, ClinicianBookingModel } from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { UpdateBookingModel } from '../../models/booking/update-booking.model';
+import { Pagination } from '../../models/table/pagination.model';
+import { PagingResult } from '../../models/paging-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,14 @@ export class BookingService {
   constructor(
     private http: HttpClient) { }
 
-  public getPatientBookings(): Observable<ApiResponse<PatientBookingModel[]>> {
-    return this.http.get<ApiResponse<PatientBookingModel[]>>(`${ApiRoutes.patientBookings}`);
+  public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel[]>>> {
+    return this.http.get<ApiResponse<PagingResult<PatientBookingModel[]>>>
+          (`${ApiRoutes.patientBookings}/${paging.pageNumber}/${paging.pageCount}`);
   }
 
-  public getClinicianBookings(): Observable<ApiResponse<ClinicianBookingModel[]>> {
-    return this.http.get<ApiResponse<ClinicianBookingModel[]>>(`${ApiRoutes.clinicianBookings}`);
+  public getClinicianBookings(paging: Pagination): Observable<ApiResponse<PagingResult<ClinicianBookingModel[]>>> {
+    return this.http.get<ApiResponse<PagingResult<ClinicianBookingModel[]>>>
+          (`${ApiRoutes.clinicianBookings}/${paging.pageNumber}/${paging.pageCount}`);
   }
 
   public updateBookings(model: UpdateBookingModel): Observable<ApiResponse<PatientBookingModel>> {

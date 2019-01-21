@@ -5,40 +5,43 @@
   <div m-close-button>CLOSE</div>
   <div class="edit-container">
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-      <div>
+      <div class="form-label-group">
         <label>
             Reciept:
-          <input type="text" formControlName="reciept">
+          <input type="text" class="form-control" formControlName="reciept">
         </label>
       </div>
-      <div>
+      <div class="form-label-group">
         <label>
             Name:
-          <input type="text" formControlName="name">
+          <input type="text" class="form-control" formControlName="name">
         </label>
       </div>
-      <div *ngIf="isPatient">
+      <div class="form-label-group" *ngIf="isPatient">
         <label>
             Clinic:
-          <select (change)="filterClinicians($event.target.value)" formControlName="clinic">
+          <select class="form-control" (change)="filterClinicians($event.target.value)" formControlName="clinic">
             <option selected> -- select an option -- </option>
             <option *ngFor="let clinic of clinics" [attr.value]="clinic.Id">{{clinic.Name}}</option>
           </select>
         </label>
       </div>
-      <div *ngIf="isPatient">
+      <div class="form-label-group" *ngIf="isPatient">
         <label>
-          Clinician Id:
-          <select formControlName="clinician">
+          Clinician:
+          <select class="form-control" formControlName="clinician">
             <option> -- select an option -- </option>
             <option *ngFor="let item of clinicians" [attr.value]="item.Id">{{item.Name}}</option>
           </select>
         </label>
       </div>
-      
       <app-edit-document [model]="model"></app-edit-document>
-
-      <button type="submit" [disabled]="!canSubmit()">Submit</button>
     </form>
   </div>
+  <div m-footer>
+      <button type="submit"
+              class="btn btn-primary"
+              (click)="onSubmit()"
+              [disabled]="!canSubmit()">Submit</button>
+    </div>
 </app-modal>

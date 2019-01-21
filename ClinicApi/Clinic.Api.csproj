@@ -127,6 +127,7 @@
     <Compile Include="Automapper\DocumentProfile.cs" />
     <Compile Include="Automapper\Infrastructure\ApiMapper.cs" />
     <Compile Include="Automapper\Infrastructure\IApiMapper.cs" />
+    <Compile Include="Automapper\PaginationProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\ClinicController.cs" />
@@ -150,6 +151,8 @@
     <Compile Include="Models\Clinician\ClinicianModel.cs" />
     <Compile Include="Models\Clinic\ClinicModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
+    <Compile Include="Models\Pagination\PaginationModel.cs" />
+    <Compile Include="Models\PagingResult.cs" />
     <Compile Include="Models\Token\RefreshTokenModel.cs" />
     <Compile Include="Models\User\UserModal.cs" />
     <Compile Include="Services\ClinicianService.cs" />

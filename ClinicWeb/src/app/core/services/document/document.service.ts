@@ -13,11 +13,11 @@ export class DocumentService {
 
   constructor(private http: HttpClient) { }
 
-    public downloadDocument(id: number): Observable<Blob> {
+    public downloadDocument(id: number, filename: string): Observable<Blob> {
       return this.http.get<Blob>(`${ApiRoutes.documents}/${id}`, { responseType: 'blob' as 'json' })
         .pipe(map(result => {
-            saveAs(result, 'download', { type: result.type });
-            return result;
+          saveAs(result, filename, { type: result.type });
+          return result;
         }));
     }
 }

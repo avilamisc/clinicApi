@@ -23,28 +23,47 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BookingDto>> GetForClinicianAsync(Expression<Func<Booking, bool>> predicate)
+        public async Task<IEnumerable<BookingDto>> GetForClinicianAsync(PagingDto pagingDto, int clinicianId)
         {
             var result = await _context.Bookings
+                .OrderBy(b => b.Id)
                 .Include(b => b.ClinicClinician.Clinic)
                 .Include(b => b.Patient)
                 .Include(b => b.Documents)
-                .Where(predicate)
+                .Where(b => b.ClinicClinician.ClinicianId == clinicianId)
+                .Skip(pagingDto.PageNumber * pagingDto.PageSize)
+                .Take(pagingDto.PageSize)
                 .ToListAsync();
 
             return _mapper.Mapper.Map<List<BookingDto>>(result);
         }
 
-        public async Task<IEnumerable<BookingDto>> GetForPatientAsync(Expression<Func<Booking, bool>> predicate)
+        public async Task<IEnumerable<BookingDto>> GetForPatientAsync(PagingDto pagingDto, int patinetId)
         {
             var result = await _context.Bookings
+                .OrderBy(b => b.Id)
                 .Include(b => b.ClinicClinician.Clinic)
                 .Include(b => b.ClinicClinician.Clinician)
                 .Include(b => b.Documents)
-                .Where(predicate)
+                .Where(b => b.PatientId == patinetId)
+                .Skip(pagingDto.PageNumber * pagingDto.PageSize)
+                .Take(pagingDto.PageSize)
                 .ToListAsync();
 
             return _mapper.Mapper.Map<List<BookingDto>>(result);
+        }
+
+        public int CountForPatien(int patinetId)
+        {
+            return _context.Bookings
+                .Where(b => b.PatientId == patinetId).Count();
+        }
+
+        public int CountForClinician(int clinicianId)
+        {
+            return _context.Bookings
+                .Include(b => b.ClinicClinician)
+                .Where(b => b.ClinicClinician.ClinicianId == clinicianId).Count();
         }
 
         public async Task<Booking> GetWithDocumentsAsync(int id)

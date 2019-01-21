@@ -33,7 +33,6 @@ export class EditComponent implements OnInit, OnChanges {
           this.createForm();
       }
       if (changes.visibility) {
-        console.log('visi', this.visibility);
       }
   }
 
@@ -46,7 +45,7 @@ export class EditComponent implements OnInit, OnChanges {
       if (this.isPatient) {
         this.setValuesFromFormToModel();
       }
-
+      console.log(this.model);
       this.isNewBooking
         ? this.onEditCompleted.emit(this.model)
         : this.bookingService.updateBookings(this.model)

@@ -1,17 +1,23 @@
-<div>
-  <div>
-    <button type="button" (click)="crateNewBooking()">Create</button>
-  </div>
+<div class="booking-container">
   <app-table [columns]="columns"
              [data]="bookings"
+             [totalAmount]="totalAmount"
+             [mobileWidth]="768"
+             (pageChanged)="updateData($event)"
              (rowClicked)="updateBoking($event.data, $event.index)">
   </app-table>
+  <div *ngIf="isPatient" class="create-container">
+    <button class="btn btn-dark btn-outline-success"
+            type="button"
+            (click)="crateNewBooking()">Create</button>
+  </div>
 </div>
 
 <ng-template let-documents="data" #documetsColumn>
-  <div>
+  <div class="document-list">
     <ul>
-      <li (click)="loadDocument($event, document.Id)" *ngFor="let document of documents">{{document.Name}}</li>
+      <li *ngFor="let document of documents"
+          (click)="loadDocument($event, document)">{{document.Name}}</li>
     </ul>
   </div>
 </ng-template>

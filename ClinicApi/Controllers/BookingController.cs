@@ -1,6 +1,7 @@
 ﻿using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Booking;
+using ClinicApi.Models.Pagination;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -22,22 +23,32 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Patient")]
-        [Route("api/bookings/patient")]
-        public async Task<IHttpActionResult> PatientBookings()
+        [Route("api/bookings/patient/{pageNumber}/{pageSize}")]
+        public async Task<IHttpActionResult> PatientBookings(int pageNumber, int pageSize)
         {
             var identity = (ClaimsIdentity)User.Identity;
+            var pagingModel = new PaginationModel
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
 
-            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims));
+            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims, pagingModel));
         }
 
         [HttpGet]
         [Authorize(Roles = "Clinician")]
-        [Route("api/bookings/clinician")]
-        public async Task<IHttpActionResult> ClinicianBookings()
+        [Route("api/bookings/clinician/{pageNumber}/{pageSize}")]
+        public async Task<IHttpActionResult> ClinicianBookings(int pageNumber, int pageSize)
         {
             var identity = (ClaimsIdentity)User.Identity;
+            var pagingModel = new PaginationModel
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
 
-            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims));
+            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims, pagingModel));
         }
 
         [HttpPost]

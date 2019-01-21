@@ -64,6 +64,7 @@
     <Compile Include="Automapper\CoreMapperWrapper.cs" />
     <Compile Include="Automapper\ICoreMapper.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="Encryption\Hashing.cs" />
     <Compile Include="Entities\Booking.cs" />
     <Compile Include="Entities\Clinic.cs" />

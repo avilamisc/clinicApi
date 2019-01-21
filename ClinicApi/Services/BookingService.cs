@@ -1,4 +1,5 @@
-﻿using Clinic.Core.Entities;
+﻿using Clinic.Core.DtoModels;
+using Clinic.Core.Entities;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
@@ -6,6 +7,7 @@ using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Booking;
+using ClinicApi.Models.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,22 +37,36 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetAllBookingsForPatientAsync(IEnumerable<Claim> claims)
+        public async Task<ApiResponse> GetAllBookingsForPatientAsync(IEnumerable<Claim> claims, PaginationModel model)
         {
             if (!CheckUserIdInClaims(claims, out int userId)) return new ApiResponse(HttpStatusCode.BadRequest);
 
-            var bookings = await _unitOfWork.BookingRepository.GetForPatientAsync(b => b.PatientId == userId);
+            var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
 
-            return ApiResponse.Ok(_mapper.Mapper.Map<List<PatientBookingModel>>(bookings));
+            var bookings = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
+            var result = new PagingResult<IEnumerable<PatientBookingModel>>
+            {
+                Result = _mapper.Mapper.Map<List<PatientBookingModel>>(bookings),
+                TotalAmount = _unitOfWork.BookingRepository.CountForPatien(userId)
+            };
+
+            return ApiResponse.Ok(result);
         }
 
-        public async Task<ApiResponse> GetAllBookingsForClinicianAsync(IEnumerable<Claim> claims)
+        public async Task<ApiResponse> GetAllBookingsForClinicianAsync(IEnumerable<Claim> claims, PaginationModel model)
         {
             if (!CheckUserIdInClaims(claims, out int userId)) return new ApiResponse(HttpStatusCode.BadRequest);
 
-            var bookings = await _unitOfWork.BookingRepository.GetForClinicianAsync(b => b.ClinicClinician.ClinicianId == userId);
+            var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
 
-            return ApiResponse.Ok(_mapper.Mapper.Map<List<ClinicianBookingModel>>(bookings));
+            var bookings = await _unitOfWork.BookingRepository.GetForClinicianAsync(pagingDto, userId);
+            var result = new PagingResult<IEnumerable<ClinicianBookingModel>>
+            {
+                Result = _mapper.Mapper.Map<List<ClinicianBookingModel>>(bookings),
+                TotalAmount = _unitOfWork.BookingRepository.CountForClinician(userId)
+            };
+
+            return ApiResponse.Ok(result);
         }
 
         public async Task<ApiResponse> CreateBookingAsync(IEnumerable<Claim> claims, HttpRequest request)

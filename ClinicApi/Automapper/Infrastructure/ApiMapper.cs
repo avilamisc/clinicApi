@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Clinic.Core.Automapper;
-using System;
 
 namespace ClinicApi.Automapper.Infrastructure
 {
@@ -29,6 +28,7 @@ namespace ClinicApi.Automapper.Infrastructure
                 {
                     config.AddProfile(new BookingProfile());
                     config.AddProfile(new DocumentProfile());
+                    config.AddProfile(new PaginationProfile());
                 });
         }
     }

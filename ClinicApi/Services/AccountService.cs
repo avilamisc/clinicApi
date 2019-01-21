@@ -53,7 +53,8 @@ namespace ClinicApi.Services
                     AccessToken = accessToken,
                     RefreshToken = refreshToken.Value,
                     RefreshTokenExpireTime = refreshToken.ExpiresUtc,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    UserName = user.Name
                 });
         }
     }

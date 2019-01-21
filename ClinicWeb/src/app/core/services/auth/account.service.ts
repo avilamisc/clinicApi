@@ -31,7 +31,8 @@ export class AccountService {
 
           const user = {
             UserRole: decode(token).role,
-            Id: result.Result.UserId
+            Id: result.Result.UserId,
+            UserName: result.Result.UserName
           } as User;
           this.userService.setUserInLocalStorage(user);
         }

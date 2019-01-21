@@ -37,5 +37,6 @@ export class TokenService {
   public removeTokens(): void {
     localStorage.removeItem(AccessTokenIdentifier);
     localStorage.removeItem(RefreshTokenIdentifier);
+    localStorage.removeItem(UserRoleIdentifier);
   }
 }

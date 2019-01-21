@@ -1,11 +1,19 @@
   <div *ngFor="let doc of model.documents">
-    {{doc.Name}}
-    <button *ngIf="canEditDocument(doc)" type="button" (click)="removeDocument(doc.Id)">X</button>
+    <button type="button"
+            class="btn btn-danger remove-btn"
+            [disabled]="!canEditDocument(doc)"
+            (click)="removeDocument(doc.Id)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <span>{{doc.Name}}</span>
   </div>
   <div *ngFor="let file of model.newFiles;let index = index">
-    {{file.name}}
-    <button type="button" (click)="removeFile(index)">X</button>
+    <span>{{file.name}}</span>
+    <button type="button"
+            class="btn btn-danger remove-btn"
+            (click)="removeFile(index)">X</button>
   </div>
-  <div>
-    <input type="file" (change)="uploadNewFile($event)">
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile" (change)="uploadNewFile($event)">
+    <label class="custom-file-label" for="customFile">Choose file</label>
   </div>

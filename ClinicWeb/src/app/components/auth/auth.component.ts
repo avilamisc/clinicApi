@@ -20,6 +20,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private tokenService: TokenService,
     private accountService: AccountService) { }
 
   public ngOnInit(): void {
@@ -29,6 +30,7 @@ export class AuthComponent implements OnInit {
 
   public onSubmit(): void {
     this.setValuesFromFormToModel();
+    this.tokenService.removeTokens();
     this.accountService.authenticate(this.model)
       .subscribe(res => {
         this.router.navigate([this.returnUrl || '/booking']);

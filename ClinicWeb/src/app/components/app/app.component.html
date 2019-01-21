@@ -1,7 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div>
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
+<div class="app-container">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="#">Clinic</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/booking">Booking</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+      </ul>
+      <div class="user-info mt-2 mt-md-0">
+        <span>{{UserName}}</span>
+      </div>
+    </div>
+  </nav>
   <router-outlet></router-outlet>
 </div>

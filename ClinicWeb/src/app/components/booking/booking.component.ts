@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 
 import { BookingService } from 'src/app/core/services/booking/booking.service';
-import { BookingModel, PatientBookingModel } from 'src/app/core/models';
+import { BookingModel, PatientBookingModel, DocumentModel } from 'src/app/core/models';
 import { UpdateBookingModel } from 'src/app/core/models/booking/update-booking.model';
-import { TokenService } from 'src/app/core/services/auth/token.service';
 import { UserRoles } from 'src/app/utilities/user-roles';
 import { User } from 'src/app/core/models/user/user.model';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { DocumentService } from 'src/app/core/services/document/document.service';
 import { PatientBookingTableConfiguration,
-         ClinicianBookingTableConfiguration } from './booking-table';
+         ClinicianBookingTableConfiguration } from './table-config';
+import { Pagination } from 'src/app/core/models/table/pagination.model';
 
 @Component({
   selector: 'app-booking',
@@ -18,6 +18,7 @@ import { PatientBookingTableConfiguration,
 })
 export class BookingComponent implements OnInit {
   public bookings: BookingModel[] = [];
+  public totalAmount = 0;
   public columns = [];
   public bookingToUpdate: UpdateBookingModel;
   public user: User;
@@ -25,12 +26,12 @@ export class BookingComponent implements OnInit {
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private isPatient: boolean;
+  private rowAmount = 10;
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
-    private tokenService: TokenService,
     private documentService: DocumentService,
     private bookingService: BookingService) { }
 
@@ -75,42 +76,64 @@ export class BookingComponent implements OnInit {
 
   public initializeBookings(): void {
     this.user = this.userService.getUserFromLocalStorage();
-    this.isPatient = this.tokenService.getUserRole() === UserRoles.Patient;
+    this.isPatient = this.user.UserRole === UserRoles.Patient;
+    const pageination = {
+      pageNumber: 0,
+      pageCount: this.rowAmount
+    } as Pagination;
     this.isPatient
-      ? this.bookingService.getPatientBookings()
+      ? this.bookingService.getPatientBookings(pageination)
         .subscribe(res => {
           if (res.Result !== null) {
-            this.bookings = res.Result;
+            this.bookings = res.Result.Result;
+            this.totalAmount = res.Result.TotalAmount;
           }
         })
-      : this.bookingService.getClinicianBookings()
+      : this.bookingService.getClinicianBookings(pageination)
         .subscribe(res => {
           if (res.Result !== null) {
-            this.bookings = res.Result;
+            this.bookings = res.Result.Result;
+            this.totalAmount = res.Result.TotalAmount;
           }
         });
   }
 
   public initializeTableColumns(): void {
     const config = this.isPatient
-    ? PatientBookingTableConfiguration
-    : ClinicianBookingTableConfiguration;
+      ? PatientBookingTableConfiguration
+      : ClinicianBookingTableConfiguration;
 
-  config.Documents.RowContent = this.documentsColumn;
+    const docConfig = config.get('Documents');
+    docConfig.RowContent = this.documentsColumn;
+    config.set('Documents', docConfig);
 
-  for (const key in config) {
-    if (config.hasOwnProperty(key)) {
-      this.columns.push(config[key]);
-    }
-  }
+    this.columns = Array.from(config.values());
   }
 
-  public loadDocument(event: any, id: number): void {
-    this.documentService.downloadDocument(id).subscribe();
+  public loadDocument(event: any, doc: DocumentModel): void {
+    this.documentService.downloadDocument(doc.Id, doc.Name).subscribe();
     event.stopPropagation();
   }
 
   public closeEditWindow(): void {
     this.isEditOpen = false;
+  }
+
+  public updateData(paging: Pagination): void {
+    this.isPatient
+      ? this.bookingService.getPatientBookings(paging)
+        .subscribe(res => {
+          if (res.Result !== null) {
+            this.bookings = res.Result.Result;
+            this.totalAmount = res.Result.TotalAmount;
+          }
+        })
+      : this.bookingService.getClinicianBookings(paging)
+        .subscribe(res => {
+          if (res.Result !== null) {
+            this.bookings = res.Result.Result;
+            this.totalAmount = res.Result.TotalAmount;
+          }
+        });
   }
 }

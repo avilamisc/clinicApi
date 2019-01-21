@@ -3,4 +3,5 @@ export class LoginResultModel {
     RefreshToken: string;
     RefreshTokenExpireTime: Date;
     UserId: number;
+    UserName: string;
 }
