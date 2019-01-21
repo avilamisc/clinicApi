@@ -5,7 +5,7 @@ export const PatientBookingTableConfiguration = new Map([
     ['Name', new Column('Name', 'Name')],
     ['Documents', new Column('Documents', 'Documents')],
     ['ClinicName', new Column('Clinic Name', 'ClinicName')],
-    ['ClinicianSurname', new Column('Clinician Surname', 'ClinicianSurname')],
+    ['ClinicianName', new Column('Clinician Surname', 'ClinicianName')],
     ['ClinicianRate', new Column('Clinician Rate', 'ClinicianRate')],
 ]);
 
@@ -15,6 +15,5 @@ export const ClinicianBookingTableConfiguration = new Map([
     ['Documents', new Column('Documents', 'Documents')],
     ['ClinicName', new Column('Clinic Name', 'ClinicName')],
     ['PatientName', new Column('Patient Name', 'PatientName')],
-    ['PatientSurname', new Column('Patient Surname', 'PatientSurname')],
     ['PatientLocation', new Column('Patient Location', 'PatientLocation')]
 ]);

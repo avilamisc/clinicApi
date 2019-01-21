@@ -6,7 +6,6 @@
         public string ClinicName { get; set; }
         public int PatientId { get; set; }
         public string PatientName { get; set; }
-        public string PatientSurname { get; set; }
         public string PatientLocation { get; set; }
     }
 }

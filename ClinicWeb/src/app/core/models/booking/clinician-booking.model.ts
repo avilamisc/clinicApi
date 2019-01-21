@@ -5,6 +5,5 @@ export class ClinicianBookingModel extends BookingModel {
     ClinicName: string;
     PatientId: number;
     PatientName: string;
-    PatientSurname: string;
     PatientLocation: string;
 }

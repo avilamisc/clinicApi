@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from 'src/app/core/models/user/user.model';
 import { UserService } from 'src/app/core/services/user/user.service';
 
 @Component({
@@ -15,6 +14,5 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.UserName = this.userService.getUserFromLocalStorage().UserName;
-    console.log('res: ', this.userService.getUserFromLocalStorage(), this.UserName);
   }
 }

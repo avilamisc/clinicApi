@@ -3,7 +3,7 @@
              [data]="bookings"
              [totalAmount]="totalAmount"
              [mobileWidth]="768"
-             (pageChanged)="updateData($event)"
+             (pageChanged)="uploadBookings($event)"
              (rowClicked)="updateBoking($event.data, $event.index)">
   </app-table>
   <div *ngIf="isPatient" class="create-container">

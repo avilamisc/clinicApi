@@ -39,7 +39,7 @@ export class AuthComponent implements OnInit {
 
   private CreateForm(): void {
     this.loginForm = new FormGroup({
-      userName: new FormControl('', [Validators.required]),
+      userEmail: new FormControl('', [Validators.email, Validators.required]),
       userPassword: new FormControl('', [Validators.required])
     });
   }
@@ -50,8 +50,7 @@ export class AuthComponent implements OnInit {
 
   private setValuesFromFormToModel(): void {
     const values = this.loginForm.getRawValue();
-
-    this.model.email = values.userName;
+    this.model.email = values.userEmail;
     this.model.password = values.userPassword;
   }
 }

@@ -16,6 +16,7 @@ export class EditComponent implements OnInit, OnChanges {
   public editForm: FormGroup;
   public clinics: ClinicModel[];
   public clinicians: ClinicianModel[] = [];
+
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
   @Input('new') public isNewBooking = false;
@@ -32,8 +33,6 @@ export class EditComponent implements OnInit, OnChanges {
       if (changes.model) {
           this.createForm();
       }
-      if (changes.visibility) {
-      }
   }
 
   public ngOnInit(): void {
@@ -45,7 +44,6 @@ export class EditComponent implements OnInit, OnChanges {
       if (this.isPatient) {
         this.setValuesFromFormToModel();
       }
-      console.log(this.model);
       this.isNewBooking
         ? this.onEditCompleted.emit(this.model)
         : this.bookingService.updateBookings(this.model)

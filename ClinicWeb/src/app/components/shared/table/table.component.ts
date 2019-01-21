@@ -9,6 +9,10 @@ import { Pagination } from 'src/app/core/models/table/pagination.model';
   styleUrls: ['./table.component.styl']
 })
 export class TableComponent implements OnInit {
+  public parser = _;
+  public useMobileTemplate = false;
+  public pagination: Pagination;
+
   @Input('columns') public columns: Column[];
   @Input('data') public data: any[];
   @Input('mobileWidth') public minAvaliableWidth;
@@ -16,9 +20,6 @@ export class TableComponent implements OnInit {
   @Input('totalAmount') public totalAmount = 0;
   @Output('rowClicked') public onRowClicked = new EventEmitter<any>();
   @Output('pageChanged') public onPageChanged = new EventEmitter<Pagination>();
-  public parser = _;
-  public useMobileTemplate = false;
-  public pagination: Pagination;
 
   @HostListener('window:resize', ['$event'])
   onResize(event): void {
@@ -31,9 +32,9 @@ export class TableComponent implements OnInit {
   }
 
   public checkMobileCompability(windowWidth: number): void {
-    if (!this.useMobileTemplate && this.minAvaliableWidth && windowWidth <= this.minAvaliableWidth) {
+    if (this.minAvaliableWidth && windowWidth <= this.minAvaliableWidth) {
       this.useMobileTemplate = true;
-    } else if (this.minAvaliableWidth && windowWidth > this.minAvaliableWidth) {
+    } else {
       this.useMobileTemplate = false;
     }
   }

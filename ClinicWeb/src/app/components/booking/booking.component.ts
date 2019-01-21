@@ -77,25 +77,10 @@ export class BookingComponent implements OnInit {
   public initializeBookings(): void {
     this.user = this.userService.getUserFromLocalStorage();
     this.isPatient = this.user.UserRole === UserRoles.Patient;
-    const pageination = {
-      pageNumber: 0,
-      pageCount: this.rowAmount
-    } as Pagination;
-    this.isPatient
-      ? this.bookingService.getPatientBookings(pageination)
-        .subscribe(res => {
-          if (res.Result !== null) {
-            this.bookings = res.Result.Result;
-            this.totalAmount = res.Result.TotalAmount;
-          }
-        })
-      : this.bookingService.getClinicianBookings(pageination)
-        .subscribe(res => {
-          if (res.Result !== null) {
-            this.bookings = res.Result.Result;
-            this.totalAmount = res.Result.TotalAmount;
-          }
-        });
+    this.uploadBookings({
+        pageNumber: 0,
+        pageCount: this.rowAmount
+      });
   }
 
   public initializeTableColumns(): void {
@@ -119,16 +104,16 @@ export class BookingComponent implements OnInit {
     this.isEditOpen = false;
   }
 
-  public updateData(paging: Pagination): void {
+  private uploadBookings(pagination: Pagination): void {
     this.isPatient
-      ? this.bookingService.getPatientBookings(paging)
+      ? this.bookingService.getPatientBookings(pagination)
         .subscribe(res => {
           if (res.Result !== null) {
             this.bookings = res.Result.Result;
             this.totalAmount = res.Result.TotalAmount;
           }
         })
-      : this.bookingService.getClinicianBookings(paging)
+      : this.bookingService.getClinicianBookings(pagination)
         .subscribe(res => {
           if (res.Result !== null) {
             this.bookings = res.Result.Result;

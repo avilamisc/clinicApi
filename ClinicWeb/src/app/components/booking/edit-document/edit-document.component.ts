@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
 
 import { UpdateBookingModel } from 'src/app/core/models/booking/update-booking.model';
 import { User } from 'src/app/core/models/user/user.model';
@@ -13,20 +12,22 @@ import { DocumentModel } from 'src/app/core/models';
 })
 export class EditDocumentComponent implements OnInit {
   public user: User;
+
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.initializeUser();
   }
 
   public removeDocument(id: number): void {
-    this.model.documents = this.model.documents.filter(d => d.Id !== id);
+    const docIndex = this.model.documents.findIndex(d => d.Id !== id);
+    this.model.documents.splice(docIndex, 1);
   }
 
   public removeFile(index: number): void {
-    this.model.newFiles = this.model.newFiles.splice(0, index);
+    this.model.newFiles.splice(index, 1);
   }
 
   public uploadNewFile(event: any): void {
