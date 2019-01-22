@@ -66,6 +66,7 @@
     <Compile Include="Automapper\PatientProfile.cs" />
     <Compile Include="Automapper\RefreshTokenProfile.cs" />
     <Compile Include="Automapper\UserProfile.cs" />
+    <Compile Include="Common\CommonExtensions.cs" />
     <Compile Include="Configurations\BookingConfiguration.cs" />
     <Compile Include="Configurations\ClinicClinicianConfiguration.cs" />
     <Compile Include="Configurations\ClinicConfiguration.cs" />

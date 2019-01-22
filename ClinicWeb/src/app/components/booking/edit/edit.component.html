@@ -22,16 +22,20 @@
             Clinic:
           <select class="form-control" (change)="filterClinicians($event.target.value)" formControlName="clinic">
             <option selected> -- select an option -- </option>
-            <option *ngFor="let clinic of clinics" [attr.value]="clinic.Id">{{clinic.Name}}</option>
+            <option *ngFor="let clinic of clinics"
+                    [attr.selected]="model.clinicId && clinic.id === model.clinicId"
+                    [attr.value]="clinic.Id">{{clinic.Name}}</option>
           </select>
         </label>
       </div>
       <div class="form-label-group" *ngIf="isPatient">
         <label>
-          Clinician:
+            Clinician:
           <select class="form-control" formControlName="clinician">
-            <option> -- select an option -- </option>
-            <option *ngFor="let item of clinicians" [attr.value]="item.Id">{{item.Name}}</option>
+            <option selected> -- select an option -- </option>
+            <option *ngFor="let clinician of clinicians"
+                    [attr.selected]="model.clinicianId && clinician.id === model.clinicianId"
+                    [attr.value]="clinician.Id">{{clinician.Name}}</option>
           </select>
         </label>
       </div>

@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { AccountService } from 'src/app/core/services/auth/account.service';
+import { TokenService } from 'src/app/core/services/auth/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +11,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private tokenService: TokenService,
+    private accountService: AccountService) { }
 
+  public logOutUser(): void {
+    this.accountService.logOut();
+    this.router.navigate(['/login']);
+  }
+
+  public get isAuthenticated(): boolean {
+    return this.tokenService.getAccessToken() !== null;
+  }
 }

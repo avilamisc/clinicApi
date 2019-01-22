@@ -29,6 +29,7 @@ namespace ClinicApi.Automapper.Infrastructure
                     config.AddProfile(new BookingProfile());
                     config.AddProfile(new DocumentProfile());
                     config.AddProfile(new PaginationProfile());
+                    config.AddProfile(new ClinicianProfile());
                 });
         }
     }

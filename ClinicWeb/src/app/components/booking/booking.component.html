@@ -1,10 +1,10 @@
 <div class="booking-container">
   <app-table [columns]="columns"
              [data]="bookings"
-             [totalAmount]="totalAmount"
+             [totalAmount]="totalDataAmount"
              [mobileWidth]="768"
              (pageChanged)="uploadBookings($event)"
-             (rowClicked)="updateBoking($event.data, $event.index)">
+             (rowClicked)="openEditWindow($event.data, $event.index)">
   </app-table>
   <div *ngIf="isPatient" class="create-container">
     <button class="btn btn-dark btn-outline-success"
@@ -17,16 +17,16 @@
   <div class="document-list">
     <ul>
       <li *ngFor="let document of documents"
-          (click)="loadDocument($event, document)">{{document.Name}}</li>
+          (click)="downloadDocument($event, document)">{{document.Name}}</li>
     </ul>
   </div>
 </ng-template>
 
 <app-edit *ngIf="bookingToUpdate"
-          [visibility]="isEditOpen"
+          [visibility]="isEditWindowOpen"
           [model]="bookingToUpdate"
           [new]="isAddingNewBooking"
-          [patient]="isPatient"
+          [isPatient]="isPatient"
           (closeEditWindow)="closeEditWindow()"
-          (editCompleted)="updateEditingModel($event)">
+          (editCompleted)="editBooking($event)">
 </app-edit>

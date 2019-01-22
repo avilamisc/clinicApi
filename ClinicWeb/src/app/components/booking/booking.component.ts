@@ -10,6 +10,7 @@ import { DocumentService } from 'src/app/core/services/document/document.service
 import { PatientBookingTableConfiguration,
          ClinicianBookingTableConfiguration } from './table-config';
 import { Pagination } from 'src/app/core/models/table/pagination.model';
+import { Column } from 'src/app/core/models/table/column.model';
 
 @Component({
   selector: 'app-booking',
@@ -18,15 +19,15 @@ import { Pagination } from 'src/app/core/models/table/pagination.model';
 })
 export class BookingComponent implements OnInit {
   public bookings: BookingModel[] = [];
-  public totalAmount = 0;
-  public columns = [];
+  public totalDataAmount = 0;
+  public columns: Column[] = [];
   public bookingToUpdate: UpdateBookingModel;
   public user: User;
-  public isEditOpen = false;
+  public isEditWindowOpen = false;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private isPatient: boolean;
-  private rowAmount = 10;
+  private tableRowAmount = 10;
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
 
@@ -40,10 +41,8 @@ export class BookingComponent implements OnInit {
     this.initializeTableColumns();
   }
 
-  public updateBoking(booking: BookingModel, index: number): void {
+  public openEditWindow(booking: BookingModel, index: number): void {
     this.editedBookingIndex = index;
-    this.isAddingNewBooking = false;
-    this.isEditOpen = true;
     this.bookingToUpdate = new UpdateBookingModel();
     this.bookingToUpdate.id = booking.Id;
     this.bookingToUpdate.reciept = booking.Reciept;
@@ -51,15 +50,16 @@ export class BookingComponent implements OnInit {
     this.bookingToUpdate.documents = booking.Documents;
     this.bookingToUpdate.clinicId = (booking as PatientBookingModel).ClinicId;
     this.bookingToUpdate.clinicianId = (booking as PatientBookingModel).ClinicianId || this.user.Id;
+    this.isAddingNewBooking = false;
+    this.isEditWindowOpen = true;
   }
 
-  public updateEditingModel(newBooking: PatientBookingModel): void {
+  public editBooking(newBooking: PatientBookingModel): void {
     if (this.isAddingNewBooking) {
       this.bookingService.createBookings(newBooking)
         .subscribe(result => {
           if (result.Result !== null) {
-            this.bookings.push(result.Result);
-            this.bookingToUpdate = null;
+            this.bookings.splice(0, 0, result.Result);
           }
         });
     } else {
@@ -70,7 +70,7 @@ export class BookingComponent implements OnInit {
 
   public crateNewBooking(): void {
     this.isAddingNewBooking = true;
-    this.isEditOpen = true;
+    this.isEditWindowOpen = true;
     this.bookingToUpdate = new UpdateBookingModel();
   }
 
@@ -79,7 +79,7 @@ export class BookingComponent implements OnInit {
     this.isPatient = this.user.UserRole === UserRoles.Patient;
     this.uploadBookings({
         pageNumber: 0,
-        pageCount: this.rowAmount
+        pageCount: this.tableRowAmount
       });
   }
 
@@ -95,29 +95,30 @@ export class BookingComponent implements OnInit {
     this.columns = Array.from(config.values());
   }
 
-  public loadDocument(event: any, doc: DocumentModel): void {
+  public downloadDocument(event: any, doc: DocumentModel): void {
     this.documentService.downloadDocument(doc.Id, doc.Name).subscribe();
     event.stopPropagation();
   }
 
   public closeEditWindow(): void {
-    this.isEditOpen = false;
+    this.bookingToUpdate = null;
+    this.isEditWindowOpen = false;
   }
 
-  private uploadBookings(pagination: Pagination): void {
+  public uploadBookings(pagination: Pagination): void {
     this.isPatient
       ? this.bookingService.getPatientBookings(pagination)
         .subscribe(res => {
           if (res.Result !== null) {
-            this.bookings = res.Result.Result;
-            this.totalAmount = res.Result.TotalAmount;
+            this.bookings = res.Result.DataCollection;
+            this.totalDataAmount = res.Result.TotalCount;
           }
         })
       : this.bookingService.getClinicianBookings(pagination)
         .subscribe(res => {
           if (res.Result !== null) {
-            this.bookings = res.Result.Result;
-            this.totalAmount = res.Result.TotalAmount;
+            this.bookings = res.Result.DataCollection;
+            this.totalDataAmount = res.Result.TotalCount;
           }
         });
   }

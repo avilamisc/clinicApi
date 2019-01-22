@@ -16,13 +16,13 @@ export class BookingService {
   constructor(
     private http: HttpClient) { }
 
-  public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel[]>>> {
-    return this.http.get<ApiResponse<PagingResult<PatientBookingModel[]>>>
+  public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel>>> {
+    return this.http.get<ApiResponse<PagingResult<PatientBookingModel>>>
           (`${ApiRoutes.patientBookings}/?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}`);
   }
 
-  public getClinicianBookings(paging: Pagination): Observable<ApiResponse<PagingResult<ClinicianBookingModel[]>>> {
-    return this.http.get<ApiResponse<PagingResult<ClinicianBookingModel[]>>>
+  public getClinicianBookings(paging: Pagination): Observable<ApiResponse<PagingResult<ClinicianBookingModel>>> {
+    return this.http.get<ApiResponse<PagingResult<ClinicianBookingModel>>>
           (`${ApiRoutes.clinicianBookings}/?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}`);
   }
 

@@ -4,11 +4,14 @@
     <a class="navbar-brand" href="#">Clinic</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li *ngIf="isAuthenticated" class="nav-item">
           <a class="nav-link" routerLink="/booking">Booking</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!isAuthenticated" class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+        <li *ngIf="isAuthenticated" class="nav-item">
+          <a class="nav-link" (click)="logOutUser()">Logout</a>
         </li>
       </ul>
     </div>

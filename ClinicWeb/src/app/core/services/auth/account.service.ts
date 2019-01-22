@@ -14,6 +14,7 @@ import { UserService } from '../user/user.service';
   providedIn: 'root'
 })
 export class AccountService {
+  public user: User;
 
   constructor(
     private http: HttpClient,
@@ -34,11 +35,17 @@ export class AccountService {
             Id: result.Result.UserId,
             UserName: result.Result.UserName
           } as User;
+          this.user = user;
           this.userService.setUserInLocalStorage(user);
         }
 
         return result;
       }));
+  }
+
+  public logOut(): void {
+    this.user = null;
+    this.tokenService.removeTokens();
   }
 
   public refreshToken(model: RefreshTokenModel): Observable<ApiResponse<LoginResultModel>> {

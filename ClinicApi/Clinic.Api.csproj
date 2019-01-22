@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="AppModule.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Automapper\ClinicianProfile.cs" />
     <Compile Include="Automapper\DocumentProfile.cs" />
     <Compile Include="Automapper\Infrastructure\ApiMapper.cs" />
     <Compile Include="Automapper\Infrastructure\IApiMapper.cs" />

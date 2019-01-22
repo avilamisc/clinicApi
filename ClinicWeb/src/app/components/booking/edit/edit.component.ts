@@ -20,7 +20,7 @@ export class EditComponent implements OnInit, OnChanges {
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
   @Input('new') public isNewBooking = false;
-  @Input('patient') public isPatient = true;
+  @Input('isPatient') public isPatient = true;
   @Output('closeEditWindow') public closeEditWindow = new EventEmitter<any>();
   @Output('editCompleted') public onEditCompleted = new EventEmitter<any>();
 
@@ -29,10 +29,10 @@ export class EditComponent implements OnInit, OnChanges {
     private clinicService: ClinicService,
     private bookingService: BookingService) { }
 
-  ngOnChanges(changes: SimpleChanges) {
-      if (changes.model) {
-          this.createForm();
-      }
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.model) {
+      this.createForm();
+    }
   }
 
   public ngOnInit(): void {
@@ -85,26 +85,24 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   private initializeForm(): void {
-    if (this.model.clinicId !== null) {
       this.clinicService.getAllClinic()
         .subscribe(result => {
           if (result.Result !== null) {
             this.clinics = result.Result;
           }
-
-          if (this.model.clinicId !== null) {
+          if (this.model.clinicId) {
             this.clinicianService.getAllClinic(this.model.clinicId)
               .subscribe(clinicianResult => {
-                if (clinicianResult.Result !== null) {
-                  this.clinicians = clinicianResult.Result;
-                }
-                this.createForm();
-              });
+                  if (clinicianResult.Result !== null) {
+                    this.clinicians = clinicianResult.Result;
+                  }
+                  this.createForm();
+                });
+          } else {
+            this.createForm();
           }
         });
-    } else {
-      this.createForm();
-    }
+
   }
 
   private createForm(): void {

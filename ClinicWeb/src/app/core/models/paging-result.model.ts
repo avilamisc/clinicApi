@@ -1,4 +1,4 @@
 export class PagingResult<T> {
-    Result: T;
-    TotalAmount: number;
+    DataCollection: T[];
+    TotalCount: number;
 }

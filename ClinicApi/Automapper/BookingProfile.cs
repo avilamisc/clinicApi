@@ -55,13 +55,15 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.Reciept, options => options.MapFrom(c => c[nameof(PatientBookingModel.Reciept)]));
 
             CreateMap<NameValueCollection, UpdateBookingModel>()
-                .ForMember(p => p.ClinicianId, options => options.MapFrom(c => c[nameof(PatientBookingModel.ClinicianId)]))
-                .ForMember(p => p.ClinicId, options => options.MapFrom(c => c[nameof(PatientBookingModel.ClinicId)]))
+                .ForMember(p => p.ClinicianId, options => options.MapFrom(c => c[nameof(UpdateBookingModel.ClinicianId)]))
+                .ForMember(p => p.ClinicId, options => options.MapFrom(c => c[nameof(UpdateBookingModel.ClinicId)]))
                 .ForMember(p => p.Documents, options => options.MapFrom(
-                    c => JsonConvert.DeserializeObject<ICollection<DocumentModel>>(c[nameof(PatientBookingModel.Documents)])))
-                .ForMember(p => p.Id, options => options.MapFrom(c => c[nameof(PatientBookingModel.Id)]))
-                .ForMember(p => p.Name, options => options.MapFrom(c => c[nameof(PatientBookingModel.Name)]))
-                .ForMember(p => p.Reciept, options => options.MapFrom(c => c[nameof(PatientBookingModel.Reciept)]));
+                    c => JsonConvert.DeserializeObject<ICollection<DocumentModel>>(c[nameof(UpdateBookingModel.Documents)])))
+                .ForMember(p => p.DeletedDocuments, options => options.MapFrom(
+                    c => JsonConvert.DeserializeObject<ICollection<DocumentModel>>(c[nameof(UpdateBookingModel.DeletedDocuments)])))
+                .ForMember(p => p.Id, options => options.MapFrom(c => c[nameof(UpdateBookingModel.Id)]))
+                .ForMember(p => p.Name, options => options.MapFrom(c => c[nameof(UpdateBookingModel.Name)]))
+                .ForMember(p => p.Reciept, options => options.MapFrom(c => c[nameof(UpdateBookingModel.Reciept)]));
 
         }
     }

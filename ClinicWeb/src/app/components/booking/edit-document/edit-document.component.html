@@ -1,8 +1,8 @@
-  <div *ngFor="let doc of model.documents">
+  <div *ngFor="let doc of displayedDocuments">
     <button type="button"
             class="btn btn-danger remove-btn"
             [disabled]="!canEditDocument(doc)"
-            (click)="removeDocument(doc.Id)">
+            (click)="removeDocument(doc)">
       <span aria-hidden="true">&times;</span>
     </button>
     <span>{{doc.Name}}</span>
@@ -11,7 +11,7 @@
   <div *ngFor="let file of model.newFiles;let index = index">
     <button type="button"
             class="btn btn-danger remove-btn"
-            (click)="removeFile(index)">
+            (click)="removeNewDocument(index)">
       <span aria-hidden="true">&times;</span>
     </button>
     <span>{{file.name}}</span>

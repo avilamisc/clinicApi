@@ -24,8 +24,8 @@ export class AuthComponent implements OnInit {
     private accountService: AccountService) { }
 
   public ngOnInit(): void {
-    this.CreateForm();
-    this.InitializeReturnUrl();
+    this.createForm();
+    this.initializeReturnUrl();
   }
 
   public onSubmit(): void {
@@ -37,14 +37,14 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  private CreateForm(): void {
+  private createForm(): void {
     this.loginForm = new FormGroup({
       userEmail: new FormControl('', [Validators.email, Validators.required]),
       userPassword: new FormControl('', [Validators.required])
     });
   }
 
-  private InitializeReturnUrl(): void {
+  private initializeReturnUrl(): void {
     this.returnUrl = this.route.snapshot.queryParams[CommonConstants.returnUrlSnapshot];
   }
 

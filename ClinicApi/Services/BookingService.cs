@@ -42,14 +42,13 @@ namespace ClinicApi.Services
             if (!CheckUserIdInClaims(claims, out int userId)) return new ApiResponse(HttpStatusCode.BadRequest);
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
-            var bookings = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
-            var result = new PagingResult<IEnumerable<PatientBookingModel>>
-            {
-                Result = _mapper.Mapper.Map<List<PatientBookingModel>>(bookings),
-                TotalAmount = _unitOfWork.BookingRepository.CountForPatien(userId)
-            };
+            var pagingResult = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
 
-            return ApiResponse.Ok(result);
+            return ApiResponse.Ok(new PagingResult<PatientBookingModel>
+            {
+                DataCollection = _mapper.Mapper.Map<IEnumerable<PatientBookingModel>>(pagingResult.DataColection),
+                TotalCount = pagingResult.TotalCount
+            });
         }
 
         public async Task<ApiResponse> GetAllBookingsForClinicianAsync(IEnumerable<Claim> claims, PaginationModel model)
@@ -58,14 +57,13 @@ namespace ClinicApi.Services
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
 
-            var bookings = await _unitOfWork.BookingRepository.GetForClinicianAsync(pagingDto, userId);
-            var result = new PagingResult<IEnumerable<ClinicianBookingModel>>
-            {
-                Result = _mapper.Mapper.Map<List<ClinicianBookingModel>>(bookings),
-                TotalAmount = _unitOfWork.BookingRepository.CountForClinician(userId)
-            };
+            var pagingResult = await _unitOfWork.BookingRepository.GetForClinicianAsync(pagingDto, userId);
 
-            return ApiResponse.Ok(result);
+            return ApiResponse.Ok(new PagingResult<ClinicianBookingModel>
+            {
+                DataCollection = _mapper.Mapper.Map<IEnumerable<ClinicianBookingModel>>(pagingResult.DataColection),
+                TotalCount = pagingResult.TotalCount
+            });
         }
 
         public async Task<ApiResponse> CreateBookingAsync(IEnumerable<Claim> claims, HttpRequest request)
@@ -87,7 +85,7 @@ namespace ClinicApi.Services
             var newBooking = _mapper.Mapper.Map<Booking>(bookingModel);
             newBooking.PatientId = userId;
             newBooking.ClinicClinicianId = clinicClinician.Id;
-            newBooking.Documents = CreateNewDocuments(request, userId).ToList();
+            AddNewDocuments(request, userId, newBooking);
 
             var result = _unitOfWork.BookingRepository.Create(newBooking);
 
@@ -122,19 +120,17 @@ namespace ClinicApi.Services
             var validatioErrorResult = CheckPatientBookingModel(bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
-            var existings = booking.Documents;
-            var newDocumets = CreateNewDocuments(request, userId).ToList();
-            var documentsToDelete = UpdateBookingDocuments(bookingModel, newDocumets, existings);
-
             _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
-            booking.Documents = newDocumets;
+            AddNewDocuments(request, userId, booking);
+            booking.Documents = booking.Documents
+                .Where(b => bookingModel.DeletedDocuments.FirstOrDefault(d => d.Id == b.Id) == null)
+                .ToList();
 
             try
             {
                 _unitOfWork.BookingRepository.Update(booking);
-                _unitOfWork.DocumentRepository.RemoveRange(documentsToDelete);
                 await _unitOfWork.SaveChangesAsync();
 
                 return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(booking));
@@ -162,47 +158,21 @@ namespace ClinicApi.Services
             return null;
         }
 
-        private IEnumerable<Document> CreateNewDocuments(HttpRequest request, int userId)
+        private void AddNewDocuments(HttpRequest request, int userId, Booking booking)
         {
-            var newDocuments = new List<Document>();
             var files = request.Files;
             for (int i = 0; i < files.Count; i++)
             {
                 var filePath = _fileService.UploadFile(files[i]);
                 if (filePath == null) continue;
 
-                newDocuments.Add(new Document
+                booking.Documents.Add(new Document
                 {
                     UserId = userId,
                     Name = files[i].FileName,
                     FilePath = filePath
                 });
             }
-
-            return newDocuments;
-        }
-
-        private IEnumerable<Document> UpdateBookingDocuments(
-            BookingModel model,
-            List<Document> documents,
-            IEnumerable<Document> existing)
-        {
-            var documentsToDelete = new List<Document>();
-
-            foreach (var doc in existing)
-            {
-                if (model.Documents.FirstOrDefault(d => doc.Id == d.Id) != null)
-                {
-                    documents.Add(doc);
-                }
-                else
-                {
-                    _fileService.DeleteFile(doc.FilePath);
-                    documentsToDelete.Add(doc);
-                }
-            }
-
-            return documentsToDelete;
         }
     }
 }
