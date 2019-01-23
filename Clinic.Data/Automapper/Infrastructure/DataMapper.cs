@@ -17,6 +17,7 @@ namespace Clinic.Data.Automapper.Infrastructure
                     config.AddProfile(new BookingProfile());
                     config.AddProfile(new ClinicClinicianProfile());
                     config.AddProfile(new ClinicianProfile());
+                    config.AddProfile(new ClinicProfile());
                     config.AddProfile(new DocumentProfile());
                     config.AddProfile(new PatientProfile());
                     config.AddProfile(new RefreshTokenProfile());

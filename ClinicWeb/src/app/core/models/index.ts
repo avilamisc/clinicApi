@@ -8,3 +8,4 @@ export * from './auth/login-result.model';
 export * from './auth/refresh-token.model';
 export * from './clinic/clinic.model';
 export * from './clinician/clinician.model';
+export * from './clinic/clinic-distance.model';

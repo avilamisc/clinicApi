@@ -9,6 +9,9 @@ namespace Clinic.Data.Configurations
             ToTable("Clinics");
             HasKey(c => c.Id);
 
+            Property(c => c.City).IsRequired();
+            Property(c => c.Geolocation).IsOptional();
+
             HasMany(c => c.ClinicClinicians)
                 .WithRequired(cc => cc.Clinic)
                 .HasForeignKey(cc => cc.ClinicId);

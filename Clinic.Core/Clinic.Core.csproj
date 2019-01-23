@@ -39,10 +39,17 @@
     <Reference Include="BCrypt.Net, Version=0.1.4141.31969, Culture=neutral, PublicKeyToken=f3bc8f8c31beeb49, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net.0.1.0\lib\net35\BCrypt.Net.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -64,6 +71,7 @@
     <Compile Include="Automapper\CoreMapperWrapper.cs" />
     <Compile Include="Automapper\ICoreMapper.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="DtoModels\ClinicWithDistanceDto.cs" />
     <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="DtoModels\PagingResultDto.cs" />
     <Compile Include="Encryption\Hashing.cs" />
@@ -77,6 +85,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\DependencyLifetimeType.cs" />
     <Compile Include="Enums\UserRole.cs" />
+    <Compile Include="GeographyExtensions\GeographyExtensions.cs" />
     <Compile Include="Repositories\IClinicianRepository.cs" />
     <Compile Include="Repositories\IClinicRepository.cs" />
     <Compile Include="Repositories\IDocumentRepository.cs" />
@@ -97,6 +106,7 @@
     <Compile Include="Repositories\IUserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

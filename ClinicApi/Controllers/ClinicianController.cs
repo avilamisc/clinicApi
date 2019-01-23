@@ -5,6 +5,8 @@ using System.Web.Http;
 
 namespace ClinicApi.Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/clinicians")]
     public class ClinicianController : ApiController
     {
         private readonly IApiMapper _mapper;
@@ -18,9 +20,8 @@ namespace ClinicApi.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
-        [Route("api/clinicians/{clinicId}")]
+        [Route("{clinicId}")]
         public async Task<IHttpActionResult> Clinicians(int clinicId)
         {
             return Ok(await _clinicianService.GetCliniciansForClinic(clinicId));

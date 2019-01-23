@@ -7,6 +7,7 @@ using System.Web.Http.Results;
 
 namespace ClinicApi.Controllers
 {
+    [RoutePrefix("api/tokens")]
     public class TokenController : ApiController
     {
         private ITokenService _tokenService;
@@ -17,7 +18,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpPost]
-        [Route("api/token/refresh")]
+        [Route("refresh")]
         public async Task<IHttpActionResult> Refresh(RefreshTokenModel refreshTokenModel)
         {
             return Ok(await _tokenService.RefreshTokenAsync(refreshTokenModel));

@@ -42,6 +42,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.1016.290\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -125,6 +128,22 @@
     <Compile Include="Migrations\201901171405260_UpdateRegionToLocationInPatientTable.Designer.cs">
       <DependentUpon>201901171405260_UpdateRegionToLocationInPatientTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901221156049_AddLongitudeAndLatitudeForClinicTable.cs" />
+    <Compile Include="Migrations\201901221156049_AddLongitudeAndLatitudeForClinicTable.Designer.cs">
+      <DependentUpon>201901221156049_AddLongitudeAndLatitudeForClinicTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901221158248_AddCityForCLinicTable.cs" />
+    <Compile Include="Migrations\201901221158248_AddCityForCLinicTable.Designer.cs">
+      <DependentUpon>201901221158248_AddCityForCLinicTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901221220536_AddGeolocationTableForClinic.cs" />
+    <Compile Include="Migrations\201901221220536_AddGeolocationTableForClinic.Designer.cs">
+      <DependentUpon>201901221220536_AddGeolocationTableForClinic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901221242130_RemoveLongitudeAndLatitudeFromClinic.cs" />
+    <Compile Include="Migrations\201901221242130_RemoveLongitudeAndLatitudeFromClinic.Designer.cs">
+      <DependentUpon>201901221242130_RemoveLongitudeAndLatitudeFromClinic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -135,6 +154,7 @@
     <Compile Include="Repositories\ClinicClinicianRepository.cs" />
     <Compile Include="Repositories\RefreshTokenRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -178,12 +198,27 @@
     <EmbeddedResource Include="Migrations\201901171405260_UpdateRegionToLocationInPatientTable.resx">
       <DependentUpon>201901171405260_UpdateRegionToLocationInPatientTable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221156049_AddLongitudeAndLatitudeForClinicTable.resx">
+      <DependentUpon>201901221156049_AddLongitudeAndLatitudeForClinicTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221158248_AddCityForCLinicTable.resx">
+      <DependentUpon>201901221158248_AddCityForCLinicTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221220536_AddGeolocationTableForClinic.resx">
+      <DependentUpon>201901221220536_AddGeolocationTableForClinic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221242130_RemoveLongitudeAndLatitudeFromClinic.resx">
+      <DependentUpon>201901221242130_RemoveLongitudeAndLatitudeFromClinic.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Clinic.Core\Clinic.Core.csproj">
       <Project>{de9f4384-be06-4b13-b61b-2d9cedc0f76c}</Project>
       <Name>Clinic.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

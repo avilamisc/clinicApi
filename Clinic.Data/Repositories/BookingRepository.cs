@@ -4,11 +4,10 @@ using Clinic.Core.Repositories;
 using Clinic.Data.Automapper.Infrastructure;
 using Clinic.Data.Common;
 using Clinic.Data.Context;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Spatial;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Clinic.Data.Repositories
@@ -26,6 +25,7 @@ namespace Clinic.Data.Repositories
 
         public async Task<PagingResultDto<BookingDto>> GetForClinicianAsync(PagingDto pagingDto, int clinicianId)
         {
+            DbGeography g = DbGeography.FromText($"POINT({10} {10})");
             var result = await _context.Bookings
                 .BookingInclude()
                 .Include(b => b.Patient)

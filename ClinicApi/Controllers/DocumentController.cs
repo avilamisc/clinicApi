@@ -10,6 +10,8 @@ using System.Web.Http;
 
 namespace ClinicApi.Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/documents")]
     public class DocumentController : ApiController
     {
         private readonly IFileService _fileService;
@@ -23,9 +25,8 @@ namespace ClinicApi.Controllers
             _fileService = fileService;
         }
 
-        [Authorize]
         [HttpGet]
-        [Route("api/documents/{id}")]
+        [Route("{id}")]
         public async Task<HttpResponseMessage> Documents(int id)
         {
             var identity = (ClaimsIdentity)User.Identity;

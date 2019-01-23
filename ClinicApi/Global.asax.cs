@@ -5,7 +5,9 @@ using Clinic.Core.Enums;
 using Clinic.Data;
 using ClinicApi.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
+using SqlServerTypes;
 using System.Configuration;
+using System.Data.Entity.SqlServer;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
@@ -17,6 +19,9 @@ namespace ClinicApi
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            SqlProviderServices.SqlServerTypesAssemblyName =
+                "Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91";
 
             var builder = new ContainerBuilder();
             var config = GlobalConfiguration.Configuration;

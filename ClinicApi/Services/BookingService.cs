@@ -92,13 +92,13 @@ namespace ClinicApi.Services
             try
             {
                 await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
             }
             catch
             {
                 return ApiResponse.InternalError(BookingErrorMessages.UpdateError);
             }
-
-            return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
         }
 
         public async Task<ApiResponse> UpdateBookingAsync(IEnumerable<Claim> claims, HttpRequest request)
@@ -120,6 +120,7 @@ namespace ClinicApi.Services
             var validatioErrorResult = CheckPatientBookingModel(bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
+            var bookingsToDelete = booking.Documents.Where(d => bookingModel.DeletedDocuments.FirstOrDefault(b => b.Id == d.Id) != null).ToList();
             _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
@@ -131,7 +132,13 @@ namespace ClinicApi.Services
             try
             {
                 _unitOfWork.BookingRepository.Update(booking);
+                _unitOfWork.DocumentRepository.RemoveRange(bookingsToDelete);
                 await _unitOfWork.SaveChangesAsync();
+
+                foreach (var file in bookingModel.DeletedDocuments)
+                {
+                    _fileService.DeleteFile(file.FilePath);
+                }
 
                 return ApiResponse.Ok(_mapper.Mapper.Map<PatientBookingModel>(booking));
             }

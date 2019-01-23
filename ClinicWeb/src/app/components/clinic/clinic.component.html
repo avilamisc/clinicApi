@@ -1,0 +1,7 @@
+<div class="container">
+  <h3>Closest clinics:</h3>
+  <div *ngFor="let item of data">
+      <h4 *ngIf="item.ClinicName">{{item.ClinicName}} in {{item.City}}, {{item.Distance.toFixed(1)}} km away</h4>
+      <h5 *ngIf="!item.ClinicName"> -> Clinician {{item.Name}} {{item.Rate}}</h5>
+  </div>
+</div>
