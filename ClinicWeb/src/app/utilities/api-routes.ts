@@ -11,3 +11,8 @@ export const ApiRoutes = {
     clinicians: `${environment.serverUrl}/clinicians`,
     documents: `${environment.serverUrl}/documents`
 };
+
+export const ApiRoutesV3 = {
+    clinics: `${environment.serverUrl}/clinics/v3`
+};
+

@@ -7,6 +7,9 @@
         <li *ngIf="isAuthenticated" class="nav-item">
           <a class="nav-link" routerLink="/booking">Booking</a>
         </li>
+        <li *ngIf="isAuthenticated" class="nav-item">
+          <a class="nav-link" routerLink="/clinic">Closest Clinics</a>
+        </li>
         <li *ngIf="!isAuthenticated" class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>

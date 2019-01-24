@@ -12,12 +12,17 @@ export class ClinicComponent implements OnInit {
   constructor(private clinicService: ClinicService) { }
 
   public ngOnInit(): void {
-    this.clinicService.getClosestClinicsWithClinician(30, 50)
-      .subscribe(result => {
-        if (result.Result !== null) {
-          this.data = result.Result;
-        }
-      });
+    window.navigator.geolocation.getCurrentPosition(location => {
+      console.log(location);
+      const long = Math.floor(location.coords.longitude);
+      const lat = Math.floor(location.coords.latitude);
+      this.clinicService.getClosestClinicsWithClinician(long, lat)
+        .subscribe(result => {
+          if (result.Result !== null) {
+            this.data = result.Result;
+          }
+        });
+    });
   }
 
 }

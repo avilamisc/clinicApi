@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ApiResponse, ClinicModel, ClinicianModel, ClinicWithDistanceModel } from '../../models';
-import { ApiRoutes } from 'src/app/utilities/api-routes';
+import { ApiResponse, ClinicModel } from '../../models';
+import { ApiRoutes, ApiRoutesV3 } from 'src/app/utilities/api-routes';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,6 @@ export class ClinicService {
     }
 
     public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<any[]>> {
-      return this.http.get<ApiResponse<any[]>>(`${ApiRoutes.clinics}/${long}/${lat}`);
+      return this.http.get<ApiResponse<any[]>>(`${ApiRoutesV3.clinics}/${long}/${lat}`);
     }
 }
