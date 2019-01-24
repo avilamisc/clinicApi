@@ -27,10 +27,28 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Route("{longitude}/{latitude}")]
+        [Route("v1/{longitude}/{latitude}")]
         public async Task<IHttpActionResult> ClinicClinicians(double longitude, double latitude)
         {
             var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinician(longitude, latitude);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("v2/{longitude}/{latitude}")]
+        public async Task<IHttpActionResult> ClinicCliniciansV2(double longitude, double latitude)
+        {
+            var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinicianV2(longitude, latitude);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("v3/{longitude}/{latitude}")]
+        public async Task<IHttpActionResult> ClinicCliniciansV3(double longitude, double latitude)
+        {
+            var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinicianV3(longitude, latitude);
 
             return Ok(result);
         }
