@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Builder;
 using Clinic.Core;
-using Clinic.Core.Automapper;
 using Clinic.Core.Enums;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;

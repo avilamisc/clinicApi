@@ -21,11 +21,11 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ClinicianDto>> GetCliniciansAsync(int clinicId)
+        public async Task<IEnumerable<ClinicianDto>> GetCliniciansAsync(int? clinicId)
         {
             var result = await _context.ClinicClinicians
                     .Include(cc => cc.Clinician)
-                    .Where(cc => cc.ClinicId == clinicId)
+                    .Where(cc => cc.ClinicId == clinicId || clinicId == null)
                     .Select(cc => cc.Clinician)
                     .ToListAsync();
 

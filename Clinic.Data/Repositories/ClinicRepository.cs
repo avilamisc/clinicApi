@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Spatial;
+using System.Linq;
 using System.Threading.Tasks;
 using Clinic.Core.DtoModels;
 using Clinic.Core.Repositories;
@@ -19,9 +21,14 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ClinicDto>> GetAllClinicsAsync()
+        public async Task<IEnumerable<ClinicDto>> GetAllClinicsAsync(DbGeography location)
         {
-            return _mapper.Mapper.Map<IEnumerable<ClinicDto>>(await _context.Clinics.ToListAsync());
+            var query = await _context.Clinics
+               .OrderBy(c => c.Geolocation.Distance(location))
+               .Take(10)
+               .ToListAsync();
+
+            return _mapper.Mapper.Map<IEnumerable<ClinicDto>>(query);
         }
     }
 }

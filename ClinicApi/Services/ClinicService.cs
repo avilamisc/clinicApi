@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
@@ -21,11 +22,22 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetAllClinic()
+        public async Task<ApiResponse> GetAllClinicAsync(double longitude, double latitude)
         {
-            var clinicDtos = await _unitOfWork.ClinicRepository.GetAllClinicsAsync();
+            var location = GeographyExtensions.CreatePoint(longitude, latitude);
+
+            var clinicDtos = await _unitOfWork.ClinicRepository.GetAllClinicsAsync(location);
 
             return ApiResponse.Ok(_mapper.Mapper.Map<IEnumerable<ClinicModel>>(clinicDtos));
+        }
+
+        public async Task<ApiResponse> GetClinicByIdAsync(int id)
+        {
+            var result = await _unitOfWork.ClinicRepository.GetAsync(id);
+
+            if (result == null) return ApiResponse.NotFound();
+
+            return ApiResponse.Ok(_mapper.Mapper.Map<ClinicModel>(result));
         }
     }
 }

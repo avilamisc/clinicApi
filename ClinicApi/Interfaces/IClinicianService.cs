@@ -5,6 +5,6 @@ namespace ClinicApi.Interfaces
 {
     public interface IClinicianService
     {
-        Task<ApiResponse> GetCliniciansForClinic(int clinicId);
+        Task<ApiResponse> GetCliniciansForClinic(int? clinicId);
     }
 }

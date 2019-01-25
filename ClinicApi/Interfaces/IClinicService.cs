@@ -5,6 +5,7 @@ namespace ClinicApi.Interfaces
 {
     public interface IClinicService
     {
-        Task<ApiResponse> GetAllClinic();
+        Task<ApiResponse> GetClinicByIdAsync(int id);
+        Task<ApiResponse> GetAllClinicAsync(double longitude, double latitude);
     }
 }

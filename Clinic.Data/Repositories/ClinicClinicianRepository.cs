@@ -24,7 +24,7 @@ namespace Clinic.Data.Repositories
                 .SingleOrDefaultAsync(c => c.ClinicId == clinicId && c.ClinicianId == clinicianId);
         }
 
-        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistance(DbGeography distanceFrom)
+        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistance_V1(DbGeography distanceFrom)
         {
             var uniqueClinician = _context.ClinicClinicians
                 .Include(cc => cc.Clinic)
@@ -67,7 +67,7 @@ namespace Clinic.Data.Repositories
                           .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistanceV2(DbGeography location)
+        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistance_V2(DbGeography location)
         {
             var result = await _context.ClinicClinicians
                 .GroupBy(cc => cc.ClinicianId)
@@ -100,8 +100,7 @@ namespace Clinic.Data.Repositories
             return result;
         }
 
-
-        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistanceV3(DbGeography location)
+        public async Task<IEnumerable<ClinicWithDistanceDto>> GetClinicClinicianSortedByDistance_V3(DbGeography location)
         {
             return await _context.Clinics
                 .GroupJoin(_context.ClinicClinicians

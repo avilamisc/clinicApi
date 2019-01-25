@@ -21,8 +21,8 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Route("{clinicId}")]
-        public async Task<IHttpActionResult> Clinicians(int clinicId)
+        [Route("")]
+        public async Task<IHttpActionResult> Clinicians(int? clinicId = null)
         {
             return Ok(await _clinicianService.GetCliniciansForClinic(clinicId));
         }

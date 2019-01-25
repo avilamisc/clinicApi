@@ -1,9 +1,12 @@
-﻿using Clinic.Core.GeographyExtensions;
+﻿using Clinic.Core.DtoModels;
+using Clinic.Core.Enums;
+using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Clinic;
+using ClinicApi.Models.ClinicClinician;
 using ClinicApi.Models.Clinician;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,57 +26,33 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetSortdetByDistanceClinicsWithClinician(double longitude, double latitude)
+        public async Task<ApiResponse> GetSortdetByDistanceClinicsWithClinicianAsync(double longitude, double latitude, ApiVersion version)
         {
             var geography = GeographyExtensions.CreatePoint(longitude, latitude);
+            IEnumerable<ClinicWithDistanceDto> sortedClinics = null;
 
-            var sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance(geography);
-
-            var result = new List<object>();
-            foreach (var clinic in sortedClinics)
+            switch (version)
             {
-                result.Add(_mapper.Mapper.Map<ClinicWithDistanceModel>(clinic));
-                foreach (var clinician in clinic.Clinicians)
-                {
-                    result.Add(_mapper.Mapper.Map<ClinicianModel>(clinician));
-                }
+                case ApiVersion.V1:
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V1(geography);
+                    break;
+                case ApiVersion.V2:
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V2(geography);
+                    break;
+                case ApiVersion.V3:
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V3(geography);
+                    break;
+                default:
+                    return ApiResponse.BadRequest();
             }
 
-            return ApiResponse.Ok(result);
-        }
-
-        public async Task<ApiResponse> GetSortdetByDistanceClinicsWithClinicianV2(double longitude, double latitude)
-        {
-            var geography = GeographyExtensions.CreatePoint(longitude, latitude);
-
-            var sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistanceV2(geography);
-
-            var result = new List<object>();
+            var result = new List<ClinicClinicianBase>();
             foreach (var clinic in sortedClinics)
             {
                 result.Add(_mapper.Mapper.Map<ClinicWithDistanceModel>(clinic));
                 foreach (var clinician in clinic.Clinicians)
                 {
-                    result.Add(_mapper.Mapper.Map<ClinicianModel>(clinician));
-                }
-            }
-
-            return ApiResponse.Ok(result);
-        }
-
-        public async Task<ApiResponse> GetSortdetByDistanceClinicsWithClinicianV3(double longitude, double latitude)
-        {
-            var geography = GeographyExtensions.CreatePoint(longitude, latitude);
-
-            var sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistanceV3(geography);
-
-            var result = new List<object>();
-            foreach (var clinic in sortedClinics)
-            {
-                result.Add(_mapper.Mapper.Map<ClinicWithDistanceModel>(clinic));
-                foreach (var clinician in clinic.Clinicians)
-                {
-                    result.Add(_mapper.Mapper.Map<ClinicianModel>(clinician));
+                    result.Add(_mapper.Mapper.Map<ClinicianWithDistanceModel>(clinician));
                 }
             }
 

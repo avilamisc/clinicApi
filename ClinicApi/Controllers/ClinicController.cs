@@ -1,4 +1,6 @@
-﻿using ClinicApi.Interfaces;
+﻿using Clinic.Core.Enums;
+using ClinicApi.Interfaces;
+using ClinicApi.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -9,48 +11,35 @@ namespace ClinicApi.Controllers
     public class ClinicController : ApiController
     {
         private readonly IClinicService _clinicService;
-        private readonly IClinicClinicianService _clinicClinicianService;
+        private readonly IClinicClinicianService _clinicClinicianServiceV1;
 
         public ClinicController(
             IClinicService clinicService,
-            IClinicClinicianService clinicClinicianService)
+            IClinicClinicianService clinicClinicianServiceV1)
         {
             _clinicService = clinicService;
-            _clinicClinicianService = clinicClinicianService;
+            _clinicClinicianServiceV1 = clinicClinicianServiceV1;
         }
 
         [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> Clinics()
+        public async Task<IHttpActionResult> Clinics(double longitude = 0, double latitude = 0)
         {
-            return Ok(await _clinicService.GetAllClinic());
+            return Ok(await _clinicService.GetAllClinicAsync(longitude, latitude));
         }
 
         [HttpGet]
-        [Route("v1/{longitude}/{latitude}")]
-        public async Task<IHttpActionResult> ClinicClinicians(double longitude, double latitude)
+        [Route("{id}")]
+        public async Task<IHttpActionResult> ClinicById(int id)
         {
-            var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinician(longitude, latitude);
-
-            return Ok(result);
+            return Ok(await _clinicService.GetClinicByIdAsync(id));
         }
 
         [HttpGet]
-        [Route("v2/{longitude}/{latitude}")]
-        public async Task<IHttpActionResult> ClinicCliniciansV2(double longitude, double latitude)
+        [Route("clinician")]
+        public async Task<IHttpActionResult> ClinicClinicians(double longitude = 0, double latitude = 0, ApiVersion v = ApiVersion.V3)
         {
-            var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinicianV2(longitude, latitude);
-
-            return Ok(result);
-        }
-
-        [HttpGet]
-        [Route("v3/{longitude}/{latitude}")]
-        public async Task<IHttpActionResult> ClinicCliniciansV3(double longitude, double latitude)
-        {
-            var result = await _clinicClinicianService.GetSortdetByDistanceClinicsWithClinicianV3(longitude, latitude);
-
-            return Ok(result);
+            return Ok(await _clinicClinicianServiceV1.GetSortdetByDistanceClinicsWithClinicianAsync(longitude, latitude, v));
         }
     }
 }

@@ -54,10 +54,10 @@
       <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -121,12 +121,25 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppModule.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Automapper\ClinicianProfile.cs" />
+    <Compile Include="Automapper\ClinicProfile.cs" />
     <Compile Include="Automapper\DocumentProfile.cs" />
     <Compile Include="Automapper\Infrastructure\ApiMapper.cs" />
     <Compile Include="Automapper\Infrastructure\IApiMapper.cs" />
@@ -152,9 +165,11 @@
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\Booking\ClinicianBookingModel.cs" />
     <Compile Include="Models\Booking\UpdateBookingModel.cs" />
-    <Compile Include="Models\Clinic\ClinicWithDistanceModel.cs" />
+    <Compile Include="Models\ClinicClinician\ClinicClinicianBase.cs" />
     <Compile Include="Models\Clinician\ClinicianModel.cs" />
+    <Compile Include="Models\ClinicClinician\ClinicianWithDistanceModel.cs" />
     <Compile Include="Models\Clinic\ClinicModel.cs" />
+    <Compile Include="Models\ClinicClinician\ClinicWithDistanceModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
     <Compile Include="Models\Pagination\PaginationModel.cs" />
     <Compile Include="Models\PagingResult.cs" />

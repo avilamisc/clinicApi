@@ -16,6 +16,7 @@ export class EditComponent implements OnInit, OnChanges {
   public editForm: FormGroup;
   public clinics: ClinicModel[];
   public clinicians: ClinicianModel[] = [];
+  private currentClinic: ClinicModel;
 
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
@@ -49,6 +50,10 @@ export class EditComponent implements OnInit, OnChanges {
         : this.bookingService.updateBookings(this.model)
           .subscribe(result => {
             if (result.Result !== null) {
+              this.currentClinic = {
+                Id : result.Result.ClinicId,
+                Name : result.Result.ClinicName,
+              };
               this.onEditCompleted.emit(result.Result);
             }
           });
@@ -85,10 +90,14 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   private initializeForm(): void {
-      this.clinicService.getAllClinic()
+    window.navigator.geolocation.getCurrentPosition(location => {
+      this.clinicService.getAllClinic(location.coords.longitude, location.coords.longitude)
         .subscribe(result => {
           if (result.Result !== null) {
             this.clinics = result.Result;
+            if (this.currentClinic) {
+              this.clinics.push(this.currentClinic);
+            }
           }
           if (this.model.clinicId) {
             this.clinicianService.getAllClinic(this.model.clinicId)
@@ -102,13 +111,24 @@ export class EditComponent implements OnInit, OnChanges {
             this.createForm();
           }
         });
+      });
 
+      this.clinicService.getClinicById(this.model.clinicId)
+        .subscribe(result => {
+          if (result.Result !== null) {
+            this.currentClinic = result.Result;
+            if (this.clinics) {
+              this.clinics.push(this.currentClinic);
+            }
+            this.createForm();
+          }
+        });
   }
 
   private createForm(): void {
     const bookingClinic = this.clinics
-      ? this.clinics.find(c => c.Id === this.model.clinicId)
-      : null;
+        ? this.clinics.find(c => c.Id === this.model.clinicId)
+        : null;
     const bookingClinician = this.clinicians
       ? this.clinicians.find(c => c.Id === this.model.clinicianId)
       : null;

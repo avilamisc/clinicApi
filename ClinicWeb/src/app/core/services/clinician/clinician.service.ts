@@ -13,6 +13,6 @@ export class ClinicianService {
     private http: HttpClient) { }
 
     public getAllClinic(clinicId: number): Observable<ApiResponse<ClinicianModel[]>> {
-      return this.http.get<ApiResponse<ClinicianModel[]>>(`${ApiRoutes.clinicians}/${clinicId}`);
+      return this.http.get<ApiResponse<ClinicianModel[]>>(`${ApiRoutes.clinicians}?clinicId=${clinicId}`);
     }
 }

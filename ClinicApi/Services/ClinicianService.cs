@@ -21,7 +21,7 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetCliniciansForClinic(int clinicId)
+        public async Task<ApiResponse> GetCliniciansForClinic(int? clinicId)
         {
             var clinicianDtos = await _unitOfWork.ClinicianRepository.GetCliniciansAsync(clinicId);
 
