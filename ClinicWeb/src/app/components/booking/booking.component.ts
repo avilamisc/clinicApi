@@ -58,8 +58,8 @@ export class BookingComponent implements OnInit {
     if (this.isAddingNewBooking) {
       this.bookingService.createBookings(newBooking)
         .subscribe(result => {
-          if (result.Result !== null) {
-            this.bookings.splice(0, 0, result.Result);
+          if (result.Data !== null) {
+            this.bookings.splice(0, 0, result.Data);
           }
         });
     } else {
@@ -109,16 +109,16 @@ export class BookingComponent implements OnInit {
     this.isPatient
       ? this.bookingService.getPatientBookings(pagination)
         .subscribe(res => {
-          if (res.Result !== null) {
-            this.bookings = res.Result.DataCollection;
-            this.totalDataAmount = res.Result.TotalCount;
+          if (res.Data !== null) {
+            this.bookings = res.Data.DataCollection;
+            this.totalDataAmount = res.Data.TotalCount;
           }
         })
       : this.bookingService.getClinicianBookings(pagination)
         .subscribe(res => {
-          if (res.Result !== null) {
-            this.bookings = res.Result.DataCollection;
-            this.totalDataAmount = res.Result.TotalCount;
+          if (res.Data !== null) {
+            this.bookings = res.Data.DataCollection;
+            this.totalDataAmount = res.Data.TotalCount;
           }
         });
   }

@@ -28,12 +28,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                 };
                 return this.accountService.refreshToken(refreshModel)
                     .pipe(mergeMap(res => {
-                        if (res.Result !== null) {
-                            this.tokenService.setAccessToken(res.Result.AccessToken);
-                            this.tokenService.setRefreshToken(res.Result.RefreshToken);
+                        if (res.Data !== null) {
+                            this.tokenService.setAccessToken(res.Data.AccessToken);
+                            this.tokenService.setRefreshToken(res.Data.RefreshToken);
                             request = request.clone({
                                 setHeaders: {
-                                    Authorization: `Bearer ${res.Result.AccessToken}`
+                                    Authorization: `Bearer ${res.Data.AccessToken}`
                                 }
                             });
 

@@ -32,7 +32,7 @@ export class AuthComponent implements OnInit {
     this.setValuesFromFormToModel();
     this.tokenService.removeTokens();
     this.accountService.authenticate(this.model)
-      .subscribe(res => {
+      .subscribe(result => {
         this.router.navigate([this.returnUrl || '/booking']);
       });
   }

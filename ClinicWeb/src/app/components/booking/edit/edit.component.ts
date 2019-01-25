@@ -49,12 +49,12 @@ export class EditComponent implements OnInit, OnChanges {
         ? this.onEditCompleted.emit(this.model)
         : this.bookingService.updateBookings(this.model)
           .subscribe(result => {
-            if (result.Result !== null) {
+            if (result.Data !== null) {
               this.currentClinic = {
-                Id : result.Result.ClinicId,
-                Name : result.Result.ClinicName,
+                Id : result.Data.ClinicId,
+                Name : result.Data.ClinicName,
               };
-              this.onEditCompleted.emit(result.Result);
+              this.onEditCompleted.emit(result.Data);
             }
           });
     }
@@ -67,8 +67,8 @@ export class EditComponent implements OnInit, OnChanges {
   public filterClinicians(clinicId: number): void {
     this.clinicianService.getAllClinic(clinicId)
       .subscribe(result => {
-        if (result.Result !== null) {
-          this.clinicians = result.Result;
+        if (result.Data !== null) {
+          this.clinicians = result.Data;
           this.editForm.get('clinician').markAsUntouched();
         }
       });
@@ -93,8 +93,8 @@ export class EditComponent implements OnInit, OnChanges {
     window.navigator.geolocation.getCurrentPosition(location => {
       this.clinicService.getAllClinic(location.coords.longitude, location.coords.longitude)
         .subscribe(result => {
-          if (result.Result !== null) {
-            this.clinics = result.Result;
+          if (result.Data !== null) {
+            this.clinics = result.Data;
             if (this.currentClinic) {
               this.clinics.push(this.currentClinic);
             }
@@ -102,8 +102,8 @@ export class EditComponent implements OnInit, OnChanges {
           if (this.model.clinicId) {
             this.clinicianService.getAllClinic(this.model.clinicId)
               .subscribe(clinicianResult => {
-                  if (clinicianResult.Result !== null) {
-                    this.clinicians = clinicianResult.Result;
+                  if (clinicianResult.Data !== null) {
+                    this.clinicians = clinicianResult.Data;
                   }
                   this.createForm();
                 });
@@ -115,8 +115,8 @@ export class EditComponent implements OnInit, OnChanges {
 
       this.clinicService.getClinicById(this.model.clinicId)
         .subscribe(result => {
-          if (result.Result !== null) {
-            this.currentClinic = result.Result;
+          if (result.Data !== null) {
+            this.currentClinic = result.Data;
             if (this.clinics) {
               this.clinics.push(this.currentClinic);
             }

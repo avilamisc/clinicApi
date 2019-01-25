@@ -6,7 +6,7 @@ namespace ClinicApi.Models
     {
         public string ErrorMessage { get; set; }
         public int StatusCode { get; set; }
-        public object Result { get; set; }
+        public object Data { get; set; }
 
         public ApiResponse(
             HttpStatusCode statusCode = HttpStatusCode.OK,
@@ -15,11 +15,11 @@ namespace ClinicApi.Models
         {
             StatusCode = (int)statusCode;
             ErrorMessage = errorMessage;
-            Result = result;
+            Data = result;
         }
 
         public static ApiResponse Ok(object result = null) =>
-            new ApiResponse { StatusCode = (int)HttpStatusCode.OK, Result = result };
+            new ApiResponse { StatusCode = (int)HttpStatusCode.OK, Data = result };
 
         public static ApiResponse ValidationError(string validationMessage) =>
             new ApiResponse { StatusCode = (int)HttpStatusCode.OK, ErrorMessage = validationMessage };

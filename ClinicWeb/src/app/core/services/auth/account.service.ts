@@ -25,15 +25,15 @@ export class AccountService {
   public authenticate(model: LoginModel): Observable<ApiResponse<LoginResultModel>> {
     return this.http.post<ApiResponse<LoginResultModel>>(ApiRoutes.authenticate, model)
       .pipe(map(result => {
-        if (result.Result !== null) {
-          const token = result.Result.AccessToken;
+        if (result.Data !== null) {
+          const token = result.Data.AccessToken;
           this.tokenService.setAccessToken(token);
-          this.tokenService.setRefreshToken(result.Result.RefreshToken);
+          this.tokenService.setRefreshToken(result.Data.RefreshToken);
 
           const user = {
             UserRole: decode(token).role,
-            Id: result.Result.UserId,
-            UserName: result.Result.UserName
+            Id: result.Data.UserId,
+            UserName: result.Data.UserName
           } as User;
           this.user = user;
           this.userService.setUserInLocalStorage(user);

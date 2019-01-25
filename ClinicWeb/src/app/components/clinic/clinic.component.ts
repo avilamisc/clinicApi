@@ -20,8 +20,8 @@ export class ClinicComponent implements OnInit {
       const lat = location.coords.latitude;
       this.clinicService.getClosestClinicsWithClinician(long, lat)
         .subscribe(result => {
-          if (result.Result !== null) {
-            this.data = result.Result;
+          if (result.Data !== null) {
+            this.data = result.Data;
           }
         });
     });
