@@ -26,7 +26,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("")]
         public async Task<HttpResponseMessage> Documents(int id)
         {
             var identity = (ClaimsIdentity)User.Identity;

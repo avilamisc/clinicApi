@@ -29,14 +29,14 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("")]
         public async Task<IHttpActionResult> ClinicById(int id)
         {
             return Ok(await _clinicService.GetClinicByIdAsync(id));
         }
 
         [HttpGet]
-        [Route("clinician")]
+        [Route("clinicians")]
         public async Task<IHttpActionResult> ClinicClinicians(double longitude = 0, double latitude = 0, ApiVersion v = ApiVersion.V3)
         {
             return Ok(await _clinicClinicianServiceV1.GetSortdetByDistanceClinicsWithClinicianAsync(longitude, latitude, v));

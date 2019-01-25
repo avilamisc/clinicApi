@@ -8,7 +8,7 @@ export const ApiRoutes = {
     clinicianBookings: `${environment.serverUrl}/bookings/clinician`,
     booking: `${environment.serverUrl}/bookings`,
     clinics: `${environment.serverUrl}/clinics`,
-    clinicsClinician: `${environment.serverUrl}/clinics/clinician`,
+    clinicsClinician: `${environment.serverUrl}/clinics/clinicians`,
     clinicians: `${environment.serverUrl}/clinicians`,
     documents: `${environment.serverUrl}/documents`
 };

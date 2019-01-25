@@ -19,7 +19,7 @@ export class ClinicService {
     }
 
     public getClinicById(id: number): Observable<ApiResponse<ClinicModel>> {
-      return this.http.get<ApiResponse<ClinicModel>>(`${ApiRoutes.clinics}/${id}`);
+      return this.http.get<ApiResponse<ClinicModel>>(`${ApiRoutes.clinics}?id=${id}`);
     }
 
     public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<ClinicClinicianBaseModel[]>> {
