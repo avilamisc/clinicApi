@@ -2,7 +2,7 @@
 
 namespace Clinic.Core.DtoModels
 {
-    public class ClinicWithDistanceDto
+    public class ClinicLocationDto
     {
         public int Id { get; set; }
         public string ClinicName { get; set; }

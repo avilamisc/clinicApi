@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClinicApi.Models.Clinic;
+using System.Collections.Generic;
 
 namespace ClinicApi.Automapper
 {

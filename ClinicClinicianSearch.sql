@@ -1,5 +1,5 @@
 DECLARE @g geography;   
-SET @g = geography::Point(49.8118805, 24.0096293, 4326)
+	SET @g = geography::Point(49.8118805, 24.0096293, 4326)
 
 SELECT
 		clinic.Id,

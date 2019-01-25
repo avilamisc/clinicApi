@@ -27,7 +27,7 @@ export class ClinicComponent implements OnInit {
     });
   }
 
-  public IsClinician(model: ClinicianDistanceModel | ClinicDistanceModel): boolean {
+  public instanceOfClinician(model: ClinicianDistanceModel | ClinicDistanceModel): boolean {
     return 'Id' in model && 'Name' in model && 'Rate' in model;
   }
 }

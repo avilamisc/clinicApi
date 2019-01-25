@@ -38,7 +38,7 @@ export class EditDocumentComponent implements OnInit, OnChanges {
     this.model.newFiles.splice(index, 1);
   }
 
-  public uploadNewFile(event: any): void {
+  public uploadNewDocument(event: any): void {
     if (event.target.files.length > 0) {
       this.model.newFiles.push(event.target.files[0]);
     }

@@ -26,21 +26,21 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetSortdetByDistanceClinicsWithClinicianAsync(double longitude, double latitude, ApiVersion version)
+        public async Task<ApiResponse> GetClinicsWithCliniciansSortdetByDistanceAsync(double longitude, double latitude, ApiVersion version)
         {
             var geography = GeographyExtensions.CreatePoint(longitude, latitude);
-            IEnumerable<ClinicWithDistanceDto> sortedClinics = null;
+            IEnumerable<ClinicLocationDto> sortedClinics = null;
 
             switch (version)
             {
                 case ApiVersion.V1:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V1(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V1(geography);
                     break;
                 case ApiVersion.V2:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V2(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V2(geography);
                     break;
                 case ApiVersion.V3:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianSortedByDistance_V3(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V3(geography);
                     break;
                 default:
                     return ApiResponse.BadRequest();

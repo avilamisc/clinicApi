@@ -71,7 +71,7 @@
     <Compile Include="Automapper\CoreMapperWrapper.cs" />
     <Compile Include="Automapper\ICoreMapper.cs" />
     <Compile Include="CoreModule.cs" />
-    <Compile Include="DtoModels\ClinicWithDistanceDto.cs" />
+    <Compile Include="DtoModels\ClinicLocationDto.cs" />
     <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="DtoModels\PagingResultDto.cs" />
     <Compile Include="Encryption\Hashing.cs" />

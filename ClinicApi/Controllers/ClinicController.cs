@@ -39,7 +39,7 @@ namespace ClinicApi.Controllers
         [Route("clinicians")]
         public async Task<IHttpActionResult> ClinicClinicians(double longitude = 0, double latitude = 0, ApiVersion v = ApiVersion.V3)
         {
-            return Ok(await _clinicClinicianServiceV1.GetSortdetByDistanceClinicsWithClinicianAsync(longitude, latitude, v));
+            return Ok(await _clinicClinicianServiceV1.GetClinicsWithCliniciansSortdetByDistanceAsync(longitude, latitude, v));
         }
     }
 }

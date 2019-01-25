@@ -6,6 +6,6 @@ namespace ClinicApi.Interfaces
 {
     public interface IClinicClinicianService
     {
-        Task<ApiResponse> GetSortdetByDistanceClinicsWithClinicianAsync(double longitude, double latitude, ApiVersion version);
+        Task<ApiResponse> GetClinicsWithCliniciansSortdetByDistanceAsync(double longitude, double latitude, ApiVersion version);
     }
 }
