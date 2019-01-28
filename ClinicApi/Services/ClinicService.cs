@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Clinic.Core.DtoModels;
 using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Clinic;
+using ClinicApi.Models.Pagination;
 
 namespace ClinicApi.Services
 {
@@ -22,11 +24,12 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetAllClinicAsync(double longitude, double latitude)
+        public async Task<ApiResponse> GetAllClinicAsync(PaginationModel paging, double longitude, double latitude)
         {
             var location = GeographyExtensions.CreatePoint(longitude, latitude);
+            var pagingDto = _mapper.Mapper.Map<PagingDto>(paging);
 
-            var clinicDtos = await _unitOfWork.ClinicRepository.GetAllClinicsAsync(location);
+            var clinicDtos = await _unitOfWork.ClinicRepository.GetAllClinicsAsync(pagingDto, location);
 
             return ApiResponse.Ok(_mapper.Mapper.Map<IEnumerable<ClinicModel>>(clinicDtos));
         }

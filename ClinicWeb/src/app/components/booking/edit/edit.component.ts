@@ -6,6 +6,7 @@ import { BookingService } from 'src/app/core/services/booking/booking.service';
 import { ClinicModel, ClinicianModel } from 'src/app/core/models';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { ClinicianService } from 'src/app/core/services/clinician/clinician.service';
+import { Pagination } from 'src/app/core/models/table/pagination.model';
 
 @Component({
   selector: 'app-edit',
@@ -15,8 +16,11 @@ import { ClinicianService } from 'src/app/core/services/clinician/clinician.serv
 export class EditComponent implements OnInit, OnChanges {
   public editForm: FormGroup;
   public clinics: ClinicModel[];
+  public clinicsPaging: Pagination = new Pagination();
   public clinicians: ClinicianModel[] = [];
+  public loadClinicsOptionId = 'loadClinics';
   private currentClinic: ClinicModel;
+  private clinicsPageSize = 10;
 
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
@@ -64,14 +68,16 @@ export class EditComponent implements OnInit, OnChanges {
     return !this.isPatient || this.editForm.valid;
   }
 
-  public filterClinicians(clinicId: number): void {
-    this.clinicianService.getAllClinic(clinicId)
-      .subscribe(result => {
-        if (result.Data !== null) {
-          this.clinicians = result.Data;
-          this.editForm.get('clinician').markAsUntouched();
-        }
-      });
+  public filterClinicians(clinicId: any): void {
+    clinicId !== this.loadClinicsOptionId
+      ? this.clinicianService.getAllClinic(clinicId)
+          .subscribe(result => {
+            if (result.Data !== null) {
+              this.clinicians = result.Data;
+              this.editForm.get('clinician').markAsUntouched();
+            }
+          })
+      : this.uploadClinics();
   }
 
   public changeVisibility(visibility: boolean): void {
@@ -79,6 +85,18 @@ export class EditComponent implements OnInit, OnChanges {
     if (this.visibility === false) {
       this.closeEditWindow.emit();
     }
+  }
+
+  public uploadClinics(): void {
+    this.clinicsPaging.pageNumber += 1;
+    window.navigator.geolocation.getCurrentPosition(location => {
+      this.clinicService.getAllClinic(this.clinicsPaging, location.coords.longitude, location.coords.longitude)
+        .subscribe(result => {
+          if (result.Data != null) {
+            this.clinics.push(...result.Data);
+          }
+        });
+    });
   }
 
   private setValuesFromFormToModel(): void {
@@ -90,8 +108,11 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   private initializeForm(): void {
+    this.clinicsPaging.pageNumber = 0;
+    this.clinicsPaging.pageCount = this.clinicsPageSize;
+
     window.navigator.geolocation.getCurrentPosition(location => {
-      this.clinicService.getAllClinic(location.coords.longitude, location.coords.longitude)
+      this.clinicService.getAllClinic(this.clinicsPaging, location.coords.longitude, location.coords.longitude)
         .subscribe(result => {
           if (result.Data !== null) {
             this.clinics = result.Data;

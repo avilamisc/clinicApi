@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -64,6 +65,11 @@ namespace ClinicApi.Infrastructure
             }
             catch (Exception)
             {
+                var resultTask = ExternalTokenValidator.VerifyExternalAccessToken("Google", token);
+                resultTask.Wait();
+
+                var res = resultTask.Result;
+
                 statusCode = HttpStatusCode.InternalServerError;
             }
 

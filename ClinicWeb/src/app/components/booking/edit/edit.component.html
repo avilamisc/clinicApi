@@ -20,11 +20,14 @@
       <div class="form-label-group" *ngIf="isPatient">
         <label>
             Clinic:
-          <select class="form-control" (change)="filterClinicians($event.target.value)" formControlName="clinic">
+          <select class="form-control"
+                  (change)="filterClinicians($event.target.value)"
+                  formControlName="clinic">
             <option selected> -- select an option -- </option>
             <option *ngFor="let clinic of clinics"
                     [attr.selected]="clinic.id === model.clinicId"
                     [attr.value]="clinic.Id">{{clinic.Name}}</option>
+            <option [attr.value]="loadClinicsOptionId">Upload Clinics...</option>
           </select>
         </label>
       </div>

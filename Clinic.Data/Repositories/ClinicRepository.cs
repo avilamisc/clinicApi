@@ -21,11 +21,12 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ClinicDto>> GetAllClinicsAsync(DbGeography location)
+        public async Task<IEnumerable<ClinicDto>> GetAllClinicsAsync(PagingDto paging, DbGeography location)
         {
             var query = await _context.Clinics
                .OrderBy(c => c.Geolocation.Distance(location))
-               .Take(10)
+               .Skip(paging.PageSize * paging.PageNumber)
+               .Take(paging.PageSize)
                .ToListAsync();
 
             return _mapper.Mapper.Map<IEnumerable<ClinicDto>>(query);

@@ -1,6 +1,7 @@
 ﻿using Clinic.Core.Enums;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
+using ClinicApi.Models.Pagination;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -23,9 +24,9 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IHttpActionResult> Clinics(double longitude = 0, double latitude = 0)
+        public async Task<IHttpActionResult> Clinics([FromUri]PaginationModel paginationModel, double longitude = 0, double latitude = 0)
         {
-            return Ok(await _clinicService.GetAllClinicAsync(longitude, latitude));
+            return Ok(await _clinicService.GetAllClinicAsync(paginationModel, longitude, latitude));
         }
 
         [HttpGet]

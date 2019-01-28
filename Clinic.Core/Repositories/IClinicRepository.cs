@@ -7,6 +7,6 @@ namespace Clinic.Core.Repositories
 {
     public interface IClinicRepository: IRepository<Entities.Clinic>
     {
-        Task<IEnumerable<ClinicDto>> GetAllClinicsAsync(DbGeography location);
+        Task<IEnumerable<ClinicDto>> GetAllClinicsAsync(PagingDto paging, DbGeography location);
     }
 }
