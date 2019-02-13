@@ -1,4 +1,5 @@
 ﻿using ClinicApi.Infrastructure;
+using ClinicApi.Infrastructure.Auth;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -8,12 +9,8 @@ namespace ClinicApi
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            config.MessageHandlers.Add(new TokenValidationHandler());
 
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 

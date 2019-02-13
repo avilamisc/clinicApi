@@ -1,14 +1,12 @@
-﻿using ClinicApi.Interfaces;
+﻿using ClinicApi.Infrastructure.Auth;
+using ClinicApi.Interfaces;
 using ClinicApi.Models;
-using ClinicApi.Models.Booking;
 using ClinicApi.Models.Pagination;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Results;
 
 namespace ClinicApi.Controllers
 {
@@ -23,7 +21,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Patient")]
+        [BearerAuthorization(Roles = "Patient")]
         [Route("patient")]
         public async Task<IHttpActionResult> PatientBookings([FromUri]PaginationModel model)
         {
@@ -33,7 +31,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Clinician")]
+        [BearerAuthorization(Roles = "Clinician")]
         [Route("clinician")]
         public async Task<IHttpActionResult> ClinicianBookings([FromUri]PaginationModel model)
         {
@@ -43,7 +41,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Patient")]
+        [BearerAuthorization(Roles = "Patient")]
         [Route("")]
         public async Task<IHttpActionResult> CreateBooking()
         {
@@ -56,7 +54,7 @@ namespace ClinicApi.Controllers
         }
 
         [HttpPut]
-        [Authorize]
+        [BearerAuthorization]
         [Route("")]
         public async Task<IHttpActionResult> UpdateBooking()
         {

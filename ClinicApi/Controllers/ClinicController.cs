@@ -1,6 +1,6 @@
 ﻿using Clinic.Core.Enums;
+using ClinicApi.Infrastructure.Auth;
 using ClinicApi.Interfaces;
-using ClinicApi.Models;
 using ClinicApi.Models.Pagination;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace ClinicApi.Controllers
 {
     [RoutePrefix("api/clinics")]
-    [Authorize]
+    [BearerAuthorization]
     public class ClinicController : ApiController
     {
         private readonly IClinicService _clinicService;

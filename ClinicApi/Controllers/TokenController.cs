@@ -19,6 +19,7 @@ namespace ClinicApi.Controllers
 
         [HttpPost]
         [Route("refresh")]
+        [AllowAnonymous]
         public async Task<IHttpActionResult> Refresh(RefreshTokenModel refreshTokenModel)
         {
             return Ok(await _tokenService.RefreshTokenAsync(refreshTokenModel));

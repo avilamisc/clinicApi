@@ -1,5 +1,5 @@
-﻿using ClinicApi.Interfaces;
-using ClinicApi.Models;
+﻿using ClinicApi.Infrastructure.Auth;
+using ClinicApi.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,8 +10,8 @@ using System.Web.Http;
 
 namespace ClinicApi.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/documents")]
+    [BearerAuthorization]
     public class DocumentController : ApiController
     {
         private readonly IFileService _fileService;

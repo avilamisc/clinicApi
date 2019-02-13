@@ -1,12 +1,13 @@
 ﻿using ClinicApi.Automapper.Infrastructure;
+using ClinicApi.Infrastructure.Auth;
 using ClinicApi.Interfaces;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ClinicApi.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/clinicians")]
+    [BearerAuthorization]
     public class ClinicianController : ApiController
     {
         private readonly IApiMapper _mapper;

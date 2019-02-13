@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +13,7 @@ using System.Web;
 
 namespace ClinicApi.Infrastructure
 {
-    public class TokenValidationHandler : DelegatingHandler
+    /*public class TokenValidationHandler : DelegatingHandler
     {
         private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
         {
@@ -86,5 +85,5 @@ namespace ClinicApi.Infrastructure
 
             return false;
         }
-    }
+    }*/
 }
