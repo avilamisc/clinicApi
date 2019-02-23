@@ -262,3 +262,6 @@ __pycache__/
 
 # Uploaded Files
 uploads/
+
+# Signing keys
+*.snk
