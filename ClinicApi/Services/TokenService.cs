@@ -37,24 +37,24 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> RefreshTokenAsync(RefreshTokenModel refreshTokenModel)
+        public async Task<ApiResponse<LoginResultModel>> RefreshTokenAsync(RefreshTokenModel refreshTokenModel)
         {
             var userPrincipal = GetPrincipalFromToken(refreshTokenModel.Token);
 
             if (!Int32.TryParse(userPrincipal.Claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value, out int userId))
             {
-                return new ApiResponse(HttpStatusCode.BadRequest);
+                return new ApiResponse<LoginResultModel>(HttpStatusCode.BadRequest);
             }
 
             var user = await _unitOfWork.UserRepository.GetAsync(userId);
-            if (user == null) return new ApiResponse(HttpStatusCode.NotFound);
+            if (user == null) return new ApiResponse<LoginResultModel>(HttpStatusCode.NotFound);
 
             var refreshToken = await GetUserRefreshTokenAsync(refreshTokenModel.RefreshToken);
             if (refreshToken == null
                     || refreshToken.UserId != userId
                     || refreshToken.ExpiresUtc < DateTime.UtcNow)
             {
-                return ApiResponse.ValidationError(AuthErrorMessages.InvalidRefreshToken);
+                return ApiResponse<LoginResultModel>.ValidationError(AuthErrorMessages.InvalidRefreshToken);
             }
 
             var newAccessToken = GenerateAccessToken(userPrincipal.Claims);
@@ -62,7 +62,7 @@ namespace ClinicApi.Services
 
             await UpdateRefreshTokenAsync(refreshToken, newRefreshToken.Value, newRefreshToken.ExpiresUtc);
 
-            return ApiResponse.Ok(new LoginResultModel
+            return ApiResponse<LoginResultModel>.Ok(new LoginResultModel
                 {
                     AccessToken = newAccessToken,
                     RefreshToken = newRefreshToken.Value,

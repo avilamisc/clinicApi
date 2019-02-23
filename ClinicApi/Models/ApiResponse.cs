@@ -6,20 +6,17 @@ namespace ClinicApi.Models
     {
         public string ErrorMessage { get; set; }
         public int StatusCode { get; set; }
-        public object Data { get; set; }
 
         public ApiResponse(
             HttpStatusCode statusCode = HttpStatusCode.OK,
-            string errorMessage = null,
-            object result = null)
+            string errorMessage = null)
         {
             StatusCode = (int)statusCode;
             ErrorMessage = errorMessage;
-            Data = result;
         }
 
-        public static ApiResponse Ok(object result = null) =>
-            new ApiResponse { StatusCode = (int)HttpStatusCode.OK, Data = result };
+        public static ApiResponse Ok() =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.OK };
 
         public static ApiResponse ValidationError(string validationMessage) =>
             new ApiResponse { StatusCode = (int)HttpStatusCode.OK, ErrorMessage = validationMessage };
@@ -35,5 +32,36 @@ namespace ClinicApi.Models
 
         public static ApiResponse NotFound() =>
             new ApiResponse { StatusCode = (int)HttpStatusCode.NotFound };
+    }
+
+    public class ApiResponse<T> : ApiResponse
+    {
+        public T Data { get; set; }
+
+        public ApiResponse(
+            HttpStatusCode statusCode = HttpStatusCode.OK,
+            string errorMessage = null,
+            T result = default(T)) : base(statusCode, errorMessage)
+        {
+            Data = result;
+        }
+
+        public static ApiResponse<T> Ok(T result) =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.OK, Data = result };
+
+        public static new ApiResponse<T> ValidationError(string validationMessage) =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.OK, ErrorMessage = validationMessage };
+
+        public static new ApiResponse<T> UnsupportedMediaType() =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.UnsupportedMediaType };
+
+        public static new ApiResponse<T> BadRequest(string errorMessage = null) =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.BadRequest, ErrorMessage = errorMessage };
+
+        public static new ApiResponse<T> InternalError(string errorMessage = null) =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.InternalServerError, ErrorMessage = errorMessage };
+
+        public static new ApiResponse<T> NotFound() =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.NotFound };
     }
 }

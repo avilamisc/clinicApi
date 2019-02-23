@@ -16,12 +16,13 @@ export class ClinicService {
     private http: HttpClient) { }
 
     public getAllClinic(paging: Pagination, long: number, lat: number): Observable<ApiResponse<ClinicModel[]>> {
+      console.log('lat', lat);
       return this.http.get<ApiResponse<ClinicModel[]>>
         (`${ApiRoutes.clinics}?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}&longitude=${long}&latitude=${lat}`);
     }
 
     public getClinicById(id: number): Observable<ApiResponse<ClinicModel>> {
-      return this.http.get<ApiResponse<ClinicModel>>(`${ApiRoutes.clinics}?id=${id}`);
+      return this.http.get<ApiResponse<ClinicModel>>(`${ApiRoutes.clinics}/${id}`);
     }
 
     public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<ClinicClinicianBaseModel[]>> {

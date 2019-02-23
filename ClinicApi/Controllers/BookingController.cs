@@ -1,7 +1,10 @@
 ﻿using ClinicApi.Infrastructure.Auth;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
+using ClinicApi.Models.Booking;
 using ClinicApi.Models.Pagination;
+using Swashbuckle.Swagger.Annotations;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,6 +26,7 @@ namespace ClinicApi.Controllers
         [HttpGet]
         [BearerAuthorization(Roles = "Patient")]
         [Route("patient")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PagingResult<PatientBookingModel>>))]
         public async Task<IHttpActionResult> PatientBookings([FromUri]PaginationModel model)
         {
             var identity = (ClaimsIdentity)User.Identity;
@@ -33,6 +37,7 @@ namespace ClinicApi.Controllers
         [HttpGet]
         [BearerAuthorization(Roles = "Clinician")]
         [Route("clinician")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PagingResult<ClinicianBookingModel>>))]
         public async Task<IHttpActionResult> ClinicianBookings([FromUri]PaginationModel model)
         {
             var identity = (ClaimsIdentity)User.Identity;
@@ -43,9 +48,13 @@ namespace ClinicApi.Controllers
         [HttpPost]
         [BearerAuthorization(Roles = "Patient")]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
         public async Task<IHttpActionResult> CreateBooking()
         {
-            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse.UnsupportedMediaType());
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return Ok(ApiResponse<PatientBookingModel>.UnsupportedMediaType());
+            }
 
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.CreateBookingAsync(identity.Claims, HttpContext.Current.Request);
@@ -56,9 +65,10 @@ namespace ClinicApi.Controllers
         [HttpPut]
         [BearerAuthorization]
         [Route("")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
         public async Task<IHttpActionResult> UpdateBooking()
         {
-            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse.UnsupportedMediaType());
+            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse<PatientBookingModel>.UnsupportedMediaType());
 
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.UpdateBookingAsync(identity.Claims, HttpContext.Current.Request);

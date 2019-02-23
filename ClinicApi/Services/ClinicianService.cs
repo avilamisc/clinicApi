@@ -21,11 +21,12 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetCliniciansForClinic(int? clinicId)
+        public async Task<ApiResponse<IEnumerable<ClinicianModel>>> GetCliniciansForClinic(int? clinicId)
         {
             var clinicianDtos = await _unitOfWork.ClinicianRepository.GetCliniciansAsync(clinicId);
 
-            return ApiResponse.Ok(_mapper.Mapper.Map<IEnumerable<ClinicianModel>>(clinicianDtos));
+            return ApiResponse<IEnumerable<ClinicianModel>>.Ok(
+                _mapper.Mapper.Map<IEnumerable<ClinicianModel>>(clinicianDtos));
         }
     }
 }

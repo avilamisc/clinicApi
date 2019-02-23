@@ -24,23 +24,26 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetAllClinicAsync(PaginationModel paging, double longitude, double latitude)
+        public async Task<ApiResponse<IEnumerable<ClinicModel>>> GetAllClinicAsync(
+            PaginationModel paging,
+            double longitude,
+            double latitude)
         {
             var location = GeographyExtensions.CreatePoint(longitude, latitude);
             var pagingDto = _mapper.Mapper.Map<PagingDto>(paging);
 
             var clinicDtos = await _unitOfWork.ClinicRepository.GetAllClinicsAsync(pagingDto, location);
 
-            return ApiResponse.Ok(_mapper.Mapper.Map<IEnumerable<ClinicModel>>(clinicDtos));
+            return ApiResponse<IEnumerable<ClinicModel>>.Ok(_mapper.Mapper.Map<IEnumerable<ClinicModel>>(clinicDtos));
         }
 
-        public async Task<ApiResponse> GetClinicByIdAsync(int id)
+        public async Task<ApiResponse<ClinicModel>> GetClinicByIdAsync(int id)
         {
             var result = await _unitOfWork.ClinicRepository.GetAsync(id);
 
-            if (result == null) return ApiResponse.NotFound();
+            if (result == null) return ApiResponse<ClinicModel>.NotFound();
 
-            return ApiResponse.Ok(_mapper.Mapper.Map<ClinicModel>(result));
+            return ApiResponse<ClinicModel>.Ok(_mapper.Mapper.Map<ClinicModel>(result));
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using Autofac;
+using Autofac.Builder;
 using Clinic.Core.UnitOfWork;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
 using Clinic.Core;
-using System.Collections.Generic;
-using Autofac.Builder;
 using Clinic.Core.Enums;
 using Clinic.Data.Automapper.Infrastructure;
 using Clinic.Data.Repositories;
+using System.Collections.Generic;
 
 namespace Clinic.Data
 {

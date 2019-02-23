@@ -1,12 +1,13 @@
 ﻿using ClinicApi.Interfaces;
+using ClinicApi.Models;
 using ClinicApi.Models.Account;
+using Swashbuckle.Swagger.Annotations;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Results;
 
 
 namespace ClinicApi.Controllers
@@ -22,6 +23,7 @@ namespace ClinicApi.Controllers
 
         [HttpPost]
         [Route("api/account/login")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
         public async Task<IHttpActionResult> Authenticate(AuthenticateModel authenticateDto)
         {
             return Ok(await _accountService.AuthenticateAsync(authenticateDto.Email, authenticateDto.Password));

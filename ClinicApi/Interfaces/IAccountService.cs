@@ -6,6 +6,6 @@ namespace ClinicApi.Interfaces
 {
     public interface IAccountService
     {
-        Task<ApiResponse> AuthenticateAsync(string email, string password);
+        Task<ApiResponse<LoginResultModel>> AuthenticateAsync(string email, string password);
     }
 }

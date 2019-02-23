@@ -23,17 +23,17 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> AuthenticateAsync(string email, string password)
+        public async Task<ApiResponse<LoginResultModel>> AuthenticateAsync(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                return ApiResponse.ValidationError(AuthErrorMessages.FailedAuthorization);
+                return ApiResponse<LoginResultModel>.ValidationError(AuthErrorMessages.FailedAuthorization);
             }
 
             var user = await _unitOfWork.UserRepository.GetFirstAsync(u => u.Email == email);
             if (user == null || !Hashing.VerifyPassword(password, user.PasswordHash))
             {
-                return ApiResponse.ValidationError(AuthErrorMessages.FailedAuthorization);
+                return ApiResponse<LoginResultModel>.ValidationError(AuthErrorMessages.FailedAuthorization);
             }
 
             var claims = new Claim[]
@@ -48,7 +48,7 @@ namespace ClinicApi.Services
 
             await _tokenService.AddRefreshTokenAsync(refreshToken);
 
-            return ApiResponse.Ok(new LoginResultModel
+            return ApiResponse<LoginResultModel>.Ok(new LoginResultModel
                 {
                     AccessToken = accessToken,
                     RefreshToken = refreshToken.Value,

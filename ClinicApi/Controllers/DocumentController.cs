@@ -1,5 +1,8 @@
 ﻿using ClinicApi.Infrastructure.Auth;
 using ClinicApi.Interfaces;
+using ClinicApi.Models;
+using Swashbuckle.Swagger.Annotations;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;

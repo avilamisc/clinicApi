@@ -5,9 +5,7 @@ using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
-using ClinicApi.Models.Clinic;
 using ClinicApi.Models.ClinicClinician;
-using ClinicApi.Models.Clinician;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,7 +24,10 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> GetClinicsWithCliniciansSortdetByDistanceAsync(double longitude, double latitude, ApiVersion version)
+        public async Task<ApiResponse<IEnumerable<ClinicClinicianBase>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
+            double longitude,
+            double latitude,
+            ApiVersion version)
         {
             var geography = GeographyExtensions.CreatePoint(longitude, latitude);
             IEnumerable<ClinicLocationDto> sortedClinics = null;
@@ -34,16 +35,19 @@ namespace ClinicApi.Services
             switch (version)
             {
                 case ApiVersion.V1:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V1(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V1(geography);
                     break;
                 case ApiVersion.V2:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V2(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V2(geography);
                     break;
                 case ApiVersion.V3:
-                    sortedClinics = await _unitOfWork.ClinicClinicianRepository.GetClinicsWithClinicianSortedByDistanceAsync_V3(geography);
+                    sortedClinics = await _unitOfWork.ClinicClinicianRepository
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V3(geography);
                     break;
                 default:
-                    return ApiResponse.BadRequest();
+                    return ApiResponse<IEnumerable<ClinicClinicianBase>>.BadRequest();
             }
 
             var result = new List<ClinicClinicianBase>();
@@ -56,7 +60,7 @@ namespace ClinicApi.Services
                 }
             }
 
-            return ApiResponse.Ok(result);
+            return ApiResponse<IEnumerable<ClinicClinicianBase>>.Ok(result);
         }
     }
 }

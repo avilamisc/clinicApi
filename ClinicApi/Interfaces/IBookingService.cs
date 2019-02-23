@@ -1,4 +1,5 @@
 ﻿using ClinicApi.Models;
+using ClinicApi.Models.Booking;
 using ClinicApi.Models.Pagination;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -9,9 +10,17 @@ namespace ClinicApi.Interfaces
 {
     public interface IBookingService
     {
-        Task<ApiResponse> GetAllBookingsForPatientAsync(IEnumerable<Claim> claims, PaginationModel model);
-        Task<ApiResponse> GetAllBookingsForClinicianAsync(IEnumerable<Claim> claims, PaginationModel model);
-        Task<ApiResponse> CreateBookingAsync(IEnumerable<Claim> claims, HttpRequest request);
-        Task<ApiResponse> UpdateBookingAsync(IEnumerable<Claim> claims, HttpRequest request);
+        Task<ApiResponse<PagingResult<PatientBookingModel>>> GetAllBookingsForPatientAsync(
+            IEnumerable<Claim> claims,
+            PaginationModel model);
+        Task<ApiResponse<PagingResult<ClinicianBookingModel>>> GetAllBookingsForClinicianAsync(
+            IEnumerable<Claim> claims,
+            PaginationModel model);
+        Task<ApiResponse<PatientBookingModel>> CreateBookingAsync(
+            IEnumerable<Claim> claims,
+            HttpRequest request);
+        Task<ApiResponse<PatientBookingModel>> UpdateBookingAsync(
+            IEnumerable<Claim> claims,
+            HttpRequest request);
     }
 }

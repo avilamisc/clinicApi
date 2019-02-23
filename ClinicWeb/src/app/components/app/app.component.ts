@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UserService } from 'src/app/core/services/user/user.service';
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { Router } from '@angular/router';

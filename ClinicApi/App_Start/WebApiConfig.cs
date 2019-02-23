@@ -1,6 +1,4 @@
-﻿using ClinicApi.Infrastructure;
-using ClinicApi.Infrastructure.Auth;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace ClinicApi

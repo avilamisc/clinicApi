@@ -1,5 +1,8 @@
 ﻿using ClinicApi.Interfaces;
+using ClinicApi.Models;
+using ClinicApi.Models.Account;
 using ClinicApi.Models.Token;
+using Swashbuckle.Swagger.Annotations;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -20,6 +23,7 @@ namespace ClinicApi.Controllers
         [HttpPost]
         [Route("refresh")]
         [AllowAnonymous]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
         public async Task<IHttpActionResult> Refresh(RefreshTokenModel refreshTokenModel)
         {
             return Ok(await _tokenService.RefreshTokenAsync(refreshTokenModel));

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 
 namespace Clinic.Core.Entities
@@ -15,6 +16,11 @@ namespace Clinic.Core.Entities
         public Clinic()
         {
             ClinicClinicians = new List<ClinicClinician>();
+        }
+
+        ~Clinic()
+        {
+            Console.Beep();
         }
     }
 }

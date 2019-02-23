@@ -112,29 +112,14 @@ export class EditComponent implements OnInit, OnChanges {
     this.clinicsPaging.pageCount = this.clinicsPageSize;
 
     window.navigator.geolocation.getCurrentPosition(location => {
-      this.clinicService.getAllClinic(this.clinicsPaging, location.coords.longitude, location.coords.longitude)
-        .subscribe(result => {
-          if (result.Data !== null) {
-            this.clinics = result.Data;
-            if (this.currentClinic) {
-              this.clinics.push(this.currentClinic);
-            }
-          }
-          if (this.model.clinicId) {
-            this.clinicianService.getAllClinic(this.model.clinicId)
-              .subscribe(clinicianResult => {
-                  if (clinicianResult.Data !== null) {
-                    this.clinicians = clinicianResult.Data;
-                  }
-                  this.createForm();
-                });
-          } else {
-            this.createForm();
-          }
-        });
-      });
+        this.updateClinics(location.coords.longitude, location.coords.latitude);
+      },
+      () => {
+        this.updateClinics();
+      }
+    );
 
-      this.clinicService.getClinicById(this.model.clinicId)
+    this.clinicService.getClinicById(this.model.clinicId)
         .subscribe(result => {
           if (result.Data !== null) {
             this.currentClinic = result.Data;
@@ -160,5 +145,28 @@ export class EditComponent implements OnInit, OnChanges {
       clinic: new FormControl(bookingClinic ? bookingClinic.Id : null, [Validators.required]),
       clinician: new FormControl(bookingClinician ? bookingClinician.Id : null, [Validators.required])
     });
+  }
+
+  private updateClinics(long = 0, lat = 0): void {
+    this.clinicService.getAllClinic(this.clinicsPaging, long, lat)
+      .subscribe(result => {
+        if (result.Data !== null) {
+          this.clinics = result.Data;
+          if (this.currentClinic) {
+            this.clinics.push(this.currentClinic);
+          }
+        }
+        if (this.model.clinicId) {
+          this.clinicianService.getAllClinic(this.model.clinicId)
+            .subscribe(clinicianResult => {
+                if (clinicianResult.Data !== null) {
+                  this.clinicians = clinicianResult.Data;
+                }
+                this.createForm();
+              });
+        } else {
+          this.createForm();
+        }
+      });
   }
 }

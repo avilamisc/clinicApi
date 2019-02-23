@@ -1,12 +1,12 @@
 ﻿using Clinic.Core.Entities;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
-using System.Threading.Tasks;
-using System.Data.Entity;
 using Clinic.Core.DtoModels;
-using System.Linq;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Spatial;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Clinic.Data.Repositories
 {
@@ -26,7 +26,8 @@ namespace Clinic.Data.Repositories
                 .SingleOrDefaultAsync(c => c.ClinicId == clinicId && c.ClinicianId == clinicianId);
         }
 
-        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V1(DbGeography distanceFrom)
+        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V1(
+            DbGeography distanceFrom)
         {
             var uniqueClinician = _context.ClinicClinicians
                 .Include(cc => cc.Clinic)
@@ -46,27 +47,6 @@ namespace Clinic.Data.Repositories
                 })
                 .GroupBy(cc => cc.ClinicianId)
                 .Select(gr => gr.OrderBy(cc => cc.Distance).FirstOrDefault());
-
-            //return await uniqueClinician
-            //    .GroupBy(uc => uc.ClinicId)
-            //    .Select(gr => new ClinicLocationDto
-            //    {
-            //        Id = gr.FirstOrDefault().ClinicId,
-            //        City = gr.FirstOrDefault().City,
-            //        ClinicName = gr.FirstOrDefault().ClinicName,
-            //        Lat = gr.FirstOrDefault().Lat,
-            //        Long = gr.FirstOrDefault().Long,
-            //        Distance = gr.FirstOrDefault().Distance / MetersPerKilometer,
-            //        Clinicians = gr.Select(item => new ClinicianDto
-            //        {
-            //            Id = item.ClinicianId,
-            //            Name = item.ClinicianName,
-            //            Rate = item.ClinicianRate,
-            //            Surname = item.ClinicianSurname
-            //        })
-            //    })
-            //    .OrderBy(c => c.Distance)
-            //    .ToListAsync();
 
             return await (from gr in uniqueClinician
                           group gr by gr.ClinicId into gr
@@ -90,7 +70,8 @@ namespace Clinic.Data.Repositories
                           .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V2(DbGeography location)
+        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V2(
+            DbGeography location)
         {
             var result = await _context.ClinicClinicians
                 .GroupBy(cc => cc.ClinicianId)
@@ -123,7 +104,8 @@ namespace Clinic.Data.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V3(DbGeography location)
+        public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V3(
+            DbGeography location)
         {
             return await _context.Clinics
                 .GroupJoin(_context.ClinicClinicians
@@ -134,11 +116,6 @@ namespace Clinic.Data.Repositories
                 })
                 .GroupBy(cc => cc.Clinician.Id)
                 .Select(gr => gr.OrderBy(grList => grList.Distance).FirstOrDefault()),
-                    //.OrderBy(cc => cc.Clinic.Geolocation.Distance(location))
-                    //.GroupBy(cc => cc.ClinicianId)
-                    //.Select(g => g.FirstOrDefault()),
-                                   //.GroupBy(cc => cc.ClinicianId)
-                                   //.Select(gr => gr.OrderBy(grList => grList.Clinic.Geolocation.Distance(location)).FirstOrDefault()),
                            c => c.Id,
                            cc => cc.ClinicId,
                            (c, cc) => new ClinicLocationDto
