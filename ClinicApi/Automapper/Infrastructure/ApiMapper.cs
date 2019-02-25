@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clinic.Core.Automapper;
+using System;
 
 namespace ClinicApi.Automapper.Infrastructure
 {
@@ -15,7 +16,7 @@ namespace ClinicApi.Automapper.Infrastructure
             {
                 return _mapper.Map<TEntity>(source);
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -31,6 +32,7 @@ namespace ClinicApi.Automapper.Infrastructure
                     config.AddProfile(new PaginationProfile());
                     config.AddProfile(new ClinicianProfile());
                     config.AddProfile(new ClinicProfile());
+                    config.AddProfile(new AccountProfile());
                 });
         }
     }

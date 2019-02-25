@@ -1,12 +1,14 @@
 ﻿using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Account;
+using ClinicApi.Models.Account.Registration;
 using Swashbuckle.Swagger.Annotations;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 
@@ -49,6 +51,34 @@ namespace ClinicApi.Controllers
             var response = await client.PostAsync("https://accounts.google.com/o/oauth2/token", content);
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("api/account/register/patient")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(PatientRegisterModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
+        public async Task<IHttpActionResult> RegisterPatient()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return Ok(ApiResponse<LoginResultModel>.UnsupportedMediaType());
+            }
+
+            return Ok(await _accountService.RegisterPatientAsync(HttpContext.Current.Request));
+        }
+
+        [HttpPost]
+        [Route("api/account/register/clinician")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(ClinicianRegisterModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
+        public async Task<IHttpActionResult> RegisterClinician()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return Ok(ApiResponse<LoginResultModel>.UnsupportedMediaType());
+            }
+
+            return Ok(await _accountService.RegisterClinicianAsync(HttpContext.Current.Request));
         }
     }
 }

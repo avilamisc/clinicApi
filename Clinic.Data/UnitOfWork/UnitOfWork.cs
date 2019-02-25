@@ -1,9 +1,9 @@
 ﻿using Clinic.Core.UnitOfWork;
 using Clinic.Core.Repositories;
 using Clinic.Data.Context;
-using System.Threading.Tasks;
 using Clinic.Data.Automapper.Infrastructure;
 using Clinic.Data.Repositories;
+using System.Threading.Tasks;
 
 namespace Clinic.Data.UnitOfWork
 {
@@ -26,6 +26,7 @@ namespace Clinic.Data.UnitOfWork
             DocumentRepository = new DocumentRepository(context);
             ClinicRepository = new ClinicRepository(mapper, context);
             ClinicianRepository = new ClinicianRepository(mapper, context);
+            PatientRepository = new PatientRepository(context);
         }
 
         public IUserRepository UserRepository { get; private set; }
@@ -41,6 +42,8 @@ namespace Clinic.Data.UnitOfWork
         public IClinicRepository ClinicRepository { get; private set; }
 
         public IClinicianRepository ClinicianRepository { get; private set; }
+
+        public IPatientRepository PatientRepository { get; private set; }
 
         public void SaveChanges()
         {

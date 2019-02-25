@@ -13,6 +13,7 @@ namespace Clinic.Core.UnitOfWork
         IDocumentRepository DocumentRepository { get; }
         IClinicRepository ClinicRepository { get; }
         IClinicianRepository ClinicianRepository { get; }
+        IPatientRepository PatientRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync();

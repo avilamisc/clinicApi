@@ -152,6 +152,7 @@
     <Compile Include="AppModule.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Automapper\AccountProfile.cs" />
     <Compile Include="Automapper\ClinicianProfile.cs" />
     <Compile Include="Automapper\ClinicProfile.cs" />
     <Compile Include="Automapper\DocumentProfile.cs" />
@@ -176,7 +177,10 @@
     <Compile Include="Interfaces\IClinicService.cs" />
     <Compile Include="Interfaces\IDocumentService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
+    <Compile Include="Models\Account\Registration\ClinicianRegisterModel.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
+    <Compile Include="Models\Account\Registration\PatientRegisterModel.cs" />
+    <Compile Include="Models\Account\Registration\UserRegisterModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\Booking\ClinicianBookingModel.cs" />

@@ -3,6 +3,7 @@
              [data]="bookings"
              [totalAmount]="totalDataAmount"
              [mobileWidth]="768"
+             [rowAmount]="tableRowAmount"
              (pageChanged)="uploadBookings($event)"
              (rowClicked)="openEditWindow($event.data, $event.index)">
   </app-table>

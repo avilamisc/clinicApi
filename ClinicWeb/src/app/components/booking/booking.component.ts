@@ -27,7 +27,7 @@ export class BookingComponent implements OnInit {
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private isPatient: boolean;
-  private tableRowAmount = 10;
+  private tableRowAmount = 5;
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
 

@@ -17,10 +17,5 @@ namespace Clinic.Core.Entities
         {
             ClinicClinicians = new List<ClinicClinician>();
         }
-
-        ~Clinic()
-        {
-            Console.Beep();
-        }
     }
 }
