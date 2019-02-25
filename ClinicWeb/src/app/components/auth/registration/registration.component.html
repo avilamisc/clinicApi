@@ -1,0 +1,46 @@
+<div class="auth-form registration-container">
+  <div class="main-information">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-label-group">
+        <label>
+          User Name:
+          <input type="text" class="form-control" formControlName="userName">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+          User Surname:
+          <input type="text" class="form-control" formControlName="userSurname">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+          User Email:
+          <input type="email" class="form-control" formControlName="userMail">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+          Password:
+          <input type="password" class="form-control" formControlName="password">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+          Role:
+          <label>
+            <input type="radio" value="Patient" formControlName="userRole">
+            <span>Patient</span>
+          </label>
+          <label>
+            <input type="radio" value="Clinician" formControlName="userRole">
+            <span>Clinician</span>
+          </label>
+        </label>
+      </div>
+      <button type="submit" class="btn form-submit" [disabled]="!registerForm.valid">
+        Continue
+      </button>
+    </form>
+  </div>
+</div>

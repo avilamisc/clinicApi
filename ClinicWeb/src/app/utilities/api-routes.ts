@@ -2,6 +2,8 @@ import { environment } from 'src/environments/environment';
 
 export const ApiRoutes = {
     authenticate: `${environment.serverUrl}/account/login`,
+    registerPatient: `${environment.serverUrl}/account/register/patient`,
+    registerClinician: `${environment.serverUrl}/account/register/clinician`,
     refreshToken: `${environment.serverUrl}/tokens/refresh`,
 
     patientBookings: `${environment.serverUrl}/bookings/patient`,

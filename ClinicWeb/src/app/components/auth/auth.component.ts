@@ -16,6 +16,7 @@ export class AuthComponent implements OnInit {
   public loginForm: FormGroup;
   private model: LoginModel = new LoginModel();
   private returnUrl: string = null;
+  private visibleAuthentication = true;
   // tslint:disable-next-line:max-line-length
   public googleAuthLink = 'https://accounts.google.com/o/oauth2/auth?redirect_uri=http://localhost:54865/api/account/google&response_type=code&client_id=433233257213-uoailm7olq0d7r1ds4pdlm0thqp4invk.apps.googleusercontent.com&scope=https://www.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile';
 
@@ -37,6 +38,10 @@ export class AuthComponent implements OnInit {
       .subscribe(result => {
         this.router.navigate([this.returnUrl || '/booking']);
       });
+  }
+
+  public navigateToRegistration(): void {
+    this.router.navigate(['registration'])
   }
 
   private createForm(): void {

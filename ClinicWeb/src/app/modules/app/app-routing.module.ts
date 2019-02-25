@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: '../auth/auth.module#AuthModule'
+  },
+  {
+    path: 'registration',
+    loadChildren: '../auth/registration/registration.module#RegistrationModule'
   }
 ];
 

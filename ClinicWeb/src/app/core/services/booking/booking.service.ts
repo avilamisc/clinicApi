@@ -7,14 +7,16 @@ import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { UpdateBookingModel } from '../../models/booking/update-booking.model';
 import { Pagination } from '../../models/table/pagination.model';
 import { PagingResult } from '../../models/paging-result.model';
+import { BaseService } from '../base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookingService {
+export class BookingService extends BaseService {
 
-  constructor(
-    private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    super();
+  }
 
   public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel>>> {
     return this.http.get<ApiResponse<PagingResult<PatientBookingModel>>>
@@ -42,24 +44,6 @@ export class BookingService {
     model.newFiles.forEach(file => {
       formData.append(file.name, file);
     });
-
-    return formData;
-  }
-
-  private getMultipartData(model: any): FormData {
-    const formData = new FormData();
-
-    for (const property in model) {
-        if (model.hasOwnProperty(property)) {
-            if (model[property] instanceof Array) {
-                formData.append(property, JSON.stringify(model[property]));
-            } else {
-                if (model[property] != null) {
-                    formData.append(property, model[property]);
-                }
-            }
-        }
-    }
 
     return formData;
   }
