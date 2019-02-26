@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { RegistrationModel } from 'src/app/core/models/auth/registration/registration.model';
-import { Router } from '@angular/router';
+import { CommonConstants } from 'src/app/utilities/common-constants';
 
 @Component({
   selector: 'app-registration',
@@ -12,24 +13,32 @@ import { Router } from '@angular/router';
 export class RegistrationComponent implements OnInit {
   public registrationModel = new RegistrationModel();
   public registerForm: FormGroup;
+  public isMainInfoSubmitted = false;
+  public isPatient = true;
+  public returnUrl: string = null;
 
-  private isPatient = true;
-
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.createForm();
+    this.initializeReturnUrl();
   }
 
   public onSubmit(): void {
     if (this.registerForm.valid) {
       this.setValuesFromFormToModel();
-      console.log('move (is patient: ', this.isPatient, ')');
-      const nextStepRoute = this.isPatient ? '/patient' : '/clinician';
-      this.router.navigate([nextStepRoute]);
-    } else {
-      console.log('denied');
+      this.isMainInfoSubmitted = true;
     }
+  }
+
+  public showMainRegistration(): void {
+    this.isMainInfoSubmitted = false;
+  }
+
+  public cancelRegistration(): void {
+    this.router.navigate(['login']);
   }
 
   private createForm(): void {
@@ -44,8 +53,8 @@ export class RegistrationComponent implements OnInit {
       userSurname: new FormControl(userSurname, [Validators.required]),
       userMail: new FormControl(this.registrationModel.UserMail, [Validators.required]),
       password: new FormControl(this.registrationModel.Password, [Validators.required]),
-      userRole: new FormControl(this.isPatient)
-    })
+      userRole: new FormControl(this.isPatient ? 'Patient' : 'Clinician')
+    });
   }
 
   private setValuesFromFormToModel(): void {
@@ -54,5 +63,9 @@ export class RegistrationComponent implements OnInit {
     this.registrationModel.UserMail = values.userMail;
     this.registrationModel.Password = values.password;
     this.isPatient = values.userRole === 'Patient';
+  }
+
+  private initializeReturnUrl(): void {
+    this.returnUrl = this.route.snapshot.queryParams[CommonConstants.returnUrlSnapshot];
   }
 }

@@ -1,3 +1,22 @@
-<p>
-  patient-registration works!
-</p>
+<div class="patient-registration-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-label-group">
+      <label>
+        Location:
+        <input type="text" class="form-control" formControlName="location">
+      </label>
+    </div>
+    <div>
+      <button type="submit"
+              class="btn btn-secondary navigation-button"
+              [disabled]="!registerForm.valid">
+        Submit
+      </button>
+      <button type="button"
+              class="btn btn-secondary navigation-button"
+              (click)="movePreviousStep()">
+        Back
+      </button>
+    </div>
+  </form>
+</div>

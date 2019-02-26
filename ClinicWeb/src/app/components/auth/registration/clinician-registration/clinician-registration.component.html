@@ -1,3 +1,44 @@
-<p>
-  clinician-registration works!
-</p>
+<div class="patient-registration-container">
+  <div class="form-label-group">
+    <button class="btn btn-secondary navigation-button"
+            type="button"
+            (click)="onSubmit()">
+      Submit
+    </button>
+    <button class="btn btn-secondary navigation-button"
+            type="button"
+            (click)="movePreviousStep()">
+      Back
+    </button>
+    <button class="btn btn-secondary dropdown-toggle selection-button"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+      Select clinic
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item"  *ngFor="let clinic of clinics;"
+          class="list-group-item"
+          (click)="selectClinic(clinic)">
+        {{clinic.Name}}
+      </a>
+      <a class="list-group-item"
+          (click)="uploadClinics()">
+        Upload more...
+      </a>
+    </div>
+  </div>
+  <div class="form-label-group selected-clinics">
+    <div *ngFor="let clinic of selectedClinics; let index = index"
+          class="selected-item">
+      <button type="button"
+              class="btn btn-danger remove-btn"
+              (click)="removeSelectedClinic(index)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <span class="clinic-name">{{ clinic.Name }}</span>
+    </div>
+  </div>
+</div>

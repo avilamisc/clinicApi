@@ -29,6 +29,7 @@ namespace ClinicApi.Controllers
 
         [HttpGet]
         [Route("")]
+        [OverrideAuthorization]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<ClinicModel>>))]
         public async Task<IHttpActionResult> Clinics(
             [FromUri]PaginationModel paginationModel,

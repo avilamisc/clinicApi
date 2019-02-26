@@ -1,9 +1,6 @@
   <form class="auth-form"
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()">
-    <h5>
-      <a class="link" (click)="navigateToRegistration()">Don`t have an account!</a>
-    </h5>
     <div class="form-label-group">
       <label type="email">
         Email:
@@ -21,6 +18,9 @@
       </label>
     </div>
     <button type="submit" class="btn form-submit" [disabled]="!loginForm.valid">Submit</button>
+    <div class="creation-link">
+      <a class="link" (click)="navigateToRegistration()">Don`t have an account!</a>
+    </div>
   </form>
   <a [href]="googleAuthLink">
     Google Account

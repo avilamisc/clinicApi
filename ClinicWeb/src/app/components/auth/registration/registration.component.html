@@ -1,5 +1,5 @@
 <div class="auth-form registration-container">
-  <div class="main-information">
+  <div *ngIf="!isMainInfoSubmitted" class="main-information">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-label-group">
         <label>
@@ -38,9 +38,26 @@
           </label>
         </label>
       </div>
-      <button type="submit" class="btn form-submit" [disabled]="!registerForm.valid">
+      <button type="submit"
+              class="btn btn-secondary navigation-button"
+              [disabled]="!registerForm.valid">
         Continue
+      </button>
+      <button type="submit"
+              class="btn btn-secondary navigation-button"
+              (click)="cancelRegistration()">
+        Cancel
       </button>
     </form>
   </div>
+  <app-patient-registration *ngIf="isMainInfoSubmitted && isPatient"
+                            [returnUrl]="returnUrl"
+                            [model]="registrationModel"
+                            (cancel)="showMainRegistration()">
+  </app-patient-registration>
+  <app-clinician-registration *ngIf="isMainInfoSubmitted && !isPatient"
+                              [returnUrl]="returnUrl"
+                              [model]="registrationModel"
+                              (cancel)="showMainRegistration()">
+  </app-clinician-registration>
 </div>

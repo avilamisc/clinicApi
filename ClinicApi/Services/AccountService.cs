@@ -101,7 +101,7 @@ namespace ClinicApi.Services
 
             var patientRegistrationDto = _mapper.Mapper.Map<PatientRegistrationDto>(registerModel);
             patientRegistrationDto.PasswordHash = Hashing.HashPassword(registerModel.Password);
-            patientRegistrationDto.Role = UserRole.Clinician;
+            patientRegistrationDto.Role = UserRole.Patient;
 
             try
             {
