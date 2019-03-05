@@ -59,3 +59,4 @@ namespace ClinicApi.Infrastructure
 }
 
 // Added it in develop. It should be after merge.
+// Add for studying. Its new functionality should be added
