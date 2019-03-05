@@ -57,3 +57,5 @@ namespace ClinicApi.Infrastructure
         }
     }
 }
+
+// Added it in develop. It should be after merge.
