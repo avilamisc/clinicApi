@@ -12,6 +12,10 @@ import { ClinicianDistanceModel } from 'src/app/core/models/clinic-clinician.mod
 export class ClinicComponent implements OnInit {
   public data: ClinicClinicianBaseModel[] = [];
 
+  private mapType = 'satellite';
+  private latitude = -28.68352;
+  private longitude = -147.20785;
+  
   constructor(private clinicService: ClinicService) { }
 
   public ngOnInit(): void {

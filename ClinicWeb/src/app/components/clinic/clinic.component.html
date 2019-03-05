@@ -4,4 +4,7 @@
       <h4 *ngIf="!instanceOfClinician(item)">{{item.ClinicName}} in {{item.City}}, {{item.Distance?.toFixed(1)}} km away</h4>
       <h5 *ngIf="instanceOfClinician(item)"> -> Clinician {{item.Name}} {{item.Rate}}</h5>
   </div>
+  <agm-map [latitude]='latitude' [longitude]='longitude' 
+    [mapTypeId]='mapType'>
+  </agm-map>
 </div>

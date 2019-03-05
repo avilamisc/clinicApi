@@ -21,6 +21,8 @@ export class EditComponent implements OnInit, OnChanges {
   public loadClinicsOptionId = 'loadClinics';
   private currentClinic: ClinicModel;
   private clinicsPageSize = 10;
+  private clientLongitude= 0;
+  private clientLatitude = 0;
 
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
@@ -42,6 +44,7 @@ export class EditComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     this.initializeForm();
+    this.initializeLocation();
   }
 
   public onSubmit(): void {
@@ -89,14 +92,12 @@ export class EditComponent implements OnInit, OnChanges {
 
   public uploadClinics(): void {
     this.clinicsPaging.pageNumber += 1;
-    window.navigator.geolocation.getCurrentPosition(location => {
-      this.clinicService.getAllClinic(this.clinicsPaging, location.coords.longitude, location.coords.longitude)
-        .subscribe(result => {
-          if (result.Data != null) {
-            this.clinics.push(...result.Data);
-          }
-        });
-    });
+    this.clinicService.getAllClinic(this.clinicsPaging, this.clientLongitude, this.clientLatitude)
+      .subscribe(result => {
+        if (result.Data != null) {
+          this.clinics.push(...result.Data);
+        }
+      });
   }
 
   private setValuesFromFormToModel(): void {
@@ -110,14 +111,8 @@ export class EditComponent implements OnInit, OnChanges {
   private initializeForm(): void {
     this.clinicsPaging.pageNumber = 0;
     this.clinicsPaging.pageCount = this.clinicsPageSize;
-
-    window.navigator.geolocation.getCurrentPosition(location => {
-        this.updateClinics(location.coords.longitude, location.coords.latitude);
-      },
-      () => {
-        this.updateClinics();
-      }
-    );
+    
+    this.updateClinics(this.clientLongitude, this.clientLatitude);
 
     this.clinicService.getClinicById(this.model.clinicId)
         .subscribe(result => {
@@ -168,5 +163,12 @@ export class EditComponent implements OnInit, OnChanges {
           this.createForm();
         }
       });
+  }
+
+  private initializeLocation(): void {
+    window.navigator.geolocation.getCurrentPosition(location => {
+      this.clientLongitude = location.coords.longitude;
+      this.clientLatitude = location.coords.latitude;
+    });
   }
 }

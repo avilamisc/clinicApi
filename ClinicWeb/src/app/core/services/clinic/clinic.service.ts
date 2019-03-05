@@ -27,6 +27,6 @@ export class ClinicService {
 
     public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<ClinicClinicianBaseModel[]>> {
       return this.http.get<ApiResponse<ClinicClinicianBaseModel[]>>
-        (`${ApiRoutes.clinicsClinician}?longitude=${long}&latitude=${lat}&v=1`);
+        (`${ApiRoutes.clinicsClinician}?longitude=${long}&latitude=${lat}&v=3`);
     }
 }
