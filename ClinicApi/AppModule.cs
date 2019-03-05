@@ -57,3 +57,5 @@ namespace ClinicApi.Infrastructure
         }
     }
 }
+
+// Add for studying. Its new functionality should be added
