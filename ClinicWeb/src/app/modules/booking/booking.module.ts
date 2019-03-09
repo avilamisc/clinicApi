@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StarRatingModule } from 'angular-star-rating';
 
 import { BookingComponent } from 'src/app/components/booking/booking.component';
 import { EditComponent } from 'src/app/components/booking/edit/edit.component';
@@ -19,7 +20,8 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     BookingRoutingModule,
-    SharedModule
+    SharedModule,
+    StarRatingModule.forRoot()
   ]
 })
 export class BookingModule { }

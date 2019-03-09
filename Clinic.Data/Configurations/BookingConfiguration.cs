@@ -11,6 +11,7 @@ namespace Clinic.Data.Configurations
             HasKey(b => b.Id);
 
             Property(b => b.Name).IsRequired();
+            Property(b => b.Rate).IsOptional();
 
             HasRequired(b => b.ClinicClinician)
                 .WithMany(cc => cc.Bookings)

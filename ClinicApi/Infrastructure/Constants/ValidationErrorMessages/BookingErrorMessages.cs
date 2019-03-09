@@ -7,5 +7,11 @@
         public const string UpdateError = "Cannot update this item";
         public const string ValidationDataError = "Wrong booking data";
         public const string MissedClinicClinician = "Wrong booking data";
+        public const string UnexistingBooking = "Such booking doesn`t exist!";
+
+        public static string BadRateValue(float value)
+        {
+            return $"Rate should be less then {value} and greater then zero!";
+        }
     }
 }

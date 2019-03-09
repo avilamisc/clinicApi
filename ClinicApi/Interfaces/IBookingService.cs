@@ -22,5 +22,6 @@ namespace ClinicApi.Interfaces
         Task<ApiResponse<PatientBookingModel>> UpdateBookingAsync(
             IEnumerable<Claim> claims,
             HttpRequest request);
+        Task<ApiResponse<float>> UpdateBookingRateAsync(int id, float rateValue);
     }
 }

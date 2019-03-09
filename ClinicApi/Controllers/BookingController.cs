@@ -68,12 +68,28 @@ namespace ClinicApi.Controllers
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
         public async Task<IHttpActionResult> UpdateBooking()
         {
-            if (!Request.Content.IsMimeMultipartContent()) return Ok(ApiResponse<PatientBookingModel>.UnsupportedMediaType());
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return Ok(ApiResponse<PatientBookingModel>.UnsupportedMediaType());
+            }
 
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.UpdateBookingAsync(identity.Claims, HttpContext.Current.Request);
 
             return Ok(result);
         }
+
+        [HttpPatch]
+        [BearerAuthorization]
+        [Route("rate")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
+        public async Task<IHttpActionResult> UpdateBookingRate(UpdatePropertyModel<float> model)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            var result = await _bookingService.UpdateBookingRateAsync(model.Id, model.Value);
+
+            return Ok(result);
+        }
+
     }
 }

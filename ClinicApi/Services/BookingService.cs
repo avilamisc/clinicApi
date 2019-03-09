@@ -25,6 +25,8 @@ namespace ClinicApi.Services
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
 
+        private const float MaxRate = 5;
+
         public BookingService(
             IApiMapper mapper,
             IFileService fileService,
@@ -49,11 +51,13 @@ namespace ClinicApi.Services
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
             var pagingResult = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
 
-            return ApiResponse<PagingResult<PatientBookingModel>>.Ok(new PagingResult<PatientBookingModel>
-            {
-                DataCollection = _mapper.Mapper.Map<IEnumerable<PatientBookingModel>>(pagingResult.DataColection),
-                TotalCount = pagingResult.TotalCount
-            });
+            return ApiResponse<PagingResult<PatientBookingModel>>.Ok(
+                new PagingResult<PatientBookingModel>
+                {
+                    DataCollection = _mapper.Mapper
+                        .Map<IEnumerable<PatientBookingModel>>(pagingResult.DataColection),
+                    TotalCount = pagingResult.TotalCount
+                });
         }
 
         public async Task<ApiResponse<PagingResult<ClinicianBookingModel>>> GetAllBookingsForClinicianAsync(
@@ -67,13 +71,16 @@ namespace ClinicApi.Services
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
 
-            var pagingResult = await _unitOfWork.BookingRepository.GetForClinicianAsync(pagingDto, userId);
+            var pagingResult = await _unitOfWork.BookingRepository
+                .GetForClinicianAsync(pagingDto, userId);
 
-            return ApiResponse<PagingResult<ClinicianBookingModel>>.Ok(new PagingResult<ClinicianBookingModel>
-            {
-                DataCollection = _mapper.Mapper.Map<IEnumerable<ClinicianBookingModel>>(pagingResult.DataColection),
-                TotalCount = pagingResult.TotalCount
-            });
+            return ApiResponse<PagingResult<ClinicianBookingModel>>.Ok(
+                new PagingResult<ClinicianBookingModel>
+                {
+                    DataCollection = _mapper.Mapper
+                        .Map<IEnumerable<ClinicianBookingModel>>(pagingResult.DataColection),
+                    TotalCount = pagingResult.TotalCount
+                });
         }
 
         public async Task<ApiResponse<PatientBookingModel>> CreateBookingAsync(
@@ -86,7 +93,8 @@ namespace ClinicApi.Services
             PatientBookingModel bookingModel = _mapper.SafeMap<PatientBookingModel>(request.Form);
             if (bookingModel == null)
             {
-                return ApiResponse<PatientBookingModel>.BadRequest(BookingErrorMessages.WrongBookingDataFormat);
+                return ApiResponse<PatientBookingModel>
+                    .BadRequest(BookingErrorMessages.WrongBookingDataFormat);
             }
 
             var clinicClinician = await _unitOfWork.ClinicClinicianRepository
@@ -105,8 +113,8 @@ namespace ClinicApi.Services
             try
             {
                 await _unitOfWork.SaveChangesAsync();
-
-                return ApiResponse<PatientBookingModel>.Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
+                return ApiResponse<PatientBookingModel>
+                    .Ok(_mapper.Mapper.Map<PatientBookingModel>(result));
             }
             catch
             {
@@ -134,12 +142,15 @@ namespace ClinicApi.Services
             var booking = await _unitOfWork.BookingRepository.GetWithDocumentsAsync(bookingModel.Id);
             if (booking == null) return ApiResponse<PatientBookingModel>.NotFound();
 
-            var clinicClinician = await _unitOfWork.ClinicClinicianRepository.GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
+            var clinicClinician = await _unitOfWork.ClinicClinicianRepository
+                .GetClinicClinicianAsync(bookingModel.ClinicId, bookingModel.ClinicianId);
 
             var validatioErrorResult = CheckPatientBookingModel(bookingModel, clinicClinician, claims);
             if (validatioErrorResult != null) return validatioErrorResult;
 
-            var bookingsToDelete = booking.Documents.Where(d => bookingModel.DeletedDocuments.FirstOrDefault(b => b.Id == d.Id) != null).ToList();
+            var bookingsToDelete = booking.Documents
+                .Where(d => bookingModel.DeletedDocuments.FirstOrDefault(b => b.Id == d.Id) != null)
+                .ToList();
             _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
@@ -159,17 +170,48 @@ namespace ClinicApi.Services
                     _fileService.DeleteFile(file.FilePath);
                 }
 
-                return ApiResponse<PatientBookingModel>.Ok(_mapper.Mapper.Map<PatientBookingModel>(booking));
+                return ApiResponse<PatientBookingModel>.Ok(
+                    _mapper.Mapper.Map<PatientBookingModel>(booking));
             }
             catch
             {
-                return new ApiResponse<PatientBookingModel>(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
+                return new ApiResponse<PatientBookingModel>(
+                    HttpStatusCode.InternalServerError,
+                    BookingErrorMessages.UpdateError);
             }
+        }
+
+        public async Task<ApiResponse<float>> UpdateBookingRateAsync(int id, float rateValue)
+        {
+            if (rateValue > MaxRate || rateValue < 0)
+            {
+                return ApiResponse<float>.BadRequest(BookingErrorMessages.BadRateValue(MaxRate));
+            }
+
+            var booking = await _unitOfWork.BookingRepository.GetFirstAsync(b => b.Id == id);
+            if (booking == null)
+            {
+                return ApiResponse<float>.BadRequest(BookingErrorMessages.UnexistingBooking);
+            }
+
+            try
+            {
+                booking.Rate = rateValue;
+                await _unitOfWork.BookingRepository.UpdateWithRecalculatingRateAsync(booking);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch
+            {
+                return new ApiResponse<float>(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
+            }
+            return ApiResponse<float>.Ok(booking.ClinicClinician.Clinician.Rate);
         }
 
         private bool CheckUserIdInClaims(IEnumerable<Claim> claims, out int userId)
         {
-            return Int32.TryParse(claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value, out userId);
+            return Int32.TryParse(
+                claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value,
+                out userId);
         }
 
         private ApiResponse<PatientBookingModel> CheckPatientBookingModel(

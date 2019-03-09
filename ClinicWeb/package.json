@@ -24,6 +24,7 @@
     "angular-star-rating": "^4.0.0-beta.3",
     "bootstrap": "^4.2.1",
     "core-js": "^2.5.4",
+    "css-star-rating": "^1.2.4",
     "file-saver": "^2.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",

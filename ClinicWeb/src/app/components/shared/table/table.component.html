@@ -14,7 +14,7 @@
           <div class="table-cell">
             <span *ngIf="!column.RowContent">{{parser.get(item, column.DataPath)}}</span>
             <ng-template [ngTemplateOutlet]="column.RowContent"
-                         [ngTemplateOutletContext]="{ data: parser.get(item, column.DataPath) }">
+                         [ngTemplateOutletContext]="{ data: item }">
             </ng-template>
           </div>
         </td>

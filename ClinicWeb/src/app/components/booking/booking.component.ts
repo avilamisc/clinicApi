@@ -28,8 +28,10 @@ export class BookingComponent implements OnInit {
   private isAddingNewBooking = false;
   private isPatient: boolean;
   private tableRowAmount = 5;
+  private currentPage = 0;
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
+  @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
@@ -92,6 +94,12 @@ export class BookingComponent implements OnInit {
     docConfig.RowContent = this.documentsColumn;
     config.set('Documents', docConfig);
 
+    if (this.isPatient) {
+      const rateConfig = config.get('ClinicianRate');
+      rateConfig.RowContent = this.rateColumn;
+      config.set('ClinicianRate', rateConfig);
+    }
+
     this.columns = Array.from(config.values());
   }
 
@@ -106,6 +114,7 @@ export class BookingComponent implements OnInit {
   }
 
   public uploadBookings(pagination: Pagination): void {
+    this.currentPage = pagination.pageNumber;
     this.isPatient
       ? this.bookingService.getPatientBookings(pagination)
         .subscribe(res => {
@@ -121,5 +130,23 @@ export class BookingComponent implements OnInit {
             this.totalDataAmount = res.Data.TotalCount;
           }
         });
+  }
+
+  public updateRate(bookingId: number, newRate: number): void {
+    const updateModel = {
+      id: bookingId,
+      value: newRate
+    }
+    this.bookingService.updateBookingRate(updateModel)
+      .subscribe(() => {
+        this.uploadBookings({
+          pageNumber: this.currentPage,
+          pageCount: this.tableRowAmount
+        });
+      })
+  }
+
+  public getCountOfStart(raitingValue: number, item): number {
+    return item.BookingRate != 0 ? Math.floor(raitingValue) : 0;
   }
 }

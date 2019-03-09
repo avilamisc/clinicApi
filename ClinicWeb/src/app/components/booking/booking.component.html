@@ -14,12 +14,21 @@
   </div>
 </div>
 
-<ng-template let-documents="data" #documetsColumn>
+<ng-template let-data="data" #documetsColumn>
   <div class="document-list">
     <ul>
-      <li *ngFor="let document of documents"
+      <li *ngFor="let document of data?.Documents"
           (click)="downloadDocument($event, document)">{{document.Name}}</li>
     </ul>
+  </div>
+</ng-template>
+
+<ng-template let-data="data" #rateColumn>
+  <div>
+    <app-rating [rating]="getCountOfStart(data?.ClinicianRate, data)"
+                [subRating]="data?.BookingRate"
+                [itemId]="data?.Id"
+                (ratingClick)="updateRate(data?.Id, $event?.rating)"></app-rating>
   </div>
 </ng-template>
 

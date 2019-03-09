@@ -1,0 +1,47 @@
+<fieldset class="rating">
+        <input type="radio"
+                value="5"
+                [name]="inputName"
+                [checked]="rating===5" />
+        <label title="Rocks!"
+                [class.subChecked]="hasSubRaiting(5)"
+                [class.subCheckedMain]="hasSubRaitingMainRaiting(5)"
+                (click)='onClick($event, 5)'>5 stars</label>
+      
+        <input type="radio"
+                value="4"
+                [name]="inputName"
+                [checked]="rating===4" />
+        <label title="Pretty good"
+                [class.subChecked]="hasSubRaiting(4)"
+                [class.subCheckedMain]="hasSubRaitingMainRaiting(4)"
+                (click)='onClick($event, 4)'>4 stars</label>
+      
+        <input type="radio"
+                value="3"
+                [name]="inputName"
+                [checked]="rating===3" />
+        <label title="Meh"
+                [class.subChecked]="hasSubRaiting(3)"
+                [class.subCheckedMain]="hasSubRaitingMainRaiting(3)"
+                (click)='onClick($event, 3)'>3 stars</label>
+      
+        <input type="radio"
+                value="2"
+                [name]="inputName"
+                [checked]="rating===2"/>
+        <label title="Kinda bad"
+                [class.subChecked]="hasSubRaiting(2)"
+                [class.subCheckedMain]="hasSubRaitingMainRaiting(2)"
+                (click)='onClick($event, 2)'>2 stars</label>
+      
+        <input type="radio"
+                value="1"
+                [name]="inputName"
+                [checked]="rating===1" />
+        <label title="Sucks big time"
+                [class.subChecked]="hasSubRaiting(1)"
+                [class.subCheckedMain]="hasSubRaitingMainRaiting(1)"
+                (click)='onClick($event, 1)'>1 star</label>
+</fieldset>
+      

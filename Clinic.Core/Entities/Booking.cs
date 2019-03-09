@@ -7,6 +7,7 @@ namespace Clinic.Core.Entities
         public int Id { get; set; }
         public string Reciept { get; set; }
         public string Name { get; set; }
+        public float? Rate { get; set; }
 
         public int ClinicClinicianId { get; set; }
         public ClinicClinician ClinicClinician { get; set; }

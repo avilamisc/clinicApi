@@ -6,5 +6,6 @@ export class PatientBookingModel extends BookingModel {
     ClinicianId: number;
     ClinicianName: string;
     ClinicianRate: number;
+    BookingRate: number;
     newFiles: any[] = [];
 }

@@ -9,4 +9,5 @@ export class UpdateBookingModel {
     clinicianId: number;
     newFiles: any[] = [];
     deletedDocuments: DocumentModel[] = [];
+    rate: number;
 }

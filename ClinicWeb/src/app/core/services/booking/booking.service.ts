@@ -33,6 +33,10 @@ export class BookingService extends BaseService {
     return this.http.put<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}`, multipartData);
   }
 
+  public updateBookingRate(updateModel: any): Observable<ApiResponse<PatientBookingModel>> {
+    return this.http.patch<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}/rate`, updateModel);
+  }
+
   public createBookings(model: PatientBookingModel): Observable<ApiResponse<PatientBookingModel>> {
     const multipartData = this.getMultipartWithFiles(model);
     return this.http.post<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}`, multipartData);

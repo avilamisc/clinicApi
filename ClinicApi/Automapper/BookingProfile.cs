@@ -15,7 +15,8 @@ namespace ClinicApi.Automapper
         {
             CreateMap<BookingDto, PatientBookingModel>()
                 .ForMember(p => p.ClinicianName, options => options.MapFrom(b => $"{b.Clinician.Name} {b.Clinician.Surname}"))
-                .ForMember(p => p.ClinicianRate, options => options.MapFrom(b => b.Clinician.Rate));
+                .ForMember(p => p.ClinicianRate, options => options.MapFrom(b => b.Clinician.Rate))
+                .ForMember(p => p.BookingRate, options => options.MapFrom(b => b.Rate));
             CreateMap<PatientBookingModel, BookingDto>();
 
             CreateMap<BookingDto, ClinicianBookingModel>()

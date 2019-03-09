@@ -57,10 +57,10 @@ namespace Clinic.Data.Repositories
                 .Where(b => b.PatientId == patinetId).Count();
 
             return new PagingResultDto<BookingDto>
-                    {
-                        DataColection = _mapper.Mapper.Map<List<BookingDto>>(result),
-                        TotalCount = totalCount
-                    };
+            {
+                DataColection = _mapper.Mapper.Map<List<BookingDto>>(result),
+                TotalCount = totalCount
+            };
         }
 
         public async Task<Booking> GetWithDocumentsAsync(int id)
@@ -68,6 +68,32 @@ namespace Clinic.Data.Repositories
             return await _context.Bookings
                 .Include(b => b.Documents)
                 .SingleOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task UpdateWithRecalculatingRateAsync(Booking entity) {
+            _context.Entry(entity).Reference(e => e.ClinicClinician).Load();
+            var clinician = _context.Clinicians.Find(entity.ClinicClinician.ClinicianId);
+            clinician.Rate = await GetClinicianRateAsync(entity.ClinicClinician.ClinicianId);
+
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(clinician).State = EntityState.Modified;
+        }
+
+        public async Task<float> GetClinicianRateAsync(int clinicianId)
+        {
+            int countBooking = _context.Bookings
+                .Where(b => b.Rate != null && b.ClinicClinician.ClinicianId == clinicianId)
+                .Count();
+
+            if (countBooking == 0) return 0;
+
+            float totalRate = countBooking > 0
+                ? _context.Bookings
+                          .Where(b => b.Rate != null && b.ClinicClinician.ClinicianId == clinicianId)
+                          .Sum(b => b.Rate.Value)
+                : 0;
+
+            return totalRate / countBooking;
         }
     }
 }

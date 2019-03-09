@@ -110,8 +110,8 @@ namespace Clinic.Data.Repositories
             return await _context.Clinics
                 .GroupJoin(_context.ClinicClinicians
                 .Select(cc => new {
-                    ClinicId = cc.ClinicId,
-                    Clinician = cc.Clinician,
+                    cc.ClinicId,
+                    cc.Clinician,
                     Distance = cc.Clinic.Geolocation.Distance(location)
                 })
                 .GroupBy(cc => cc.Clinician.Id)

@@ -150,6 +150,10 @@
     <Compile Include="Migrations\201901221242130_RemoveLongitudeAndLatitudeFromClinic.Designer.cs">
       <DependentUpon>201901221242130_RemoveLongitudeAndLatitudeFromClinic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.cs" />
+    <Compile Include="Migrations\201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.Designer.cs">
+      <DependentUpon>201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -217,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901221242130_RemoveLongitudeAndLatitudeFromClinic.resx">
       <DependentUpon>201901221242130_RemoveLongitudeAndLatitudeFromClinic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.resx">
+      <DependentUpon>201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

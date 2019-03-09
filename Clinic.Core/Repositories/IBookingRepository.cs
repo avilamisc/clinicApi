@@ -12,5 +12,7 @@ namespace Clinic.Core.Repositories
         Task<PagingResultDto<BookingDto>> GetForClinicianAsync(PagingDto pagingDto, int patientId);
         Task<PagingResultDto<BookingDto>> GetForPatientAsync(PagingDto pagingDto, int clinicianId);
         Task<Booking> GetWithDocumentsAsync(int id);
+        Task UpdateWithRecalculatingRateAsync(Booking entity);
+        Task<float> GetClinicianRateAsync(int clinicianId);
     }
 }

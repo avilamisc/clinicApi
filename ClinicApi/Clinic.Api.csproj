@@ -194,6 +194,7 @@
     <Compile Include="Models\Pagination\PaginationModel.cs" />
     <Compile Include="Models\PagingResult.cs" />
     <Compile Include="Models\Token\RefreshTokenModel.cs" />
+    <Compile Include="Models\UpdatePropertyModel.cs" />
     <Compile Include="Models\User\UserModal.cs" />
     <Compile Include="Services\ClinicClinicianService.cs" />
     <Compile Include="Services\ClinicianService.cs" />
