@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { PatientRegistrationModel } from 'src/app/core/models/auth/registration/patient-registration.model';
 import { AccountService } from 'src/app/core/services/auth/account.service';
@@ -17,7 +17,6 @@ export class PatientRegistrationComponent implements OnInit {
   public registerForm: FormGroup;
   
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
     private tokenService: TokenService) { }

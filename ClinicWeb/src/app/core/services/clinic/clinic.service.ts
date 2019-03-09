@@ -16,7 +16,6 @@ export class ClinicService {
     private http: HttpClient) { }
 
     public getAllClinic(paging: Pagination, long: number, lat: number): Observable<ApiResponse<ClinicModel[]>> {
-      console.log('lat', lat);
       return this.http.get<ApiResponse<ClinicModel[]>>
         (`${ApiRoutes.clinics}?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}&longitude=${long}&latitude=${lat}`);
     }

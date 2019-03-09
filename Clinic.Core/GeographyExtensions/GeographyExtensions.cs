@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Entity.Spatial;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace Clinic.Core.GeographyExtensions

@@ -70,16 +70,16 @@ namespace Clinic.Data.Repositories
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task UpdateWithRecalculatingRateAsync(Booking entity) {
+        public void UpdateWithRecalculatingRateAsync(Booking entity) {
             _context.Entry(entity).Reference(e => e.ClinicClinician).Load();
             var clinician = _context.Clinicians.Find(entity.ClinicClinician.ClinicianId);
-            clinician.Rate = await GetClinicianRateAsync(entity.ClinicClinician.ClinicianId);
+            clinician.Rate = GetClinicianRateAsync(entity.ClinicClinician.ClinicianId);
 
             _context.Entry(entity).State = EntityState.Modified;
             _context.Entry(clinician).State = EntityState.Modified;
         }
 
-        public async Task<float> GetClinicianRateAsync(int clinicianId)
+        public float GetClinicianRateAsync(int clinicianId)
         {
             int countBooking = _context.Bookings
                 .Where(b => b.Rate != null && b.ClinicClinician.ClinicianId == clinicianId)

@@ -197,7 +197,7 @@ namespace ClinicApi.Services
             try
             {
                 booking.Rate = rateValue;
-                await _unitOfWork.BookingRepository.UpdateWithRecalculatingRateAsync(booking);
+                 _unitOfWork.BookingRepository.UpdateWithRecalculatingRateAsync(booking);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch
