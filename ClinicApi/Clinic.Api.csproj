@@ -185,7 +185,6 @@
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\Booking\ClinicianBookingModel.cs" />
     <Compile Include="Models\Booking\UpdateBookingModel.cs" />
-    <Compile Include="Models\ClinicClinician\ClinicClinicianBase.cs" />
     <Compile Include="Models\Clinician\ClinicianModel.cs" />
     <Compile Include="Models\ClinicClinician\ClinicianWithDistanceModel.cs" />
     <Compile Include="Models\Clinic\ClinicModel.cs" />

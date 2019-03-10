@@ -8,7 +8,7 @@ namespace ClinicApi.Interfaces
 {
     public interface IClinicClinicianService
     {
-        Task<ApiResponse<IEnumerable<ClinicClinicianBase>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
+        Task<ApiResponse<IEnumerable<ClinicWithDistanceModel>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
             double longitude,
             double latitude,
             ApiVersion version);

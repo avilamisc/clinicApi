@@ -24,7 +24,7 @@ namespace ClinicApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse<IEnumerable<ClinicClinicianBase>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
+        public async Task<ApiResponse<IEnumerable<ClinicWithDistanceModel>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
             double longitude,
             double latitude,
             ApiVersion version)
@@ -47,20 +47,11 @@ namespace ClinicApi.Services
                         .GetClinicsWithClinicianSortedByDistanceAsync_V3(geography);
                     break;
                 default:
-                    return ApiResponse<IEnumerable<ClinicClinicianBase>>.BadRequest();
+                    return ApiResponse<IEnumerable<ClinicWithDistanceModel>>.BadRequest();
             }
 
-            var result = new List<ClinicClinicianBase>();
-            foreach (var clinic in sortedClinics)
-            {
-                result.Add(_mapper.Mapper.Map<ClinicWithDistanceModel>(clinic));
-                foreach (var clinician in clinic.Clinicians)
-                {
-                    result.Add(_mapper.Mapper.Map<ClinicianWithDistanceModel>(clinician));
-                }
-            }
-
-            return ApiResponse<IEnumerable<ClinicClinicianBase>>.Ok(result);
+            return ApiResponse<IEnumerable<ClinicWithDistanceModel>>.Ok(
+                _mapper.Mapper.Map<IEnumerable< ClinicWithDistanceModel>>(sortedClinics));
         }
     }
 }

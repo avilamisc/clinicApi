@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clinic.Core.DtoModels;
+using ClinicApi.Models.ClinicClinician;
 using ClinicApi.Models.Clinician;
 
 namespace ClinicApi.Automapper
@@ -9,6 +10,9 @@ namespace ClinicApi.Automapper
         public ClinicianProfile()
         {
             CreateMap<ClinicianDto, ClinicianModel>()
+                .ForMember(m => m.Name, options => options.MapFrom(dto => $"{dto.Name} {dto.Surname}"));
+
+            CreateMap<ClinicianDto, ClinicianWithDistanceModel>()
                 .ForMember(m => m.Name, options => options.MapFrom(dto => $"{dto.Name} {dto.Surname}"));
         }
     }

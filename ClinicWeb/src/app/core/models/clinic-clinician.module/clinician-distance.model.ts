@@ -1,7 +1,5 @@
-import { ClinicClinicianBaseModel } from './clinic-clinician-base.model';
-import { ClinicClinicianType } from './clinic-clinician.enum';
-
-export class ClinicianDistanceModel extends ClinicClinicianBaseModel {
+export class ClinicianDistanceModel {
+    Id: number;
     Name: string;
     Rate: number;
 }

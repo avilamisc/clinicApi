@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Clinic.Core.DtoModels;
 using ClinicApi.Models.Clinic;
+using ClinicApi.Models.ClinicClinician;
 using System.Collections.Generic;
 
 namespace ClinicApi.Automapper

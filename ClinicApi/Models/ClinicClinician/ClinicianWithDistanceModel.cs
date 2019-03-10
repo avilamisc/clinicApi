@@ -1,8 +1,9 @@
 ﻿namespace ClinicApi.Models.ClinicClinician
 {
-    public class ClinicianWithDistanceModel: ClinicClinicianBase
+    public class ClinicianWithDistanceModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public int Rate { get; set; }
+        public float Rate { get; set; }
     }
 }

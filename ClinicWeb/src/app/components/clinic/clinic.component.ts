@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
-import { ClinicClinicianBaseModel } from 'src/app/core/models/clinic-clinician.module/clinic-clinician-base.model';
 import { ClinicDistanceModel } from 'src/app/core/models/clinic-clinician.module/clinic-distance.model';
-import { ClinicianDistanceModel } from 'src/app/core/models/clinic-clinician.module/clinician-distance.model';
+import { LocationService } from 'src/app/core/services/location.service';
 
 @Component({
   selector: 'app-clinic',
@@ -10,28 +9,36 @@ import { ClinicianDistanceModel } from 'src/app/core/models/clinic-clinician.mod
   styleUrls: ['./clinic.component.styl']
 })
 export class ClinicComponent implements OnInit {
-  public data: ClinicClinicianBaseModel[] = [];
-
-  private mapType = 'satellite';
-  private latitude = -28.68352;
-  private longitude = -147.20785;
+  public clinics: ClinicDistanceModel[] = [];
+  public mapType = 'satellite';
+  public latitude = 0;
+  public longitude = 0;
   
-  constructor(private clinicService: ClinicService) { }
+  constructor(
+    private clinicService: ClinicService,
+    private locationService: LocationService) { }
 
   public ngOnInit(): void {
-    window.navigator.geolocation.getCurrentPosition(location => {
-      const long = location.coords.longitude;
-      const lat = location.coords.latitude;
-      this.clinicService.getClosestClinicsWithClinician(long, lat)
+    this.initializeLocation();
+    this.clinicService.getClosestClinicsWithClinician(this.longitude, this.latitude)
         .subscribe(result => {
           if (result.Data !== null) {
-            this.data = result.Data;
+            this.clinics = result.Data;
           }
         });
-    });
   }
 
-  public instanceOfClinician(model: ClinicianDistanceModel | ClinicDistanceModel): boolean {
-    return 'Id' in model && 'Name' in model && 'Rate' in model;
+  private initializeLocation(): void {
+    if (this.locationService.userLatitude === null
+          || this.locationService.userLongitude === null) {
+      this.locationService.initializeLocation();
+    }
+
+    this.longitude = this.locationService.userLongitude;
+    this.latitude = this.locationService.userLatitude;
+  }
+
+  public getIconUrl(): string {
+    return `assets/images/4.png`;
   }
 }

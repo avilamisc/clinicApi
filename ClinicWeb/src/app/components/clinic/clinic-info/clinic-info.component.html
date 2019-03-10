@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="info-header">Clinic {{clinic.ClinicName}}</div>
+  <div class="info-item">Located {{clinic.City}}</div>
+  <div class="info-item">It`s {{clinic.Distance}} far from you</div>
+  <div class="clinicians-info">
+    <div class="dropdown" *ngFor="let clinician of clinic.Clinicians">
+      <div class="dropbtn">{{clinician.Name}}</div>
+      <div class="dropdown-content">
+          <app-rating [rating]="getClinicianRate(clinician)"
+                      [itemId]="clinician?.Id"></app-rating>
+      </div>   
+    </div>
+  </div>
+</div>

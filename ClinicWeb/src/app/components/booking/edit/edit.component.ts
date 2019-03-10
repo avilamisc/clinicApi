@@ -7,6 +7,7 @@ import { ClinicModel, ClinicianModel } from 'src/app/core/models';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { ClinicianService } from 'src/app/core/services/clinician/clinician.service';
 import { Pagination } from 'src/app/core/models/table/pagination.model';
+import { LocationService } from 'src/app/core/services/location.service';
 
 @Component({
   selector: 'app-edit',
@@ -34,7 +35,8 @@ export class EditComponent implements OnInit, OnChanges {
   constructor(
     private clinicianService: ClinicianService,
     private clinicService: ClinicService,
-    private bookingService: BookingService) { }
+    private bookingService: BookingService,
+    private locationService: LocationService) { }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.model) {
@@ -166,9 +168,12 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   private initializeLocation(): void {
-    window.navigator.geolocation.getCurrentPosition(location => {
-      this.clientLongitude = location.coords.longitude;
-      this.clientLatitude = location.coords.latitude;
-    });
+    if (this.locationService.userLatitude === null
+          || this.locationService.userLongitude === null) {
+      this.locationService.initializeLocation();
+    }
+
+    this.clientLongitude = this.locationService.userLongitude;
+    this.clientLatitude = this.locationService.userLatitude;
   }
 }

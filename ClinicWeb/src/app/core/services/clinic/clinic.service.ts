@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { ApiResponse, ClinicModel } from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
-import { ClinicClinicianBaseModel } from '../../models/clinic-clinician.module/clinic-clinician-base.model';
 import { Pagination } from '../../models/table/pagination.model';
+import { ClinicDistanceModel } from '../../models/clinic-clinician.module/clinic-distance.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,8 @@ export class ClinicService {
       return this.http.get<ApiResponse<ClinicModel>>(`${ApiRoutes.clinics}/${id}`);
     }
 
-    public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<ClinicClinicianBaseModel[]>> {
-      return this.http.get<ApiResponse<ClinicClinicianBaseModel[]>>
+    public getClosestClinicsWithClinician(long: number, lat: number): Observable<ApiResponse<ClinicDistanceModel[]>> {
+      return this.http.get<ApiResponse<ClinicDistanceModel[]>>
         (`${ApiRoutes.clinicsClinician}?longitude=${long}&latitude=${lat}&v=3`);
     }
 }

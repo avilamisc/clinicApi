@@ -1,9 +1,11 @@
-import { ClinicClinicianBaseModel } from './clinic-clinician-base.model';
+import { ClinicianDistanceModel } from "./clinician-distance.model";
 
-export class ClinicDistanceModel extends ClinicClinicianBaseModel {
+export class ClinicDistanceModel {
+    Id: number;
     ClinicName: string;
     City: string;
     Lat: number;
     Long: number;
     Distance: number;
+    Clinicians: ClinicianDistanceModel[]
 }

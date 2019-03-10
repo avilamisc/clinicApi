@@ -1,10 +1,23 @@
 <div class="container">
   <h3>Closest clinics:</h3>
-  <div *ngFor="let item of data">
-      <h4 *ngIf="!instanceOfClinician(item)">{{item.ClinicName}} in {{item.City}}, {{item.Distance?.toFixed(1)}} km away</h4>
-      <h5 *ngIf="instanceOfClinician(item)"> -> Clinician {{item.Name}} {{item.Rate}}</h5>
+  <div class="map-container">
+    <agm-map
+      [zoomControl]="false"
+      [latitude]="latitude"
+      [longitude]="longitude"
+      [disableDoubleClickZoom]="true"
+      [fullscreenControl]="true">
+        <agm-marker
+          *ngFor="let clinic of clinics"
+          [iconUrl]="getIconUrl()"
+          [latitude]="clinic.Lat"
+          [longitude]="clinic.Long"
+          [markerDraggable]="false"
+          [label]="clinic.ClinicName" >
+          <agm-info-window [disableAutoPan]="true">
+            <app-clinic-info [clinic]="clinic"></app-clinic-info>
+          </agm-info-window>
+        </agm-marker>
+    </agm-map>
   </div>
-  <agm-map [latitude]='latitude' [longitude]='longitude' 
-    [mapTypeId]='mapType'>
-  </agm-map>
 </div>
