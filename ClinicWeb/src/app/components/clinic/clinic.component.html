@@ -1,12 +1,12 @@
 <div class="container">
-  <h3>Closest clinics:</h3>
   <div class="map-container">
     <agm-map
       [zoomControl]="false"
       [latitude]="latitude"
       [longitude]="longitude"
       [disableDoubleClickZoom]="true"
-      [fullscreenControl]="true">
+      [fullscreenControl]="true"
+      (mapReady)="mapReady($event)">
         <agm-marker
           *ngFor="let clinic of clinics"
           [iconUrl]="getIconUrl()"

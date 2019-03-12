@@ -27,7 +27,7 @@ namespace Clinic.Data.Repositories
         }
 
         public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V1(
-            DbGeography distanceFrom)
+            DbGeography distanceFrom, int maxCount)
         {
             var uniqueClinician = _context.ClinicClinicians
                 .Include(cc => cc.Clinic)
@@ -67,11 +67,12 @@ namespace Clinic.Data.Repositories
                               })
                           })
                           .OrderBy(c => c.Distance)
+                          .Take(maxCount)
                           .ToListAsync();
         }
 
         public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V2(
-            DbGeography location)
+            DbGeography location, int maxCount)
         {
             var result = await _context.ClinicClinicians
                 .GroupBy(cc => cc.ClinicianId)
@@ -99,13 +100,14 @@ namespace Clinic.Data.Repositories
                     })
                 })
                 .OrderBy(dto => dto.Distance)
+                .Take(maxCount)
                 .ToListAsync();
 
             return result;
         }
 
         public async Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V3(
-            DbGeography location)
+            DbGeography location, int maxCount)
         {
             return await _context.Clinics
                 .GroupJoin(_context.ClinicClinicians
@@ -135,6 +137,7 @@ namespace Clinic.Data.Repositories
                                })
                            })
                 .OrderBy(c => c.Distance)
+                .Take(maxCount)
                 .ToListAsync();
         }
 

@@ -10,10 +10,16 @@ namespace Clinic.Core.Repositories
     {
         Task<ClinicClinician> GetClinicClinicianAsync(int clinicId, int clinicianId);
 
-        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V1(DbGeography distanceFrom);
+        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V1(
+            DbGeography distanceFrom,
+            int maxCount);
 
-        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V2(DbGeography distanceFrom);
+        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V2(
+            DbGeography distanceFrom,
+            int maxCount);
 
-        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V3(DbGeography distanceFrom);
+        Task<IEnumerable<ClinicLocationDto>> GetClinicsWithClinicianSortedByDistanceAsync_V3(
+            DbGeography distanceFrom,
+            int maxCount);
     }
 }

@@ -190,6 +190,7 @@
     <Compile Include="Models\Clinic\ClinicModel.cs" />
     <Compile Include="Models\ClinicClinician\ClinicWithDistanceModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
+    <Compile Include="Models\Pagination\LocationPagingModel.cs" />
     <Compile Include="Models\Pagination\PaginationModel.cs" />
     <Compile Include="Models\PagingResult.cs" />
     <Compile Include="Models\Token\RefreshTokenModel.cs" />

@@ -11,7 +11,7 @@ export class LocationService implements OnInit {
         this.initializeLocation();
     }
 
-    public initializeLocation(): void {
+    public initializeLocation(): any {
         window.navigator.geolocation.getCurrentPosition(location => {
             this.userLongitude = location.coords.longitude;
             this.userLatitude = location.coords.latitude;

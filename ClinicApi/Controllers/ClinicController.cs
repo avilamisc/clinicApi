@@ -51,12 +51,11 @@ namespace ClinicApi.Controllers
         [Route("clinicians")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<ClinicModel>))]
         public async Task<IHttpActionResult> ClinicClinicians(
-            double longitude = 0,
-            double latitude = 0,
+            [FromUri]LocationPagingModel pagingModel,
             ApiVersion v = ApiVersion.V3)
         {
             return Ok(await _clinicClinicianServiceV1
-                .GetClinicsWithCliniciansSortdetByDistanceAsync(longitude, latitude, v));
+                .GetClinicsWithCliniciansSortdetByDistanceAsync(pagingModel, v));
         }
     }
 }

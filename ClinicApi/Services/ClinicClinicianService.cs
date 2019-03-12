@@ -6,6 +6,7 @@ using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.ClinicClinician;
+using ClinicApi.Models.Pagination;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,26 +26,25 @@ namespace ClinicApi.Services
         }
 
         public async Task<ApiResponse<IEnumerable<ClinicWithDistanceModel>>> GetClinicsWithCliniciansSortdetByDistanceAsync(
-            double longitude,
-            double latitude,
+            LocationPagingModel pagingModel,
             ApiVersion version)
         {
-            var geography = GeographyExtensions.CreatePoint(longitude, latitude);
+            var geography = GeographyExtensions.CreatePoint(pagingModel.Longitude, pagingModel.Latitude);
             IEnumerable<ClinicLocationDto> sortedClinics = null;
 
             switch (version)
             {
                 case ApiVersion.V1:
                     sortedClinics = await _unitOfWork.ClinicClinicianRepository
-                        .GetClinicsWithClinicianSortedByDistanceAsync_V1(geography);
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V1(geography, pagingModel.Count);
                     break;
                 case ApiVersion.V2:
                     sortedClinics = await _unitOfWork.ClinicClinicianRepository
-                        .GetClinicsWithClinicianSortedByDistanceAsync_V2(geography);
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V2(geography, pagingModel.Count);
                     break;
                 case ApiVersion.V3:
                     sortedClinics = await _unitOfWork.ClinicClinicianRepository
-                        .GetClinicsWithClinicianSortedByDistanceAsync_V3(geography);
+                        .GetClinicsWithClinicianSortedByDistanceAsync_V3(geography, pagingModel.Count);
                     break;
                 default:
                     return ApiResponse<IEnumerable<ClinicWithDistanceModel>>.BadRequest();
