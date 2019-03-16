@@ -78,7 +78,9 @@ namespace ClinicApi.Controllers
                 return Ok(ApiResponse<LoginResultModel>.UnsupportedMediaType());
             }
 
-            return Ok(await _accountService.RegisterClinicianAsync(HttpContext.Current.Request));
+            return Created(
+                "api/account/register/clinician",
+                await _accountService.RegisterClinicianAsync(HttpContext.Current.Request));
         }
     }
 }

@@ -1,5 +1,5 @@
 export class ApiResponse<T> {
-    RrrorMessage: string;
+    ErorrMessage: string;
     StatusCode: number;
     Data: T;
 }

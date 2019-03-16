@@ -23,6 +23,14 @@ namespace Clinic.Core.Repositories
 
         Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate);
 
+        Task<TEntity> GetFirstAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includeProperties);
+
         Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate);
+
+        Task<TEntity> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

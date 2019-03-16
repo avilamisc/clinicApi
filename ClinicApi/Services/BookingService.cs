@@ -232,6 +232,45 @@ namespace ClinicApi.Services
             return null;
         }
 
+        public async Task<ApiResponse<RemoveResult>> RemoveBookig(int id, IEnumerable<Claim> claims)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<RemoveResult>.BadRequest();
+            }
+
+            var booking = await _unitOfWork.BookingRepository.GetFirstAsync(
+                b => b.Id == id,
+                b => b.ClinicClinician,
+                b => b.Documents);
+            if (booking == null)
+            {
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Failed(BookingErrorMessages.UnexistingBooking));
+            }
+
+            if (booking.PatientId != userId && booking.ClinicClinician.ClinicianId != userId)
+            {
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Failed(BookingErrorMessages.PermissionsToDelete));
+            }
+
+            try
+            {
+                RemoveUsersDocuments(booking);
+                _unitOfWork.DocumentRepository.RemoveRange(booking.Documents);
+                _unitOfWork.BookingRepository.Remove(booking);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Removed(BookingErrorMessages.SuccessfulDelete));
+            }
+            catch
+            {
+                return ApiResponse<RemoveResult>.InternalError();
+            }
+        }
+
         private void AddNewDocuments(HttpRequest request, int userId, Booking booking)
         {
             var files = request.Files;
@@ -248,5 +287,16 @@ namespace ClinicApi.Services
                 });
             }
         }
+
+        private void RemoveUsersDocuments(Booking booking)
+        {
+            foreach (var doc in booking.Documents)
+            {
+                _fileService.DeleteFile(doc.FilePath);
+            }
+
+            booking.Documents = new List<Document>();
+        }
+
     }
 }

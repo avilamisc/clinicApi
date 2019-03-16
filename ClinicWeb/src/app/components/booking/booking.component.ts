@@ -32,6 +32,7 @@ export class BookingComponent implements OnInit {
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
   @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
+  @ViewChild('actionsColumn') actionsColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
@@ -94,6 +95,10 @@ export class BookingComponent implements OnInit {
     docConfig.RowContent = this.documentsColumn;
     config.set('Documents', docConfig);
 
+    const actionsConfig = config.get('Actions');
+    actionsConfig.RowContent = this.actionsColumn;
+    config.set('Actions', actionsConfig);
+
     if (this.isPatient) {
       const rateConfig = config.get('ClinicianRate');
       rateConfig.RowContent = this.rateColumn;
@@ -148,5 +153,22 @@ export class BookingComponent implements OnInit {
 
   public getCountOfStart(raitingValue: number, item): number {
     return item.BookingRate != 0 ? Math.floor(raitingValue) : 0;
+  }
+
+  public removeBooking($event: any, id: number): void {
+    $event.stopPropagation();
+    this.bookingService.removeBookings(id)
+      .subscribe(result => {
+        if (!result.Data) {
+          console.log(result.StatusCode, ' ', result.ErorrMessage); // TO DO add toast notification
+        } else if (!result.Data.IsRemoved) {
+          console.log(result.Data.Description); // TO DO add toast notification
+        } else {
+          const bookingIndex = this.bookings.findIndex(b => b.Id === id);
+          if (bookingIndex !== -1) {
+            this.bookings.splice(bookingIndex, 1);
+          }
+        }
+      })
   }
 }

@@ -59,9 +59,32 @@ namespace Clinic.Data.Repositories
             return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
         }
 
+        public async Task<TEntity> GetFirstAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = Include(includeProperties);
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
         public async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _context.Set<TEntity>().SingleOrDefaultAsync(predicate);
+        }
+
+        public async Task<TEntity> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = Include(includeProperties);
+            return await _context.Set<TEntity>().SingleOrDefaultAsync(predicate);
+        }
+
+        private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            return includeProperties
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
     }
 }

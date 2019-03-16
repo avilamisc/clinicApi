@@ -4,11 +4,13 @@ using ClinicApi.Models;
 using ClinicApi.Models.Booking;
 using ClinicApi.Models.Pagination;
 using Swashbuckle.Swagger.Annotations;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 
 namespace ClinicApi.Controllers
@@ -48,7 +50,8 @@ namespace ClinicApi.Controllers
         [HttpPost]
         [BearerAuthorization(Roles = "Patient")]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ApiResponse<PatientBookingModel>))]
         public async Task<IHttpActionResult> CreateBooking()
         {
             if (!Request.Content.IsMimeMultipartContent())
@@ -59,13 +62,14 @@ namespace ClinicApi.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.CreateBookingAsync(identity.Claims, HttpContext.Current.Request);
 
-            return Ok(result);
+            return Created("api/bookings", result);
         }
 
         [HttpPut]
         [BearerAuthorization]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientBookingModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ApiResponse<PatientBookingModel>))]
         public async Task<IHttpActionResult> UpdateBooking()
         {
             if (!Request.Content.IsMimeMultipartContent())
@@ -76,7 +80,7 @@ namespace ClinicApi.Controllers
             var identity = (ClaimsIdentity)User.Identity;
             var result = await _bookingService.UpdateBookingAsync(identity.Claims, HttpContext.Current.Request);
 
-            return Ok(result);
+            return Created("api/bookings", result);
         }
 
         [HttpPatch]
@@ -91,5 +95,16 @@ namespace ClinicApi.Controllers
             return Ok(result);
         }
 
+        [HttpDelete]
+        [BearerAuthorization]
+        [Route("")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<RemoveResult>))]
+        public async Task<IHttpActionResult> RemoveBooking(int id)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            var result = await _bookingService.RemoveBookig(id, identity.Claims);
+
+            return Ok(result);
+        }
     }
 }

@@ -23,5 +23,6 @@ namespace ClinicApi.Interfaces
             IEnumerable<Claim> claims,
             HttpRequest request);
         Task<ApiResponse<float>> UpdateBookingRateAsync(int id, float rateValue);
+        Task<ApiResponse<RemoveResult>> RemoveBookig(int id, IEnumerable<Claim> claims);
     }
 }

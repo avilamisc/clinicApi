@@ -8,6 +8,8 @@
         public const string ValidationDataError = "Wrong booking data";
         public const string MissedClinicClinician = "Wrong booking data";
         public const string UnexistingBooking = "Such booking doesn`t exist!";
+        public const string PermissionsToDelete = "You don`t have permissions to delete this.";
+        public const string SuccessfulDelete = "Successfuly delete booking";
 
         public static string BadRateValue(float value)
         {

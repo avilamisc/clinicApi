@@ -45,8 +45,8 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit(): void {
-    this.initializeForm();
     this.initializeLocation();
+    this.initializeForm();
   }
 
   public onSubmit(): void {

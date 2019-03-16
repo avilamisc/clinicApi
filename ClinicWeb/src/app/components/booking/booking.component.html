@@ -32,6 +32,13 @@
   </div>
 </ng-template>
 
+<ng-template let-data="data" #actionsColumn>
+  <div>
+    <button class="btn btn-default"
+            (click)="removeBooking($event, data?.Id)">Remove</button>
+  </div>
+</ng-template>
+
 <app-edit *ngIf="bookingToUpdate"
           [visibility]="isEditWindowOpen"
           [model]="bookingToUpdate"

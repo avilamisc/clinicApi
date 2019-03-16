@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ApiResponse, PatientBookingModel, ClinicianBookingModel } from '../../models';
+import {
+  ApiResponse,
+  PatientBookingModel,
+  ClinicianBookingModel,
+  RemoveResult,
+  UpdateBookingModel,
+  Pagination,
+  PagingResult } from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
-import { UpdateBookingModel } from '../../models/booking/update-booking.model';
-import { Pagination } from '../../models/table/pagination.model';
-import { PagingResult } from '../../models/paging-result.model';
 import { BaseService } from '../base.service';
 
 @Injectable({
@@ -40,6 +44,10 @@ export class BookingService extends BaseService {
   public createBookings(model: PatientBookingModel): Observable<ApiResponse<PatientBookingModel>> {
     const multipartData = this.getMultipartWithFiles(model);
     return this.http.post<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}`, multipartData);
+  }
+
+  public removeBookings(id: number): Observable<ApiResponse<RemoveResult>> {
+    return this.http.delete<ApiResponse<RemoveResult>>(`${ApiRoutes.booking}?id=${id}`);
   }
 
   private getMultipartWithFiles(model: any): FormData {
