@@ -81,6 +81,7 @@
     <Compile Include="Configurations\ClinicConfiguration.cs" />
     <Compile Include="Configurations\ClinicianConfiguration.cs" />
     <Compile Include="Configurations\DocumentConfiguration.cs" />
+    <Compile Include="Configurations\NotificationConfiguration.cs" />
     <Compile Include="Configurations\PatientConfiguration.cs" />
     <Compile Include="Configurations\RefreshTokenConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
@@ -154,6 +155,10 @@
     <Compile Include="Migrations\201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.Designer.cs">
       <DependentUpon>201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903162159138_AddNotificationTable.cs" />
+    <Compile Include="Migrations\201903162159138_AddNotificationTable.Designer.cs">
+      <DependentUpon>201903162159138_AddNotificationTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -224,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.resx">
       <DependentUpon>201903082118059_AddRateForBookingTableUpdateRateTypeInClinicianTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903162159138_AddNotificationTable.resx">
+      <DependentUpon>201903162159138_AddNotificationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

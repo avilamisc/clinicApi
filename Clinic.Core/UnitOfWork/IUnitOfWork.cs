@@ -1,5 +1,4 @@
 ﻿using Clinic.Core.Repositories;
-using System;
 using System.Threading.Tasks;
 
 namespace Clinic.Core.UnitOfWork
@@ -14,6 +13,7 @@ namespace Clinic.Core.UnitOfWork
         IClinicRepository ClinicRepository { get; }
         IClinicianRepository ClinicianRepository { get; }
         IPatientRepository PatientRepository { get; }
+        INotificationRepository NotificationRepository { get; }
 
         void SaveChanges();
         Task SaveChangesAsync();

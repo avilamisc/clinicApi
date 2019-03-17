@@ -18,7 +18,7 @@ using System.Web;
 
 namespace ClinicApi.Services
 {
-    public class BookingService : IBookingService
+    public class BookingService : ServiceBase, IBookingService
     {
         private readonly IApiMapper _mapper;
         private readonly IFileService _fileService;
@@ -205,13 +205,6 @@ namespace ClinicApi.Services
                 return new ApiResponse<float>(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
             }
             return ApiResponse<float>.Ok(booking.ClinicClinician.Clinician.Rate);
-        }
-
-        private bool CheckUserIdInClaims(IEnumerable<Claim> claims, out int userId)
-        {
-            return Int32.TryParse(
-                claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value,
-                out userId);
         }
 
         private ApiResponse<PatientBookingModel> CheckPatientBookingModel(

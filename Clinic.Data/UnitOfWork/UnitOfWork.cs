@@ -45,6 +45,8 @@ namespace Clinic.Data.UnitOfWork
 
         public IPatientRepository PatientRepository { get; private set; }
 
+        public INotificationRepository NotificationRepository { get; private set; }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace ClinicApi.Interfaces
 {
-    public interface IBookingService
+    public interface IBookingService : IServiceBase
     {
         Task<ApiResponse<PagingResult<PatientBookingModel>>> GetAllBookingsForPatientAsync(
             IEnumerable<Claim> claims,

@@ -152,7 +152,7 @@ export class BookingComponent implements OnInit {
   }
 
   public getCountOfStart(raitingValue: number, item): number {
-    return item.BookingRate != 0 ? Math.floor(raitingValue) : 0;
+    return item.BookingRate !== null ? Math.floor(raitingValue) : 0;
   }
 
   public removeBooking($event: any, id: number): void {
