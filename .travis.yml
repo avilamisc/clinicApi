@@ -4,6 +4,7 @@ node_js:
 before_script:
   - npm install -g @angular/cli
 script:
+  - cd ClinicWeb
   - ng lint
   - ng build --prod
 install:
