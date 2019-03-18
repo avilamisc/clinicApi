@@ -22,7 +22,7 @@ export class EditComponent implements OnInit, OnChanges {
   public loadClinicsOptionId = 'loadClinics';
   private currentClinic: ClinicModel;
   private clinicsPageSize = 10;
-  private clientLongitude= 0;
+  private clientLongitude = 0;
   private clientLatitude = 0;
 
   @Input('visibility') visibility = false;
@@ -113,7 +113,7 @@ export class EditComponent implements OnInit, OnChanges {
   private initializeForm(): void {
     this.clinicsPaging.pageNumber = 0;
     this.clinicsPaging.pageCount = this.clinicsPageSize;
-    
+
     this.updateClinics(this.clientLongitude, this.clientLatitude);
 
     this.clinicService.getClinicById(this.model.clinicId)

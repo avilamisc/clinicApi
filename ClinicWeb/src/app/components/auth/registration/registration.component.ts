@@ -43,7 +43,7 @@ export class RegistrationComponent implements OnInit {
 
   private createForm(): void {
     const fullName = this.registrationModel.UserName
-      ? this.registrationModel.UserName.split(' ') 
+      ? this.registrationModel.UserName.split(' ')
       : '';
     const userName = fullName.length === 2 ? fullName[0] : '';
     const userSurname = fullName.length === 2 ? fullName[1] : '';

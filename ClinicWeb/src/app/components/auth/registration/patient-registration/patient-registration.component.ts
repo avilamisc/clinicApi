@@ -13,9 +13,9 @@ import { TokenService } from 'src/app/core/services/auth/token.service';
 export class PatientRegistrationComponent implements OnInit {
   @Input('model') public patientModel: PatientRegistrationModel;
   @Input('returnUrl') public returnUrl: string = null;
-  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>()
+  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
   public registerForm: FormGroup;
-  
+
   constructor(
     private router: Router,
     private accountService: AccountService,
@@ -32,7 +32,7 @@ export class PatientRegistrationComponent implements OnInit {
       this.accountService.registerPatient(this.patientModel)
         .subscribe(result => {
           this.router.navigate([this.returnUrl || '/booking']);
-        })
+        });
     }
   }
 
@@ -43,7 +43,7 @@ export class PatientRegistrationComponent implements OnInit {
   private createForm(): void {
     this.registerForm = new FormGroup({
       location: new FormControl(this.patientModel.Location, [Validators.required])
-    })
+    });
   }
 
   private setValuesFromFormToModel(): void {

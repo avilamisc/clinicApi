@@ -141,14 +141,14 @@ export class BookingComponent implements OnInit {
     const updateModel = {
       id: bookingId,
       value: newRate
-    }
+    };
     this.bookingService.updateBookingRate(updateModel)
       .subscribe(() => {
         this.uploadBookings({
           pageNumber: this.currentPage,
           pageCount: this.tableRowAmount
         });
-      })
+      });
   }
 
   public getCountOfStart(raitingValue: number, item): number {
@@ -169,6 +169,6 @@ export class BookingComponent implements OnInit {
             this.bookings.splice(bookingIndex, 1);
           }
         }
-      })
+      });
   }
 }

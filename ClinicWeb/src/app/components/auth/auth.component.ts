@@ -41,7 +41,7 @@ export class AuthComponent implements OnInit {
   }
 
   public navigateToRegistration(): void {
-    this.router.navigate(['registration'])
+    this.router.navigate(['registration']);
   }
 
   private createForm(): void {

@@ -16,7 +16,7 @@ export class StarRatingComponent implements OnInit {
   ngOnInit() {
     this.inputName = this.itemId + '_rating';
   }
-  
+
   public onClick(event: any, rating: number): void {
     this.rating = rating;
     this.ratingClick.emit({

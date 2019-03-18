@@ -20,9 +20,9 @@ import { RaitingModule } from '../shared/raiting/star/star.module';
     RaitingModule,
     AgmCoreModule.forRoot({
       apiKey: ''
-      /* apiKey is required, unless you are a 
-      premium customer, in which case you can 
-      use clientId 
+      /* apiKey is required, unless you are a
+      premium customer, in which case you can
+      use clientId
       */
     })
   ]

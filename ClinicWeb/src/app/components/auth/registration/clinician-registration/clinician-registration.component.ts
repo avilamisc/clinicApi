@@ -15,11 +15,10 @@ import { AccountService } from 'src/app/core/services/auth/account.service';
 export class ClinicianRegistrationComponent implements OnInit {
   @Input('model') clinicianModel: ClinicianRegistrationModel;
   @Input('returnUrl') public returnUrl: string = null;
-  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>()
+  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
   public selectedClinics: Array<ClinicModel> = [];
   public clinics: Array<ClinicModel> = [];
   public clinicsPaging: Pagination = new Pagination();
-  
   private clinicsPageSize = 10;
 
   constructor(
@@ -33,7 +32,7 @@ export class ClinicianRegistrationComponent implements OnInit {
   }
 
   public selectClinic(clinic: ClinicModel): void {
-    if (!this.selectedClinics.find(c => c.Id == clinic.Id)) {
+    if (!this.selectedClinics.find(c => c.Id === clinic.Id)) {
       this.selectedClinics.push(clinic);
     }
   }
@@ -45,7 +44,7 @@ export class ClinicianRegistrationComponent implements OnInit {
       this.accountService.registerClinician(this.clinicianModel)
         .subscribe(result => {
           this.router.navigate([this.returnUrl || '/booking']);
-        })
+        });
     }
   }
 

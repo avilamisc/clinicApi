@@ -26,7 +26,7 @@ export class ClinicComponent implements OnInit {
   }
 
   public mapReady(map): void {
-    map.addListener("dragend", (event) => {
+    map.addListener('dragend', (event) => {
       this.pagingModel.Latitude = map.center.lat();
       this.pagingModel.Longitude = map.center.lng();
       this.updateClinics();

@@ -1,7 +1,7 @@
 export class BaseService {
     protected getMultipartData(model: any): FormData {
         const formData = new FormData();
-    
+
         for (const property in model) {
             if (model.hasOwnProperty(property)) {
                 if (model[property] instanceof Array) {
@@ -13,7 +13,7 @@ export class BaseService {
                 }
             }
         }
-    
+
         return formData;
       }
 }

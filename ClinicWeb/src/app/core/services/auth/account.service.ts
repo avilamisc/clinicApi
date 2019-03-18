@@ -41,7 +41,7 @@ export class AccountService extends BaseService {
       .pipe(map(result => {
         this.updateLoginationData(result.Data);
         return result;
-      })); 
+      }));
   }
 
   public registerClinician(model: ClinicianRegistrationModel): Observable<ApiResponse<LoginResultModel>> {
@@ -50,7 +50,7 @@ export class AccountService extends BaseService {
       .pipe(map(result => {
         this.updateLoginationData(result.Data);
         return result;
-      })); 
+      }));
   }
 
   public logOut(): void {

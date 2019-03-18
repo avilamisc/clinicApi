@@ -5,8 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { RegistrationRoutingModule } from './registration-routing.module';
 import { RegistrationComponent } from 'src/app/components/auth/registration/registration.component';
-import { PatientRegistrationComponent } from 'src/app/components/auth/registration/patient-registration/patient-registration.component';
-import { ClinicianRegistrationComponent } from 'src/app/components/auth/registration/clinician-registration/clinician-registration.component';
+import {
+  PatientRegistrationComponent
+} from 'src/app/components/auth/registration/patient-registration/patient-registration.component';
+import {
+  ClinicianRegistrationComponent
+} from 'src/app/components/auth/registration/clinician-registration/clinician-registration.component';
 
 @NgModule({
   declarations: [

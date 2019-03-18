@@ -1,4 +1,4 @@
-import { ClinicianDistanceModel } from "./clinician-distance.model";
+import { ClinicianDistanceModel } from './clinician-distance.model';
 
 export class ClinicDistanceModel {
     Id: number;
@@ -7,5 +7,5 @@ export class ClinicDistanceModel {
     Lat: number;
     Long: number;
     Distance: number;
-    Clinicians: ClinicianDistanceModel[]
+    Clinicians: ClinicianDistanceModel[];
 }

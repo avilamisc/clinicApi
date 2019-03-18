@@ -1,4 +1,4 @@
-import { RegistrationModel } from "./registration.model";
+import { RegistrationModel } from './registration.model';
 
 export class PatientRegistrationModel extends RegistrationModel {
     Location: string;
