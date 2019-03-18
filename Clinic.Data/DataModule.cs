@@ -37,6 +37,7 @@ namespace Clinic.Data
                 builder.RegisterType<UserRepository>().As<IUserRepository>(),
                 builder.RegisterType<ClinicRepository>().As<IClinicRepository>(),
                 builder.RegisterType<ClinicianRepository>().As<IClinicianRepository>(),
+                builder.RegisterType<NotificationRepository>().As<INotificationRepository>(),
                 builder.RegisterType<UnitOfWork.UnitOfWork>().As<IUnitOfWork>()
             };
 

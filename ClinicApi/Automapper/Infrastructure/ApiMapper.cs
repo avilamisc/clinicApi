@@ -33,6 +33,7 @@ namespace ClinicApi.Automapper.Infrastructure
                     config.AddProfile(new ClinicianProfile());
                     config.AddProfile(new ClinicProfile());
                     config.AddProfile(new AccountProfile());
+                    config.AddProfile(new NotificationProfile());
                 });
         }
     }

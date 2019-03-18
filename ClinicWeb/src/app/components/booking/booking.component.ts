@@ -24,10 +24,10 @@ export class BookingComponent implements OnInit {
   public bookingToUpdate: UpdateBookingModel;
   public user: User;
   public isEditWindowOpen = false;
+  public tableRowAmount = 5;
+  public isPatient: boolean;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
-  private isPatient: boolean;
-  private tableRowAmount = 5;
   private currentPage = 0;
 
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;

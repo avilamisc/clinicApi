@@ -27,6 +27,7 @@ namespace Clinic.Data.UnitOfWork
             ClinicRepository = new ClinicRepository(mapper, context);
             ClinicianRepository = new ClinicianRepository(mapper, context);
             PatientRepository = new PatientRepository(context);
+            NotificationRepository = new NotificationRepository(mapper, context);
         }
 
         public IUserRepository UserRepository { get; private set; }

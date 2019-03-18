@@ -158,12 +158,14 @@
     <Compile Include="Automapper\DocumentProfile.cs" />
     <Compile Include="Automapper\Infrastructure\ApiMapper.cs" />
     <Compile Include="Automapper\Infrastructure\IApiMapper.cs" />
+    <Compile Include="Automapper\NotificationProfile.cs" />
     <Compile Include="Automapper\PaginationProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\ClinicController.cs" />
     <Compile Include="Controllers\ClinicianController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Automapper\BookingProfile.cs" />
     <Compile Include="Infrastructure\Auth\BearerAuthorizationAttribute.cs" />
@@ -177,6 +179,8 @@
     <Compile Include="Interfaces\IClinicService.cs" />
     <Compile Include="Interfaces\IDocumentService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
+    <Compile Include="Interfaces\INotificationService.cs" />
+    <Compile Include="Interfaces\IServiceBase.cs" />
     <Compile Include="Models\Account\Registration\ClinicianRegisterModel.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
     <Compile Include="Models\Account\Registration\PatientRegisterModel.cs" />
@@ -190,6 +194,7 @@
     <Compile Include="Models\Clinic\ClinicModel.cs" />
     <Compile Include="Models\ClinicClinician\ClinicWithDistanceModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
+    <Compile Include="Models\Notification\NotificationModel.cs" />
     <Compile Include="Models\Pagination\LocationPagingModel.cs" />
     <Compile Include="Models\Pagination\PaginationModel.cs" />
     <Compile Include="Models\PagingResult.cs" />
@@ -202,6 +207,8 @@
     <Compile Include="Services\ClinicService.cs" />
     <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

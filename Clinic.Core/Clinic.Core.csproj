@@ -78,9 +78,10 @@
     <Compile Include="Automapper\ICoreMapper.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="DtoModels\ClinicLocationDto.cs" />
-    <Compile Include="DtoModels\NewFolder1\ClinicianRegistrationDto.cs" />
-    <Compile Include="DtoModels\NewFolder1\PatientRegistrationDto.cs" />
-    <Compile Include="DtoModels\NewFolder1\UserRegistrationDto.cs" />
+    <Compile Include="DtoModels\Account\ClinicianRegistrationDto.cs" />
+    <Compile Include="DtoModels\Account\PatientRegistrationDto.cs" />
+    <Compile Include="DtoModels\Account\UserRegistrationDto.cs" />
+    <Compile Include="DtoModels\NotificationDto.cs" />
     <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="DtoModels\PagingResultDto.cs" />
     <Compile Include="Encryption\Hashing.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Repositories\IClinicianRepository.cs" />
     <Compile Include="Repositories\IClinicRepository.cs" />
     <Compile Include="Repositories\IDocumentRepository.cs" />
+    <Compile Include="Repositories\INotificationRepository.cs" />
     <Compile Include="Repositories\IPatientRepository.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="DtoModels\BookingDto.cs" />

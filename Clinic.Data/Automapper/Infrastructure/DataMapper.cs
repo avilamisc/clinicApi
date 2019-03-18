@@ -22,6 +22,7 @@ namespace Clinic.Data.Automapper.Infrastructure
                     config.AddProfile(new PatientProfile());
                     config.AddProfile(new RefreshTokenProfile());
                     config.AddProfile(new UserProfile());
+                    config.AddProfile(new NotificationProfile());
                 });
         }
     }

@@ -14,6 +14,7 @@ namespace Clinic.Data.Context
         public DbSet<Patient> Patients { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public ClinicDb()
         {

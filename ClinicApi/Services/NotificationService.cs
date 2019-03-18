@@ -2,7 +2,9 @@
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Clinic.Core.DtoModels;
 using Clinic.Core.UnitOfWork;
+using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Notification;
@@ -12,10 +14,14 @@ namespace ClinicApi.Services
 {
     public class NotificationService : ServiceBase, INotificationService
     {
+        private readonly IApiMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public NotificationService(IUnitOfWork unitOfWork)
+        public NotificationService(
+            IApiMapper mapper,
+            IUnitOfWork unitOfWork)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
@@ -28,7 +34,13 @@ namespace ClinicApi.Services
                 return new ApiResponse<IEnumerable<NotificationModel>>(HttpStatusCode.BadRequest);
             }
 
-            throw new System.NotImplementedException();
+            var pagingDto = _mapper.Mapper.Map<PagingDto>(pagination);
+
+            var result = await _unitOfWork.NotificationRepository
+                .GetNotificationByUserIdAsync(userId, pagingDto);
+
+            return ApiResponse<IEnumerable<NotificationModel>>.Ok(
+                _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result));
         }
     }
 }

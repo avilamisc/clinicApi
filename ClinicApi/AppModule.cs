@@ -43,6 +43,7 @@ namespace ClinicApi.Infrastructure
 
                 builder.Register(c => new ApiMapper(ApiMapper.GetMapperConfiguration().CreateMapper())).As<IApiMapper>(),
 
+                builder.RegisterType<ServiceBase>().As<IServiceBase>(),
                 builder.RegisterType<TokenService>().As<ITokenService>(),
                 builder.RegisterType<BookingService>().As<IBookingService>(),
                 builder.RegisterType<AccountService>().As<IAccountService>(),
@@ -50,7 +51,8 @@ namespace ClinicApi.Infrastructure
                 builder.RegisterType<ClinicService>().As<IClinicService>(),
                 builder.RegisterType<ClinicianService>().As<IClinicianService>(),
                 builder.RegisterType<DocumentService>().As<IDocumentService>(),
-                builder.RegisterType<ClinicClinicianService>().As<IClinicClinicianService>()
+                builder.RegisterType<ClinicClinicianService>().As<IClinicClinicianService>(),
+                builder.RegisterType<NotificationService>().As<INotificationService>()
             };
 
             SetDependenciesInstanceType();
