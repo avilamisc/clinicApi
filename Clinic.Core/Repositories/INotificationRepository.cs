@@ -10,5 +10,7 @@ namespace Clinic.Core.Repositories
         Task<IEnumerable<NotificationDto>> GetNotificationByUserIdAsync(
             int userId,
             PagingDto pagingDto);
+
+        Notification CreateNotification(CreateNotificationDto dtoModel);
     }
 }

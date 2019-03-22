@@ -81,6 +81,7 @@
     <Compile Include="DtoModels\Account\ClinicianRegistrationDto.cs" />
     <Compile Include="DtoModels\Account\PatientRegistrationDto.cs" />
     <Compile Include="DtoModels\Account\UserRegistrationDto.cs" />
+    <Compile Include="DtoModels\CreateNotificationDto.cs" />
     <Compile Include="DtoModels\NotificationDto.cs" />
     <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="DtoModels\PagingResultDto.cs" />

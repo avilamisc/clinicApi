@@ -22,6 +22,16 @@ namespace Clinic.Data.Configurations
             HasMany(u => u.RefreshTokens)
                 .WithRequired(r => r.User)
                 .HasForeignKey(r => r.UserId);
+
+            HasMany(u => u.Notifications)
+                .WithRequired(n => n.User)
+                .HasForeignKey(n => n.UserId)
+                .WillCascadeOnDelete(false);
+
+            HasMany(u => u.CreatedNotifications)
+                .WithRequired(n => n.Author)
+                .HasForeignKey(n => n.AuthorId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

@@ -32,5 +32,16 @@ namespace ClinicApi.Controllers
 
             return Ok(await _notificationService.GetNotificationsAsync(identity.Claims, pagination));
         }
+
+        [HttpPost]
+        [Route("")]
+        [BearerAuthorization]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NotificationModel>>))]
+        public async Task<IHttpActionResult> CreateNotification(CreateNotificationModel model)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _notificationService.CreateNotificationAsync(identity.Claims, model));
+        }
     }
 }

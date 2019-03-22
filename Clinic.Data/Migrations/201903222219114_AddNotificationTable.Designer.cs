@@ -13,7 +13,7 @@ namespace Clinic.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201903162159138_AddNotificationTable"; }
+            get { return "201903222219114_AddNotificationTable"; }
         }
         
         string IMigrationMetadata.Source

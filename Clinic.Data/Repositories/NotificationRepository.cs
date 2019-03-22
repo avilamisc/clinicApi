@@ -27,12 +27,21 @@ namespace Clinic.Data.Repositories
             PagingDto pagingDto)
         {
             var result = await _context.Notifications
+                .Include(n => n.User)
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.Id)
                 .Paging(pagingDto)
                 .ToListAsync();
 
             return _mapper.Mapper.Map<IEnumerable<NotificationDto>>(result);
+        }
+
+        public Notification CreateNotification(CreateNotificationDto dtoModel)
+        {
+            var entity = _mapper.Mapper.Map<Notification>(dtoModel);
+            _context.Notifications.Add(entity);
+
+            return entity;
         }
     }
 }

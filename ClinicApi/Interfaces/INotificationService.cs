@@ -12,5 +12,8 @@ namespace ClinicApi.Interfaces
         Task<ApiResponse<IEnumerable<NotificationModel>>> GetNotificationsAsync(
             IEnumerable<Claim> claims,
             PaginationModel pagination);
+        Task<ApiResponse<NotificationModel>> CreateNotificationAsync(
+            IEnumerable<Claim> claims,
+            CreateNotificationModel model);
     }
 }

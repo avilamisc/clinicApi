@@ -15,12 +15,14 @@ namespace Clinic.Core.Entities
         public ICollection<Document> Documents { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<Notification> Notifications { get; set; }
+        public ICollection<Notification> CreatedNotifications { get; set; }
 
         public User()
         {
             Documents = new List<Document>();
             RefreshTokens = new List<RefreshToken>();
             Notifications = new List<Notification>();
+            CreatedNotifications = new List<Notification>();
         }
     }
 }
