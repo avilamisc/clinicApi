@@ -8,7 +8,7 @@ namespace ClinicApi.Models.Notification
         public DateTime? CreationDate { get; set; }
         public int UserId { get; set; }
 
-        public string Validate()
+        public virtual string Validate()
         {
             if (string.IsNullOrWhiteSpace(Content))
             {

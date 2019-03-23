@@ -20,6 +20,11 @@ namespace ClinicApi.Automapper
 
             CreateMap<Notification, NotificationModel>()
                 .ForMember(nModel => nModel.Message, options => options.MapFrom(n => n.Content));
+
+            CreateMap<UpdateNotificationModel, Notification>()
+                .ForMember(n => n.Author, options => options.Ignore())
+                .ForMember(n => n.User, options => options.Ignore())
+                .ForMember(n => n.IsRead, options => options.MapFrom(nModel => nModel.IsRead.Value));
         }
     }
 }

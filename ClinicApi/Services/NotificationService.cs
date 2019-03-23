@@ -38,16 +38,10 @@ namespace ClinicApi.Services
                 ? model.CreationDate
                 : DateTime.Now;
 
-            var validationErrorMessage = model.Validate();
-            if (validationErrorMessage != null)
+            var validationError = await ValidateNotificationAsync(model, userId);
+            if (validationError != null)
             {
-                return ApiResponse<NotificationModel>.ValidationError(validationErrorMessage);
-            }
-
-            if (userId == model.UserId)
-            {
-                return ApiResponse<NotificationModel>
-                    .ValidationError("Author cannot be a recipient of notification");
+                return validationError;
             }
 
             var notificationDto = _mapper.Mapper.Map<CreateNotificationDto>(model);
@@ -58,11 +52,8 @@ namespace ClinicApi.Services
             {
                 var entity = _unitOfWork.NotificationRepository.CreateNotification(notificationDto);
                 await _unitOfWork.SaveChangesAsync();
-                var user = await _unitOfWork.UserRepository.GetSingleAsync(u => u.Id == userId);
 
                 var result = _mapper.Mapper.Map<NotificationModel>(entity);
-                result.UserName = $"{user.Name} {user.Surname}";
-                result.UserMail = user.Email;
 
                 return ApiResponse<NotificationModel>.Ok(result);
             }
@@ -87,6 +78,71 @@ namespace ClinicApi.Services
 
             return ApiResponse<IEnumerable<NotificationModel>>.Ok(
                 _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result));
+        }
+
+        public async Task<ApiResponse<NotificationModel>> UpdateNotificationAsync(
+            IEnumerable<Claim> claims, UpdateNotificationModel model)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return new ApiResponse<NotificationModel>(HttpStatusCode.BadRequest);
+            }
+
+            var entity = await _unitOfWork.NotificationRepository.GetSingleAsync(n => n.Id == model.Id);
+            if (entity == null)
+            {
+                return ApiResponse<NotificationModel>.ValidationError("Unexisting Notification");
+            }
+
+            var validationError = await ValidateNotificationAsync(model, userId);
+            if (validationError != null)
+            {
+                return validationError;
+            }
+
+            if (model.CreationDate == null)
+            {
+                return ApiResponse<NotificationModel>.ValidationError("Creation date is required");
+            }
+
+            try
+            {
+                _mapper.Mapper.Map(model, entity);
+                _unitOfWork.NotificationRepository.Update(entity);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<NotificationModel>.Ok(
+                    _mapper.Mapper.Map<NotificationModel>(entity));
+            }
+            catch
+            {
+                return ApiResponse<NotificationModel>.InternalError();
+            }
+        }
+
+        private async Task<ApiResponse<NotificationModel>> ValidateNotificationAsync(
+            CreateNotificationModel model, int userId)
+        {
+            var validationErrorMessage = model.Validate();
+            if (validationErrorMessage != null)
+            {
+                return ApiResponse<NotificationModel>.ValidationError(validationErrorMessage);
+            }
+
+            if (userId == model.UserId)
+            {
+                return ApiResponse<NotificationModel>
+                    .ValidationError("Author cannot be a recipient of notification");
+            }
+
+            var user = await _unitOfWork.UserRepository.GetSingleAsync(u => u.Id == model.UserId);
+            if (user == null)
+            {
+                return ApiResponse<NotificationModel>
+                    .ValidationError("Such user doesn`t exist");
+            }
+
+            return null;
         }
     }
 }
