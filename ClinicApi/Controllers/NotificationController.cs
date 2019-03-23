@@ -65,5 +65,16 @@ namespace ClinicApi.Controllers
 
             return Ok(await _notificationService.SetReadStateAsync(identity.Claims, model));
         }
+
+        [HttpDelete]
+        [BearerAuthorization]
+        [Route("{id:int}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<RemoveResult>))]
+        public async Task<IHttpActionResult> RemoveBookingAsync(int id)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _notificationService.RemoveNotificationAsync(identity.Claims, id));
+        }
     }
 }

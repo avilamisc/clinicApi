@@ -80,6 +80,42 @@ namespace ClinicApi.Services
                 _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result));
         }
 
+        public async Task<ApiResponse<RemoveResult>> RemoveNotificationAsync(
+            IEnumerable<Claim> claims, int id)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<RemoveResult>.BadRequest();
+            }
+
+            var notification = await _unitOfWork.NotificationRepository
+                .GetSingleAsync(n => n.Id == id);
+            if (notification == null)
+            {
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Failed("Unexisitng notification"));
+            }
+
+            if (notification.UserId != userId && notification.AuthorId != userId)
+            {
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Failed("Don`t have permission"));
+            }
+
+            try
+            {
+                _unitOfWork.NotificationRepository.Remove(notification);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<RemoveResult>.Ok(
+                    RemoveResult.Removed("Notification successfuly deleted"));
+            }
+            catch
+            {
+                return ApiResponse<RemoveResult>.InternalError();
+            }
+        }
+
         public async Task<ApiResponse<bool?>> SetReadStateAsync(
             IEnumerable<Claim> claims, UpdatePropertyModel<bool?> updateModel)
         {
