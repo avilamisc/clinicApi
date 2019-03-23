@@ -63,12 +63,12 @@ namespace ClinicApi.Services
             }
         }
 
-        public async Task<ApiResponse<IEnumerable<NotificationModel>>> GetNotificationsAsync(
+        public async Task<ApiResponse<PagingResult<NotificationModel>>> GetNotificationsAsync(
             IEnumerable<Claim> claims, PaginationModel pagination)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
-                return ApiResponse<IEnumerable<NotificationModel>>.BadRequest();
+                return ApiResponse<PagingResult<NotificationModel>>.BadRequest();
             }
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(pagination);
@@ -76,8 +76,12 @@ namespace ClinicApi.Services
             var result = await _unitOfWork.NotificationRepository
                 .GetNotificationByUserIdAsync(userId, pagingDto);
 
-            return ApiResponse<IEnumerable<NotificationModel>>.Ok(
-                _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result));
+            return ApiResponse<PagingResult<NotificationModel>>.Ok(
+                new PagingResult<NotificationModel>
+                {
+                    DataCollection = _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result.DataColection),
+                    TotalCount = result.TotalCount
+                });
         }
 
         public async Task<ApiResponse<RemoveResult>> RemoveNotificationAsync(

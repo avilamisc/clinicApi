@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToolbarModule } from 'primeng/toolbar';
+import { AccordionModule } from 'primeng/accordion';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from '../../components/app/app.component';
@@ -14,12 +17,15 @@ import { BootstrapModule } from '../bootstrap/bootstrap.module';
     AppComponent
   ],
   imports: [
+    AccordionModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BootstrapModule
+    BootstrapModule,
+    ToolbarModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

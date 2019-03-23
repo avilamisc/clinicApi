@@ -15,3 +15,6 @@ export * from './table/pagination.model';
 export * from './table/column.model';
 export * from './table/row.model';
 export * from './paging-result.model';
+export * from './notification/create-notification.model';
+export * from './notification/notification.model';
+export * from './notification/update-notification.model';

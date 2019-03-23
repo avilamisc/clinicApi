@@ -22,7 +22,7 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NotificationDto>> GetNotificationByUserIdAsync(
+        public async Task<PagingResultDto<NotificationDto>> GetNotificationByUserIdAsync(
             int userId,
             PagingDto pagingDto)
         {
@@ -33,7 +33,15 @@ namespace Clinic.Data.Repositories
                 .Paging(pagingDto)
                 .ToListAsync();
 
-            return _mapper.Mapper.Map<IEnumerable<NotificationDto>>(result);
+            var totalAmount = _context.Notifications
+                .Where(n => n.UserId == userId)
+                .Count();
+
+            return new PagingResultDto<NotificationDto>
+            {
+                DataColection = _mapper.Mapper.Map<IEnumerable<NotificationDto>>(result),
+                TotalCount = totalAmount
+            };
         }
 
         public Notification CreateNotification(CreateNotificationDto dtoModel)

@@ -9,7 +9,7 @@ namespace ClinicApi.Interfaces
 {
     public interface INotificationService : IServiceBase
     {
-        Task<ApiResponse<IEnumerable<NotificationModel>>> GetNotificationsAsync(
+        Task<ApiResponse<PagingResult<NotificationModel>>> GetNotificationsAsync(
             IEnumerable<Claim> claims, PaginationModel pagination);
 
         Task<ApiResponse<NotificationModel>> CreateNotificationAsync(

@@ -187,6 +187,7 @@
     <Compile Include="Models\Account\Registration\UserRegisterModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\Booking\BookingModel.cs" />
+    <Compile Include="Models\Booking\BookingResultModel.cs" />
     <Compile Include="Models\Booking\ClinicianBookingModel.cs" />
     <Compile Include="Models\Booking\UpdateBookingModel.cs" />
     <Compile Include="Models\Clinician\ClinicianModel.cs" />
