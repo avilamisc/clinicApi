@@ -10,13 +10,15 @@ namespace ClinicApi.Interfaces
     public interface INotificationService : IServiceBase
     {
         Task<ApiResponse<IEnumerable<NotificationModel>>> GetNotificationsAsync(
-            IEnumerable<Claim> claims,
-            PaginationModel pagination);
+            IEnumerable<Claim> claims, PaginationModel pagination);
+
         Task<ApiResponse<NotificationModel>> CreateNotificationAsync(
-            IEnumerable<Claim> claims,
-            CreateNotificationModel model);
+            IEnumerable<Claim> claims, CreateNotificationModel model);
+
         Task<ApiResponse<NotificationModel>> UpdateNotificationAsync(
-            IEnumerable<Claim> claims,
-            UpdateNotificationModel model);
+            IEnumerable<Claim> claims, UpdateNotificationModel model);
+
+        Task<ApiResponse<bool?>> SetReadStateAsync(
+            IEnumerable<Claim> claims, UpdatePropertyModel<bool?> updateModel);
     }
 }

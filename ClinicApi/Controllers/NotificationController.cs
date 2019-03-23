@@ -54,5 +54,16 @@ namespace ClinicApi.Controllers
 
             return Ok(await _notificationService.UpdateNotificationAsync(identity.Claims, model));
         }
+
+        [HttpPatch]
+        [Route("readstate")]
+        [BearerAuthorization]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<bool?>))]
+        public async Task<IHttpActionResult> UpdateIsReadStateAsync(UpdatePropertyModel<bool?> model)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _notificationService.SetReadStateAsync(identity.Claims, model));
+        }
     }
 }

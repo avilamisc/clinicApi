@@ -68,7 +68,7 @@ namespace ClinicApi.Services
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
-                return new ApiResponse<IEnumerable<NotificationModel>>(HttpStatusCode.BadRequest);
+                return ApiResponse<IEnumerable<NotificationModel>>.BadRequest();
             }
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(pagination);
@@ -78,6 +78,45 @@ namespace ClinicApi.Services
 
             return ApiResponse<IEnumerable<NotificationModel>>.Ok(
                 _mapper.Mapper.Map<IEnumerable<NotificationModel>>(result));
+        }
+
+        public async Task<ApiResponse<bool?>> SetReadStateAsync(
+            IEnumerable<Claim> claims, UpdatePropertyModel<bool?> updateModel)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<bool?>.BadRequest();
+            }
+
+            if (!updateModel.Value.HasValue)
+            {
+                return ApiResponse<bool?>.ValidationError("Is read is required.");
+            }
+
+            var entity = await _unitOfWork.NotificationRepository.GetSingleAsync(n => n.Id == updateModel.Id);
+
+            if (entity == null)
+            {
+                return ApiResponse<bool?>.ValidationError("Unexisting notification");
+            }
+
+            if (userId != entity.UserId)
+            {
+                return ApiResponse<bool?>.ValidationError("Don`t have permission");
+            }
+
+            try
+            {
+                entity.IsRead = updateModel.Value.Value;
+                _unitOfWork.NotificationRepository.Update(entity);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<bool?>.Ok(entity.IsRead);
+            }
+            catch
+            {
+                return ApiResponse<bool?>.InternalError("Cannot update entity");
+            }
         }
 
         public async Task<ApiResponse<NotificationModel>> UpdateNotificationAsync(
