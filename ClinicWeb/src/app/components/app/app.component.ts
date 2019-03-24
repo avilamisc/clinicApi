@@ -45,9 +45,29 @@ export class AppComponent implements OnInit {
     this.notificationService.getNotifications(this.notificationPagination)
       .subscribe(result => {
         if (result && result.Data) {
-          this.notifications.push(...result.Data.DataCollection);
+          this.notifications = [...result.Data.DataCollection];
           this.totalNotificationsCount = result.Data.TotalCount;
         }
+      })
+  }
+
+  public markNotificationAsRead(id: number): void {
+    this.notificationService.setNotificationReadState({Id: id, Value: true})
+      .subscribe(result => {
+        const notificationIndex = this.notifications.findIndex(n => n.Id == id);
+        if (notificationIndex === -1) {
+          return;
+        }
+        const updatedNotification = {
+          ...this.notifications[notificationIndex],
+          IsRead: result.Data
+        }
+        this.notifications = [
+          ...this.notifications.slice(0, notificationIndex),
+          updatedNotification,
+          ...this.notifications.slice(notificationIndex + 1)
+        ];
+        this.totalNotificationsCount--;
       })
   }
 

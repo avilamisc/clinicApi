@@ -2,6 +2,7 @@
 using Clinic.Core.DtoModels;
 using Clinic.Core.Entities;
 using ClinicApi.Models.Notification;
+using System;
 
 namespace ClinicApi.Automapper
 {
@@ -19,7 +20,8 @@ namespace ClinicApi.Automapper
                 .ForMember(nDto => nDto.IsRead, options => options.Ignore());
 
             CreateMap<Notification, NotificationModel>()
-                .ForMember(nModel => nModel.Message, options => options.MapFrom(n => n.Content));
+                .ForMember(nModel => nModel.Message, options => options.MapFrom(n => n.Content))
+                .ForMember(nModel => nModel.CreationDate, options => options.MapFrom(n => (DateTimeOffset)n.CreationDate));
 
             CreateMap<UpdateNotificationModel, Notification>()
                 .ForMember(n => n.Author, options => options.Ignore())

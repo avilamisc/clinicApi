@@ -84,39 +84,42 @@ namespace ClinicApi.Services
                 });
         }
 
-        public async Task<ApiResponse<RemoveResult>> RemoveNotificationAsync(
+        public async Task<ApiResponse<RemoveResult<NotificationModel>>> RemoveNotificationAsync(
             IEnumerable<Claim> claims, int id)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
-                return ApiResponse<RemoveResult>.BadRequest();
+                return ApiResponse<RemoveResult<NotificationModel>>.BadRequest();
             }
 
             var notification = await _unitOfWork.NotificationRepository
                 .GetSingleAsync(n => n.Id == id);
             if (notification == null)
             {
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Failed("Unexisitng notification"));
+                return ApiResponse<RemoveResult<NotificationModel>>.Ok(
+                    RemoveResult<NotificationModel>.Failed("Unexisitng notification"));
             }
 
             if (notification.UserId != userId && notification.AuthorId != userId)
             {
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Failed("Don`t have permission"));
+                return ApiResponse<RemoveResult<NotificationModel>>.Ok(
+                    RemoveResult<NotificationModel>.Failed("Don`t have permission"));
             }
 
             try
             {
+                var resultValue = _mapper.Mapper.Map<NotificationModel>(notification);
                 _unitOfWork.NotificationRepository.Remove(notification);
                 await _unitOfWork.SaveChangesAsync();
 
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Removed("Notification successfuly deleted"));
+                return ApiResponse<RemoveResult<NotificationModel>>.Ok(
+                    RemoveResult<NotificationModel>.Removed(
+                        "Notification successfuly deleted",
+                        resultValue));
             }
             catch
             {
-                return ApiResponse<RemoveResult>.InternalError();
+                return ApiResponse<RemoveResult<NotificationModel>>.InternalError();
             }
         }
 

@@ -98,7 +98,7 @@ namespace ClinicApi.Controllers
         [HttpDelete]
         [BearerAuthorization]
         [Route("")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<RemoveResult>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<RemoveResult<BookingResultModel>>))]
         public async Task<IHttpActionResult> RemoveBooking(int id)
         {
             var identity = (ClaimsIdentity)User.Identity;

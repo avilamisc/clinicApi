@@ -34,7 +34,7 @@ namespace Clinic.Data.Repositories
                 .ToListAsync();
 
             var totalAmount = _context.Notifications
-                .Where(n => n.UserId == userId)
+                .Where(n => n.UserId == userId && n.IsRead == false)
                 .Count();
 
             return new PagingResultDto<NotificationDto>

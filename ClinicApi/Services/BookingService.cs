@@ -228,11 +228,11 @@ namespace ClinicApi.Services
             return null;
         }
 
-        public async Task<ApiResponse<RemoveResult>> RemoveBookig(int id, IEnumerable<Claim> claims)
+        public async Task<ApiResponse<RemoveResult<BookingResultModel>>> RemoveBookig(int id, IEnumerable<Claim> claims)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
-                return ApiResponse<RemoveResult>.BadRequest();
+                return ApiResponse<RemoveResult<BookingResultModel>>.BadRequest();
             }
 
             var booking = await _unitOfWork.BookingRepository.GetFirstAsync(
@@ -241,29 +241,30 @@ namespace ClinicApi.Services
                 b => b.Documents);
             if (booking == null)
             {
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Failed(BookingErrorMessages.UnexistingBooking));
+                return ApiResponse<RemoveResult<BookingResultModel>>.Ok(
+                    RemoveResult<BookingResultModel>.Failed(BookingErrorMessages.UnexistingBooking));
             }
 
             if (booking.PatientId != userId && booking.ClinicClinician.ClinicianId != userId)
             {
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Failed(BookingErrorMessages.PermissionsToDelete));
+                return ApiResponse<RemoveResult<BookingResultModel>>.Ok(
+                    RemoveResult<BookingResultModel>.Failed(BookingErrorMessages.PermissionsToDelete));
             }
 
             try
             {
+                var resultValue = _mapper.Mapper.Map<BookingResultModel>(booking);
                 RemoveUsersDocuments(booking);
                 _unitOfWork.DocumentRepository.RemoveRange(booking.Documents);
                 _unitOfWork.BookingRepository.Remove(booking);
                 await _unitOfWork.SaveChangesAsync();
 
-                return ApiResponse<RemoveResult>.Ok(
-                    RemoveResult.Removed(BookingErrorMessages.SuccessfulDelete));
+                return ApiResponse<RemoveResult<BookingResultModel>>.Ok(
+                    RemoveResult<BookingResultModel>.Removed(BookingErrorMessages.SuccessfulDelete, resultValue));
             }
             catch
             {
-                return ApiResponse<RemoveResult>.InternalError();
+                return ApiResponse<RemoveResult<BookingResultModel>>.InternalError();
             }
         }
 

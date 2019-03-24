@@ -21,7 +21,7 @@ namespace ClinicApi.Interfaces
         Task<ApiResponse<bool?>> SetReadStateAsync(
             IEnumerable<Claim> claims, UpdatePropertyModel<bool?> updateModel);
 
-        Task<ApiResponse<RemoveResult>> RemoveNotificationAsync(
+        Task<ApiResponse<RemoveResult<NotificationModel>>> RemoveNotificationAsync(
             IEnumerable<Claim> claims, int id);
     }
 }

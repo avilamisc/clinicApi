@@ -17,11 +17,33 @@
           <p-toolbar>
             <p-accordion>
               <p-accordionTab [header]="'Events (' + totalNotificationsCount + ')'">
-                <ul>
-                  <li *ngFor="let notification of notifications">
-                    {{notification.Message}}
+                <ul *ngIf="totalNotificationsCount > 0"
+                    class="list-group">
+                  <li *ngFor="let notification of notifications"
+                      class="list-group-item">
+                      <div class="read-state-container">
+                        <i *ngIf="!notification.IsRead"
+                            class="pi pi-circle-off"
+                            (click)="markNotificationAsRead(notification.Id)"></i>
+                        <i *ngIf="notification.IsRead"
+                            class="pi pi-check-circle"></i>
+                      </div>
+                      <div class="main-part">
+                          <div class="additional-info">
+                            <div class="data-info">
+                              {{notification.CreationDate}}
+                            </div>
+                            <div class="author-info">
+                              {{notification.UserName}}
+                            </div>
+                          </div>
+                          <div class="notification-container">
+                              {{notification.Message}}
+                          </div>
+                      </div>
                   </li>
                 </ul>
+                <span *ngIf="totalNotificationsCount <= 0">No Events</span>
              </p-accordionTab>
             </p-accordion>
           </p-toolbar>

@@ -17,7 +17,6 @@ import { BaseService } from '../base.service';
 import { NotificationService } from '../notification/notification.service';
 import { map } from 'rxjs/operators';
 import { UserService } from '../user/user.service';
-import { User } from '../../models/user/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,6 @@ export class BookingService extends BaseService {
       .pipe(map(result => {
         if (result && result.Data) {
           const user = this.userService.getUserFromLocalStorage();
-          console.log(user);
           this.createNotification(
             `${user.UserName} has updated your booking ${result.Data.Name}.`,
             user.Id,
@@ -58,7 +56,12 @@ export class BookingService extends BaseService {
   }
 
   public updateBookingRate(updateModel: any): Observable<ApiResponse<PatientBookingModel>> {
-    return this.http.patch<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}/rate`, updateModel)
+    return this.http.patch<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}/rate`, updateModel);
+  }
+
+  public createBookings(model: PatientBookingModel): Observable<ApiResponse<BookingModelResult>> {
+    const multipartData = this.getMultipartWithFiles(model);
+    return this.http.post<ApiResponse<BookingModelResult>>(`${ApiRoutes.booking}`, multipartData)
       .pipe(map(result => {
         if (result && result.Data) {
           const user = this.userService.getUserFromLocalStorage();
@@ -72,13 +75,19 @@ export class BookingService extends BaseService {
       }));
   }
 
-  public createBookings(model: PatientBookingModel): Observable<ApiResponse<BookingModelResult>> {
-    const multipartData = this.getMultipartWithFiles(model);
-    return this.http.post<ApiResponse<BookingModelResult>>(`${ApiRoutes.booking}`, multipartData);
-  }
-
-  public removeBookings(id: number): Observable<ApiResponse<RemoveResult>> {
-    return this.http.delete<ApiResponse<RemoveResult>>(`${ApiRoutes.booking}?id=${id}`);
+  public removeBookings(id: number): Observable<ApiResponse<RemoveResult<BookingModelResult>>> {
+    return this.http.delete<ApiResponse<RemoveResult<BookingModelResult>>>(`${ApiRoutes.booking}?id=${id}`)
+      .pipe(map(result => {
+        if (result && result.Data) {
+          const user = this.userService.getUserFromLocalStorage();
+          this.createNotification(
+            `${user.UserName} ${result.Data.Description} ${result.Data.Value.Name}.`,
+            user.Id,
+            result.Data.Value
+          )
+        }
+        return result;
+      }));
   }
 
   private getMultipartWithFiles(model: any): FormData {
