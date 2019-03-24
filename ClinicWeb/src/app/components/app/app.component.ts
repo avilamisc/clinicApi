@@ -15,10 +15,8 @@ import { NotificationModel, Pagination } from 'src/app/core/models';
 export class AppComponent implements OnInit {
   public notifications: NotificationModel[] = [];
   public totalNotificationsCount = 0;
-  private notificationPagination: Pagination = {
-    pageNumber: 0,
-    pageCount: 10
-  }
+  private notificationPagination: Pagination;
+  private defaultPaginationAmount = 2;
 
   constructor(
     private router: Router,
@@ -29,7 +27,7 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.locationService.initializeLocation();
-    this.initializeNotification();
+    this.setUpdateNotificationEvent();
   }
 
   public logOutUser(): void {
@@ -41,11 +39,26 @@ export class AppComponent implements OnInit {
     return this.tokenService.getAccessToken() !== null;
   }
 
-  public uploadNotification(): void {
+  public initializeNotifications(): void {
+    this.notificationPagination = {
+      pageNumber: 0,
+      pageCount: this.defaultPaginationAmount
+    };
     this.notificationService.getNotifications(this.notificationPagination)
       .subscribe(result => {
         if (result && result.Data) {
           this.notifications = [...result.Data.DataCollection];
+          this.totalNotificationsCount = result.Data.TotalCount;
+        }
+      });
+  }
+
+  public uploadMoreNotification(): void {
+    this.notificationPagination.pageNumber++;
+    this.notificationService.getNotifications(this.notificationPagination)
+      .subscribe(result => {
+        if (result && result.Data) {
+          this.notifications.push(...result.Data.DataCollection);
           this.totalNotificationsCount = result.Data.TotalCount;
         }
       })
@@ -71,15 +84,21 @@ export class AppComponent implements OnInit {
       })
   }
 
-  private initializeNotification(): void {
+  public removeNotification(id: number): void {
+    this.notificationService.removeNotification(id)
+      .subscribe(result => {
+        if (result && result.Data) {
+          const notificatioIndex = this.notifications.findIndex(n => n.Id == result.Data.Value.Id);
+          this.notifications.splice(notificatioIndex, 1);
+        }
+      })
+  }
+
+  private setUpdateNotificationEvent(): void {
     this.router.events
       .subscribe((event: NavigationStart ) => {
         if (event instanceof NavigationEnd) {
-          this.notificationPagination = {
-            pageNumber: 0,
-            pageCount: 10
-          }
-          this.uploadNotification();
+          this.initializeNotifications();
         }
       });
   }

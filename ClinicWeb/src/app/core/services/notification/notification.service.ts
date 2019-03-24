@@ -40,6 +40,6 @@ export class NotificationService extends BaseService {
   }
 
   public removeNotification(id: number): Observable<ApiResponse<RemoveResult<NotificationModel>>> {
-    return this.http.delete<ApiResponse<RemoveResult<NotificationModel>>>(`${ApiRoutes.notifications}?id=${id}`);
+    return this.http.delete<ApiResponse<RemoveResult<NotificationModel>>>(`${ApiRoutes.notifications}/${id}`);
   }
 }

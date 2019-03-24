@@ -20,7 +20,8 @@
                 <ul *ngIf="totalNotificationsCount > 0"
                     class="list-group">
                   <li *ngFor="let notification of notifications"
-                      class="list-group-item">
+                      class="list-group-item"
+                      [class.unread-list-item]="!notification.IsRead">
                       <div class="read-state-container">
                         <i *ngIf="!notification.IsRead"
                             class="pi pi-circle-off"
@@ -36,11 +37,21 @@
                             <div class="author-info">
                               {{notification.UserName}}
                             </div>
+                            <div class="remove-notification-container">
+                              <i class="pi pi-times-circle"
+                                 (click)="removeNotification(notification.Id)"></i>
+                            </div>
                           </div>
                           <div class="notification-container">
                               {{notification.Message}}
                           </div>
                       </div>
+                  </li>
+                  <li class="list-group-item list-group-upload"
+                      (click)="uploadMoreNotification()">
+                    <div class="upload-more-button">
+                      Upload more
+                    </div>
                   </li>
                 </ul>
                 <span *ngIf="totalNotificationsCount <= 0">No Events</span>
