@@ -21,12 +21,3 @@
     </agm-map>
   </div>
 </div>
-
-<app-edit *ngIf="bookingToUpdate"
-          [visibility]="isEditWindowOpen"
-          [model]="bookingToUpdate"
-          [new]="isAddingNewBooking"
-          [isPatient]="isPatient"
-          (closeEditWindow)="closeEditWindow()"
-          (editCompleted)="editBooking($event)">
-</app-edit>
