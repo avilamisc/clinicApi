@@ -10,7 +10,7 @@ import {
     UpdateNotificationModel,
     CreateNotificationModel,
     NotificationModel,
-    RemoveResult, 
+    RemoveResult,
     PagingResult} from '../../models';
 
 @Injectable({
@@ -18,7 +18,7 @@ import {
 })
 export class NotificationService extends BaseService {
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
       super();
   }
 

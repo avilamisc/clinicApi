@@ -9,7 +9,7 @@ import {
   RemoveResult,
   UpdateBookingModel,
   Pagination,
-  PagingResult, 
+  PagingResult,
   CreateNotificationModel,
   BookingModelResult} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
@@ -49,7 +49,7 @@ export class BookingService extends BaseService {
             `${user.UserName} has updated your booking ${result.Data.Name}.`,
             user.Id,
             result.Data
-          )
+          );
         }
         return result;
       }));
@@ -69,7 +69,7 @@ export class BookingService extends BaseService {
             `${user.UserName} created new booking for your (${result.Data.Name}).`,
             user.Id,
             result.Data
-          )
+          );
         }
         return result;
       }));
@@ -84,7 +84,7 @@ export class BookingService extends BaseService {
             `${user.UserName} ${result.Data.Description} ${result.Data.Value.Name}.`,
             user.Id,
             result.Data.Value
-          )
+          );
         }
         return result;
       }));
@@ -104,11 +104,11 @@ export class BookingService extends BaseService {
     const notificationUserId =
       userId === booking.PatientId
         ? booking.ClinicianId
-        : booking.PatientId
+        : booking.PatientId;
     const newNotification: CreateNotificationModel = {
       Content: message,
       UserId: notificationUserId
-    }
+    };
     this.notificationService.createNotification(newNotification)
       .subscribe();
   }

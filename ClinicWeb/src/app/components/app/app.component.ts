@@ -61,37 +61,37 @@ export class AppComponent implements OnInit {
           this.notifications.push(...result.Data.DataCollection);
           this.totalNotificationsCount = result.Data.TotalCount;
         }
-      })
+      });
   }
 
   public markNotificationAsRead(id: number): void {
     this.notificationService.setNotificationReadState({Id: id, Value: true})
       .subscribe(result => {
-        const notificationIndex = this.notifications.findIndex(n => n.Id == id);
+        const notificationIndex = this.notifications.findIndex(n => n.Id === id);
         if (notificationIndex === -1) {
           return;
         }
         const updatedNotification = {
           ...this.notifications[notificationIndex],
           IsRead: result.Data
-        }
+        };
         this.notifications = [
           ...this.notifications.slice(0, notificationIndex),
           updatedNotification,
           ...this.notifications.slice(notificationIndex + 1)
         ];
         this.totalNotificationsCount--;
-      })
+      });
   }
 
   public removeNotification(id: number): void {
     this.notificationService.removeNotification(id)
       .subscribe(result => {
         if (result && result.Data) {
-          const notificatioIndex = this.notifications.findIndex(n => n.Id == result.Data.Value.Id);
+          const notificatioIndex = this.notifications.findIndex(n => n.Id === result.Data.Value.Id);
           this.notifications.splice(notificatioIndex, 1);
         }
-      })
+      });
   }
 
   private setUpdateNotificationEvent(): void {
