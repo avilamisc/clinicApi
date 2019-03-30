@@ -8,5 +8,8 @@ namespace ClinicApi.Models.Notification
         public int Id { get; set; }
         public bool IsRead { get; set; }
         public DateTime CreationDate { get; set; }
+        public string UserName { get; set; }
+        public int UserId { get; set; }
+        public string UserMail { get; set; }
     }
 }

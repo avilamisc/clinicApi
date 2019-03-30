@@ -23,7 +23,8 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<PagingResultDto<BookingDto>> GetForClinicianAsync(PagingDto pagingDto, int clinicianId)
+        public async Task<PagingResultDto<BookingDto>> GetForClinicianAsync(
+            PagingDto pagingDto, int clinicianId)
         {
             DbGeography g = DbGeography.FromText($"POINT({10} {10})");
             var result = await _context.Bookings
@@ -44,7 +45,8 @@ namespace Clinic.Data.Repositories
                     };
         }
 
-        public async Task<PagingResultDto<BookingDto>> GetForPatientAsync(PagingDto pagingDto, int patinetId)
+        public async Task<PagingResultDto<BookingDto>> GetForPatientAsync(
+            PagingDto pagingDto, int patinetId)
         {
             var result = await _context.Bookings
                 .BookingInclude()

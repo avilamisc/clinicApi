@@ -11,10 +11,18 @@ namespace Clinic.Data.Configurations
             HasKey(n => n.Id);
 
             Property(n => n.Content).IsRequired();
+            Property(n => n.AuthorId).IsRequired();
+            Property(n => n.UserId).IsRequired();
 
             HasRequired(n => n.User)
                 .WithMany(u => u.Notifications)
-                .HasForeignKey(n => n.UserId);
+                .HasForeignKey(n => n.UserId)
+                .WillCascadeOnDelete(false);
+
+            HasRequired(n => n.Author)
+                .WithMany(u => u.CreatedNotifications)
+                .HasForeignKey(n => n.AuthorId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

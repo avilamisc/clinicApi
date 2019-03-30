@@ -9,16 +9,23 @@ import {
   RemoveResult,
   UpdateBookingModel,
   Pagination,
-  PagingResult } from '../../models';
+  PagingResult,
+  CreateNotificationModel,
+  BookingModelResult} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { BaseService } from '../base.service';
+import { NotificationService } from '../notification/notification.service';
+import { map } from 'rxjs/operators';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService extends BaseService {
-
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private notificationService: NotificationService) {
     super();
   }
 
@@ -32,22 +39,55 @@ export class BookingService extends BaseService {
           (`${ApiRoutes.clinicianBookings}/?PageNumber=${paging.pageNumber}&PageSize=${paging.pageCount}`);
   }
 
-  public updateBookings(model: UpdateBookingModel): Observable<ApiResponse<PatientBookingModel>> {
+  public updateBookings(model: UpdateBookingModel): Observable<ApiResponse<BookingModelResult>> {
     const multipartData = this.getMultipartWithFiles(model);
-    return this.http.put<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}`, multipartData);
+    return this.http.put<ApiResponse<BookingModelResult>>(`${ApiRoutes.booking}`, multipartData)
+      .pipe(map(result => {
+        if (result && result.Data) {
+          const user = this.userService.getUserFromLocalStorage();
+          this.createNotification(
+            `${user.UserName} has updated your booking ${result.Data.Name}.`,
+            user.Id,
+            result.Data
+          );
+        }
+        return result;
+      }));
   }
 
   public updateBookingRate(updateModel: any): Observable<ApiResponse<PatientBookingModel>> {
     return this.http.patch<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}/rate`, updateModel);
   }
 
-  public createBookings(model: PatientBookingModel): Observable<ApiResponse<PatientBookingModel>> {
+  public createBookings(model: PatientBookingModel): Observable<ApiResponse<BookingModelResult>> {
     const multipartData = this.getMultipartWithFiles(model);
-    return this.http.post<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}`, multipartData);
+    return this.http.post<ApiResponse<BookingModelResult>>(`${ApiRoutes.booking}`, multipartData)
+      .pipe(map(result => {
+        if (result && result.Data) {
+          const user = this.userService.getUserFromLocalStorage();
+          this.createNotification(
+            `${user.UserName} created new booking for your (${result.Data.Name}).`,
+            user.Id,
+            result.Data
+          );
+        }
+        return result;
+      }));
   }
 
-  public removeBookings(id: number): Observable<ApiResponse<RemoveResult>> {
-    return this.http.delete<ApiResponse<RemoveResult>>(`${ApiRoutes.booking}?id=${id}`);
+  public removeBookings(id: number): Observable<ApiResponse<RemoveResult<BookingModelResult>>> {
+    return this.http.delete<ApiResponse<RemoveResult<BookingModelResult>>>(`${ApiRoutes.booking}?id=${id}`)
+      .pipe(map(result => {
+        if (result && result.Data) {
+          const user = this.userService.getUserFromLocalStorage();
+          this.createNotification(
+            `${user.UserName} ${result.Data.Description} ${result.Data.Value.Name}.`,
+            user.Id,
+            result.Data.Value
+          );
+        }
+        return result;
+      }));
   }
 
   private getMultipartWithFiles(model: any): FormData {
@@ -58,5 +98,18 @@ export class BookingService extends BaseService {
     });
 
     return formData;
+  }
+
+  private createNotification(message: string, userId: number, booking: BookingModelResult): void {
+    const notificationUserId =
+      userId === booking.PatientId
+        ? booking.ClinicianId
+        : booking.PatientId;
+    const newNotification: CreateNotificationModel = {
+      Content: message,
+      UserId: notificationUserId
+    };
+    this.notificationService.createNotification(newNotification)
+      .subscribe();
   }
 }

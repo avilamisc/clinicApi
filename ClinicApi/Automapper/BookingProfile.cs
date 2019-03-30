@@ -66,6 +66,19 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.Name, options => options.MapFrom(c => c[nameof(UpdateBookingModel.Name)]))
                 .ForMember(p => p.Reciept, options => options.MapFrom(c => c[nameof(UpdateBookingModel.Reciept)]));
 
+            CreateMap<Booking, BookingResultModel>()
+                .ForMember(b => b.BookingRate, options => options.MapFrom(m => m.Rate))
+                .ForMember(
+                    b => b.ClinicianName,
+                    options => options.MapFrom(m => $"{m.ClinicClinician.Clinician.Name} {m.ClinicClinician.Clinician.Surname}"))
+                .ForMember(b => b.PatientLocation, options => options.MapFrom(m => m.Patient.Location))
+                .ForMember(
+                    b => b.PatientName,
+                    options => options.MapFrom(m => $"{m.Patient.Name} {m.Patient.Surname}"))
+                .ForMember(b => b.ClinicName, options => options.MapFrom(m => m.ClinicClinician.Clinic.Name))
+                .ForMember(b => b.ClinicId, options => options.MapFrom(m => m.ClinicClinician.ClinicId))
+                .ForMember(b => b.ClinicianId, options => options.MapFrom(m => m.ClinicClinician.ClinicianId))
+                .ForMember(b => b.ClinicianRate, options => options.MapFrom(m => m.ClinicClinician.Clinician.Rate));
         }
     }
 }

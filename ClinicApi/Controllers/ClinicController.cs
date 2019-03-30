@@ -32,9 +32,7 @@ namespace ClinicApi.Controllers
         [OverrideAuthorization]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<ClinicModel>>))]
         public async Task<IHttpActionResult> Clinics(
-            [FromUri]PaginationModel paginationModel,
-            double longitude = 0,
-            double latitude = 0)
+            [FromUri]PaginationModel paginationModel, double longitude = 0, double latitude = 0)
         {
             return Ok(await _clinicService.GetAllClinicAsync(paginationModel, longitude, latitude));
         }
@@ -51,8 +49,7 @@ namespace ClinicApi.Controllers
         [Route("clinicians")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<ClinicModel>))]
         public async Task<IHttpActionResult> ClinicClinicians(
-            [FromUri]LocationPagingModel pagingModel,
-            ApiVersion v = ApiVersion.V3)
+            [FromUri]LocationPagingModel pagingModel, ApiVersion v = ApiVersion.V3)
         {
             return Ok(await _clinicClinicianServiceV1
                 .GetClinicsWithCliniciansSortdetByDistanceAsync(pagingModel, v));

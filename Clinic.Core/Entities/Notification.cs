@@ -11,5 +11,8 @@ namespace Clinic.Core.Entities
 
         public int UserId { get; set; }
         public User User { get; set; }
+
+        public int AuthorId { get; set; }
+        public User Author { get; set; }
     }
 }

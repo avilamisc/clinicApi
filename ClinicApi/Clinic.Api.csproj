@@ -187,6 +187,7 @@
     <Compile Include="Models\Account\Registration\UserRegisterModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\Booking\BookingModel.cs" />
+    <Compile Include="Models\Booking\BookingResultModel.cs" />
     <Compile Include="Models\Booking\ClinicianBookingModel.cs" />
     <Compile Include="Models\Booking\UpdateBookingModel.cs" />
     <Compile Include="Models\Clinician\ClinicianModel.cs" />
@@ -194,7 +195,9 @@
     <Compile Include="Models\Clinic\ClinicModel.cs" />
     <Compile Include="Models\ClinicClinician\ClinicWithDistanceModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
+    <Compile Include="Models\Notification\CreateNotificationModel.cs" />
     <Compile Include="Models\Notification\NotificationModel.cs" />
+    <Compile Include="Models\Notification\UpdateNotificationModel.cs" />
     <Compile Include="Models\Pagination\LocationPagingModel.cs" />
     <Compile Include="Models\Pagination\PaginationModel.cs" />
     <Compile Include="Models\PagingResult.cs" />

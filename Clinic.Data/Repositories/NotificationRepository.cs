@@ -22,17 +22,34 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NotificationDto>> GetNotificationByUserIdAsync(
+        public async Task<PagingResultDto<NotificationDto>> GetNotificationByUserIdAsync(
             int userId,
             PagingDto pagingDto)
         {
             var result = await _context.Notifications
+                .Include(n => n.User)
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.Id)
                 .Paging(pagingDto)
                 .ToListAsync();
 
-            return _mapper.Mapper.Map<IEnumerable<NotificationDto>>(result);
+            var totalAmount = _context.Notifications
+                .Where(n => n.UserId == userId && n.IsRead == false)
+                .Count();
+
+            return new PagingResultDto<NotificationDto>
+            {
+                DataColection = _mapper.Mapper.Map<IEnumerable<NotificationDto>>(result),
+                TotalCount = totalAmount
+            };
+        }
+
+        public Notification CreateNotification(CreateNotificationDto dtoModel)
+        {
+            var entity = _mapper.Mapper.Map<Notification>(dtoModel);
+            _context.Notifications.Add(entity);
+
+            return entity;
         }
     }
 }

@@ -7,8 +7,10 @@ namespace Clinic.Core.Repositories
 {
     public interface INotificationRepository: IRepository<Notification>
     {
-        Task<IEnumerable<NotificationDto>> GetNotificationByUserIdAsync(
+        Task<PagingResultDto<NotificationDto>> GetNotificationByUserIdAsync(
             int userId,
             PagingDto pagingDto);
+
+        Notification CreateNotification(CreateNotificationDto dtoModel);
     }
 }

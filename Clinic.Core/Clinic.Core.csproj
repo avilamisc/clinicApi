@@ -81,6 +81,7 @@
     <Compile Include="DtoModels\Account\ClinicianRegistrationDto.cs" />
     <Compile Include="DtoModels\Account\PatientRegistrationDto.cs" />
     <Compile Include="DtoModels\Account\UserRegistrationDto.cs" />
+    <Compile Include="DtoModels\CreateNotificationDto.cs" />
     <Compile Include="DtoModels\NotificationDto.cs" />
     <Compile Include="DtoModels\PagingDto.cs" />
     <Compile Include="DtoModels\PagingResultDto.cs" />
@@ -121,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="KlymenkoInc.snk" />
     <None Include="packages.config" />
   </ItemGroup>

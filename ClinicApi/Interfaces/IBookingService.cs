@@ -16,13 +16,13 @@ namespace ClinicApi.Interfaces
         Task<ApiResponse<PagingResult<ClinicianBookingModel>>> GetAllBookingsForClinicianAsync(
             IEnumerable<Claim> claims,
             PaginationModel model);
-        Task<ApiResponse<PatientBookingModel>> CreateBookingAsync(
+        Task<ApiResponse<BookingResultModel>> CreateBookingAsync(
             IEnumerable<Claim> claims,
             HttpRequest request);
-        Task<ApiResponse<PatientBookingModel>> UpdateBookingAsync(
+        Task<ApiResponse<BookingResultModel>> UpdateBookingAsync(
             IEnumerable<Claim> claims,
             HttpRequest request);
         Task<ApiResponse<float>> UpdateBookingRateAsync(int id, float rateValue);
-        Task<ApiResponse<RemoveResult>> RemoveBookig(int id, IEnumerable<Claim> claims);
+        Task<ApiResponse<RemoveResult<BookingResultModel>>> RemoveBookig(int id, IEnumerable<Claim> claims);
     }
 }

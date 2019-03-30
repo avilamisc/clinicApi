@@ -1,7 +1,6 @@
 import { Column } from 'src/app/core/models/table/column.model';
 
 export const PatientBookingTableConfiguration = new Map([
-    ['Reciept', new Column('Reciept', 'Reciept')],
     ['Name', new Column('Name', 'Name')],
     ['Documents', new Column('Documents', 'Documents')],
     ['ClinicName', new Column('Clinic Name', 'ClinicName')],
@@ -11,7 +10,6 @@ export const PatientBookingTableConfiguration = new Map([
 ]);
 
 export const ClinicianBookingTableConfiguration = new Map([
-    ['Reciept', new Column('Reciept', 'Reciept')],
     ['Name', new Column('Name', 'Name')],
     ['Documents', new Column('Documents', 'Documents')],
     ['ClinicName', new Column('Clinic', 'ClinicName')],
