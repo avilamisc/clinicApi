@@ -17,8 +17,7 @@
           <p-toolbar>
             <p-accordion>
               <p-accordionTab [header]="'Events (' + totalNotificationsCount + ')'">
-                <ul *ngIf="totalNotificationsCount > 0"
-                    class="list-group">
+                <ul class="list-group">
                   <li *ngFor="let notification of notifications"
                       class="list-group-item"
                       [class.unread-list-item]="!notification.IsRead">
@@ -54,7 +53,7 @@
                     </div>
                   </li>
                 </ul>
-                <span *ngIf="totalNotificationsCount <= 0">No Events</span>
+                <span *ngIf="notifications.Length <= 0">No Events</span>
              </p-accordionTab>
             </p-accordion>
           </p-toolbar>
