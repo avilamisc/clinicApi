@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { NotificationModel, Pagination } from 'src/app/core/models';
+import { LoaderService, LoaderState } from 'src/app/core/services/loader/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +17,15 @@ import { NotificationModel, Pagination } from 'src/app/core/models';
 export class AppComponent implements OnInit {
   public notifications: NotificationModel[] = [];
   public totalNotificationsCount = 0;
+  public hasLoadedResources = false;
   private notificationPagination: Pagination;
   private defaultPaginationAmount = 2;
+  private subscription: Subscription;
 
   constructor(
     private router: Router,
     private tokenService: TokenService,
+    private loaderService: LoaderService,
     private accountService: AccountService,
     private locationService: LocationService,
     private notificationService: NotificationService) { }
@@ -28,6 +33,7 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.locationService.initializeLocation();
     this.setUpdateNotificationEvent();
+    this.setLoaderState();
   }
 
   public logOutUser(): void {
@@ -100,6 +106,13 @@ export class AppComponent implements OnInit {
         if (event instanceof NavigationEnd) {
           this.initializeNotifications();
         }
+      });
+  }
+
+  private setLoaderState(): void {
+    this.subscription = this.loaderService.loaderState
+      .subscribe((state: LoaderState) => {
+        this.hasLoadedResources = state.show;
       });
   }
 }
