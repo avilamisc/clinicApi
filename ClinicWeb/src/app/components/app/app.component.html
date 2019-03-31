@@ -66,4 +66,7 @@
     </div>
   </nav>
   <router-outlet></router-outlet>
+  <div *ngIf="hasLoadedResources" class="loader-conatainer">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
 </div>

@@ -37,14 +37,10 @@ export class ClinicComponent implements OnInit {
     this.initializeLocation();
   }
 
-  public mapReady(map): void {
-    map.addListener('dragend', (event) => {
-      this.pagingModel.Latitude = map.center.lat();
-      this.pagingModel.Longitude = map.center.lng();
-      this.updateClinics();
-      this.latitude = this.pagingModel.Latitude;
-      this.longitude = this.pagingModel.Longitude;
-    });
+  public mapClick(res: any): void {
+    this.pagingModel.Latitude = res.coords.lat;
+    this.pagingModel.Longitude = res.coords.lng;
+    this.updateClinics();
   }
 
   public getIconUrl(): string {
@@ -57,7 +53,6 @@ export class ClinicComponent implements OnInit {
   }
 
   public crateNewBooking(clinic: ClinicDistanceModel): void {
-    console.log('create', clinic.Id);
     this.selectedClinic = {
       Id: clinic.Id,
       Name: clinic.ClinicName
@@ -100,7 +95,7 @@ export class ClinicComponent implements OnInit {
     }
   }
 
-  private updateClinics(): void {
+  private updateClinics(res = null): void {
     this.clinicService.getClosestClinicsWithClinician(this.pagingModel)
         .subscribe(result => {
           if (result.Data !== null) {
