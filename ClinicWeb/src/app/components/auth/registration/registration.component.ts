@@ -3,7 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { RegistrationModel } from 'src/app/core/models/auth/registration/registration.model';
-import { CommonConstants } from 'src/app/utilities/common-constants';
+import { CommonConstants, ValidatorLengths, CommonRegEx } from 'src/app/utilities/common-constants';
+import { FormValidationService } from 'src/app/core/services/validation.service';
+import { ValidationMessages } from 'src/app/utilities/validation-messages';
 
 @Component({
   selector: 'app-registration',
@@ -16,10 +18,13 @@ export class RegistrationComponent implements OnInit {
   public isMainInfoSubmitted = false;
   public isPatient = true;
   public returnUrl: string = null;
+  public formErrors = {};
+  public submitTouched = false;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private formValidationService: FormValidationService) { }
 
   ngOnInit() {
     this.createForm();
@@ -27,9 +32,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this.submitTouched = true;
     if (this.registerForm.valid) {
       this.setValuesFromFormToModel();
       this.isMainInfoSubmitted = true;
+    } else {
+      this.formValidationService.markFormGroupTouched();
+      this.validateForm();
     }
   }
 
@@ -39,6 +48,10 @@ export class RegistrationComponent implements OnInit {
 
   public cancelRegistration(): void {
     this.router.navigate(['login']);
+  }
+
+  private validateForm(): void {
+    this.formErrors = this.formValidationService.validateForm();
   }
 
   private createForm(): void {
@@ -51,10 +64,21 @@ export class RegistrationComponent implements OnInit {
     this.registerForm = new FormGroup({
       userName: new FormControl(userName, [Validators.required]),
       userSurname: new FormControl(userSurname, [Validators.required]),
-      userMail: new FormControl(this.registrationModel.UserMail, [Validators.required]),
-      password: new FormControl(this.registrationModel.Password, [Validators.required]),
+      userMail: new FormControl(this.registrationModel.UserMail,
+        [
+          Validators.required,
+          Validators.email
+        ]),
+      password: new FormControl(this.registrationModel.Password, 
+        [
+          Validators.required,
+          Validators.minLength(ValidatorLengths.passwordMin),
+          Validators.pattern(CommonRegEx.passwordAlphaNumber)
+        ]),
       userRole: new FormControl(this.isPatient ? 'Patient' : 'Clinician')
     });
+    this.formValidationService.setFormData(this.registerForm, ValidationMessages.RegistrationBase);
+    this.registerForm.valueChanges.subscribe(() => this.validateForm());
   }
 
   private setValuesFromFormToModel(): void {
