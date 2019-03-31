@@ -12,7 +12,7 @@ export class ClinicianService {
   constructor(
     private http: HttpClient) { }
 
-    public getAllClinic(clinicId: number): Observable<ApiResponse<ClinicianModel[]>> {
+    public getAllClinician(clinicId: number): Observable<ApiResponse<ClinicianModel[]>> {
       return this.http.get<ApiResponse<ClinicianModel[]>>(`${ApiRoutes.clinicians}?clinicId=${clinicId}`);
     }
 }

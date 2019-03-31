@@ -15,9 +15,21 @@
           [markerDraggable]="false"
           [label]="clinic.ClinicName" >
           <agm-info-window [disableAutoPan]="true">
-            <app-clinic-info [clinic]="clinic"></app-clinic-info>
+            <app-clinic-info [clinic]="clinic"
+                             [patient]="isPatient"
+                             (createbooking)="crateNewBooking($event)"></app-clinic-info>
           </agm-info-window>
         </agm-marker>
     </agm-map>
   </div>
 </div>
+
+<app-edit *ngIf="bookingToUpdate"
+          [visibility]="isEditWindowOpen"
+          [model]="bookingToUpdate"
+          [new]="true"
+          [clinics]="selectedClinic ? [selectedClinic] : []"
+          [isPatient]="isPatient"
+          (closeEditWindow)="closeEditWindow()"
+          (editCompleted)="aproveCreationBooking($event)">
+</app-edit>

@@ -27,7 +27,7 @@
             <option *ngFor="let clinic of clinics"
                     [attr.selected]="clinic.id === model.clinicId"
                     [attr.value]="clinic.Id">{{clinic.Name}}</option>
-            <option [attr.value]="loadClinicsOptionId">Upload Clinics...</option>
+            <option *ngIf="!fixedClinicList" [attr.value]="loadClinicsOptionId">Upload Clinics...</option>
           </select>
         </label>
       </div>

@@ -16,15 +16,16 @@ import { LocationService } from 'src/app/core/services/location.service';
 })
 export class EditComponent implements OnInit, OnChanges {
   public editForm: FormGroup;
-  public clinics: ClinicModel[];
   public clinicsPaging: Pagination = new Pagination();
-  public clinicians: ClinicianModel[] = [];
   public loadClinicsOptionId = 'loadClinics';
+  public fixedClinicList = false;
   private currentClinic: ClinicModel;
   private clinicsPageSize = 10;
   private clientLongitude = 0;
   private clientLatitude = 0;
 
+  @Input('clinics') public clinics: ClinicModel[];
+  @Input('clinicians') public clinicians: ClinicianModel[] = [];
   @Input('visibility') visibility = false;
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
   @Input('new') public isNewBooking = false;
@@ -75,7 +76,7 @@ export class EditComponent implements OnInit, OnChanges {
 
   public filterClinicians(clinicId: any): void {
     clinicId !== this.loadClinicsOptionId
-      ? this.clinicianService.getAllClinic(clinicId)
+      ? this.clinicianService.getAllClinician(clinicId)
           .subscribe(result => {
             if (result.Data !== null) {
               this.clinicians = result.Data;
@@ -111,12 +112,21 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   private initializeForm(): void {
-    this.clinicsPaging.pageNumber = 0;
-    this.clinicsPaging.pageCount = this.clinicsPageSize;
+    if (this.clinics && this.clinics.length >= 1) {
+      this.fixedClinicList = true;
+      if (this.clinics.length === 1) {
+        const clinicId = this.clinics[0].Id;
+        this.editForm.controls['clinic'].setValue(clinicId);
+        this.filterClinicians(clinicId);
+      }
+    } else {
+      this.fixedClinicList = false;
+      this.clinicsPaging.pageNumber = 0;
+      this.clinicsPaging.pageCount = this.clinicsPageSize;
 
-    this.updateClinics(this.clientLongitude, this.clientLatitude);
+      this.updateClinics(this.clientLongitude, this.clientLatitude);
 
-    this.clinicService.getClinicById(this.model.clinicId)
+      this.clinicService.getClinicById(this.model.clinicId)
         .subscribe(result => {
           if (result.Data !== null) {
             this.currentClinic = result.Data;
@@ -126,6 +136,7 @@ export class EditComponent implements OnInit, OnChanges {
             this.createForm();
           }
         });
+    }
   }
 
   private createForm(): void {
@@ -154,7 +165,7 @@ export class EditComponent implements OnInit, OnChanges {
           }
         }
         if (this.model.clinicId) {
-          this.clinicianService.getAllClinic(this.model.clinicId)
+          this.clinicianService.getAllClinician(this.model.clinicId)
             .subscribe(clinicianResult => {
                 if (clinicianResult.Data !== null) {
                   this.clinicians = clinicianResult.Data;

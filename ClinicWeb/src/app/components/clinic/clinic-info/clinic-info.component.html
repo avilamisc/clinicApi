@@ -10,5 +10,8 @@
                       [itemId]="clinician?.Id"></app-rating>
       </div>   
     </div>
+    <button *ngIf="isPatient"
+            class="btn btn-default"
+            (click)="crateNewBooking()">Create Booking</button>
   </div>
 </div>
