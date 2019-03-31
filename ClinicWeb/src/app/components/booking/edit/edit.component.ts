@@ -21,7 +21,7 @@ export class EditComponent implements OnInit, OnChanges {
   public clinicsPaging: Pagination = new Pagination();
   public loadClinicsOptionId = 'loadClinics';
   public fixedClinicList = false;
-  public formErrors = {};
+  public formErrors: any = {};
   public submitTouched = false;
   private currentClinic: ClinicModel;
   private clinicsPageSize = 10;
