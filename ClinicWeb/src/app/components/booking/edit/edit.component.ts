@@ -8,6 +8,8 @@ import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { ClinicianService } from 'src/app/core/services/clinician/clinician.service';
 import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { LocationService } from 'src/app/core/services/location.service';
+import { FormValidationService } from 'src/app/core/services/validation.service';
+import { ValidationMessages } from 'src/app/utilities/validation-messages';
 
 @Component({
   selector: 'app-edit',
@@ -19,6 +21,8 @@ export class EditComponent implements OnInit, OnChanges {
   public clinicsPaging: Pagination = new Pagination();
   public loadClinicsOptionId = 'loadClinics';
   public fixedClinicList = false;
+  public formErrors = {};
+  public submitTouched = false;
   private currentClinic: ClinicModel;
   private clinicsPageSize = 10;
   private clientLongitude = 0;
@@ -34,10 +38,11 @@ export class EditComponent implements OnInit, OnChanges {
   @Output('editCompleted') public onEditCompleted = new EventEmitter<any>();
 
   constructor(
-    private clinicianService: ClinicianService,
     private clinicService: ClinicService,
     private bookingService: BookingService,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private clinicianService: ClinicianService,
+    private formValidationService: FormValidationService) { }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.model) {
@@ -51,6 +56,7 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   public onSubmit(): void {
+    this.submitTouched = true;
     if (this.canSubmit()) {
       if (this.isPatient) {
         this.setValuesFromFormToModel();
@@ -67,6 +73,9 @@ export class EditComponent implements OnInit, OnChanges {
               this.onEditCompleted.emit(result.Data);
             }
           });
+    } else {
+      this.formValidationService.markFormGroupTouched();
+      this.validateForm();
     }
   }
 
@@ -139,6 +148,10 @@ export class EditComponent implements OnInit, OnChanges {
     }
   }
 
+  private validateForm(): void {
+    this.formErrors = this.formValidationService.validateForm();
+  }
+
   private createForm(): void {
     const bookingClinic = this.clinics
         ? this.clinics.find(c => c.Id === this.model.clinicId)
@@ -153,6 +166,8 @@ export class EditComponent implements OnInit, OnChanges {
       clinic: new FormControl(bookingClinic ? bookingClinic.Id : null, [Validators.required]),
       clinician: new FormControl(bookingClinician ? bookingClinician.Id : null, [Validators.required])
     });
+    this.formValidationService.setFormData(this.editForm, ValidationMessages.Booking);
+    this.editForm.valueChanges.subscribe(() => this.validateForm());
   }
 
   private updateClinics(long = 0, lat = 0): void {

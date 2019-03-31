@@ -160,7 +160,7 @@ export class BookingComponent implements OnInit {
     this.bookingService.removeBookings(id)
       .subscribe(result => {
         if (!result.Data) {
-          console.log(result.StatusCode, ' ', result.ErorrMessage); // TO DO add toast notification
+          console.log(result.StatusCode, ' ', result.ErrorMessage); // TO DO add toast notification
         } else if (!result.Data.IsRemoved) {
           console.log(result.Data.Description); // TO DO add toast notification
         } else {

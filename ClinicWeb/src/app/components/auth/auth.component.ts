@@ -14,6 +14,7 @@ import { CommonConstants } from 'src/app/utilities/common-constants';
 })
 export class AuthComponent implements OnInit {
   public loginForm: FormGroup;
+  public validationMsg: string;
   private model: LoginModel = new LoginModel();
   private returnUrl: string = null;
   private visibleAuthentication = true;
@@ -36,7 +37,11 @@ export class AuthComponent implements OnInit {
     this.tokenService.removeTokens();
     this.accountService.authenticate(this.model)
       .subscribe(result => {
-        this.router.navigate([this.returnUrl || '/booking']);
+        if (result && result.Data) {
+          this.router.navigate([this.returnUrl || '/booking']);
+        } else {
+          this.validationMsg = result.ErrorMessage;
+        }
       });
   }
 

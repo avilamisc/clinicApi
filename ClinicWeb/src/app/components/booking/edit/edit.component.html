@@ -5,19 +5,28 @@
   <div m-close-button>CLOSE</div>
   <div class="edit-container">
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.reciept">
         <label>
             Reciept:
           <input type="text" class="form-control" formControlName="reciept">
+          <div *ngIf="submitTouched && formErrors.reciept" class="validation-error-text">
+            {{formErrors.reciept}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.name">
         <label>
             Name:
           <input type="text" class="form-control" formControlName="name">
+          <div *ngIf="submitTouched && formErrors.name" class="validation-error-text">
+            {{formErrors.name}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group" *ngIf="isPatient">
+      <div class="form-label-group" *ngIf="isPatient"
+           [class.form-label-failed-group]="submitTouched && formErrors.clinic">
         <label>
             Clinic:
           <select class="form-control"
@@ -29,9 +38,13 @@
                     [attr.value]="clinic.Id">{{clinic.Name}}</option>
             <option *ngIf="!fixedClinicList" [attr.value]="loadClinicsOptionId">Upload Clinics...</option>
           </select>
+          <div *ngIf="submitTouched && formErrors.clinic" class="validation-error-text">
+            {{formErrors.clinic}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group" *ngIf="isPatient">
+      <div class="form-label-group" *ngIf="isPatient"
+           [class.form-label-failed-group]="submitTouched && formErrors.clinician">
         <label>
             Clinician:
           <select class="form-control" formControlName="clinician">
@@ -40,6 +53,9 @@
                     [attr.selected]="clinician.id === model.clinicianId"
                     [attr.value]="clinician.Id">{{clinician.Name}}</option>
           </select>
+          <div *ngIf="submitTouched && formErrors.clinician" class="validation-error-text">
+            {{formErrors.clinician}}
+          </div>
         </label>
       </div>
       <app-edit-document [model]="model"></app-edit-document>
@@ -49,6 +65,6 @@
     <button type="submit"
             class="btn btn-primary"
             (click)="onSubmit()"
-            [disabled]="!canSubmit()">Submit</button>
+            [disabled]="submitTouched && !canSubmit()">Submit</button>
   </div>
 </app-modal>

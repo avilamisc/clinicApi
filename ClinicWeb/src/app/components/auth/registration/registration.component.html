@@ -1,28 +1,44 @@
 <div class="auth-form registration-container">
   <div *ngIf="!isMainInfoSubmitted" class="main-information">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.userName">
         <label>
           User Name:
           <input type="text" class="form-control" formControlName="userName">
+          <div *ngIf="submitTouched && formErrors.userName" class="validation-error-text">
+            {{formErrors.userName}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.userSurname">
         <label>
           User Surname:
           <input type="text" class="form-control" formControlName="userSurname">
+          <div *ngIf="submitTouched && formErrors.userSurname" class="validation-error-text">
+            {{formErrors.userSurname}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.userMail">
         <label>
           User Email:
           <input type="email" class="form-control" formControlName="userMail">
+          <div *ngIf="submitTouched && formErrors.userMail" class="validation-error-text">
+            {{formErrors.userMail}}
+          </div>
         </label>
       </div>
-      <div class="form-label-group">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.password">
         <label>
           Password:
           <input type="password" class="form-control" formControlName="password">
+          <div *ngIf="submitTouched && formErrors.password" class="validation-error-text">
+            {{formErrors.password}}
+          </div>
         </label>
       </div>
       <div class="form-label-group">
@@ -40,10 +56,10 @@
       </div>
       <button type="submit"
               class="btn btn-secondary navigation-button"
-              [disabled]="!registerForm.valid">
+              [disabled]="submitTouched && !registerForm.valid">
         Continue
       </button>
-      <button type="submit"
+      <button type="button"
               class="btn btn-secondary navigation-button"
               (click)="cancelRegistration()">
         Cancel
