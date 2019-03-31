@@ -69,7 +69,7 @@ export class RegistrationComponent implements OnInit {
           Validators.required,
           Validators.email
         ]),
-      password: new FormControl(this.registrationModel.Password, 
+      password: new FormControl(this.registrationModel.Password,
         [
           Validators.required,
           Validators.minLength(ValidatorLengths.passwordMin),
