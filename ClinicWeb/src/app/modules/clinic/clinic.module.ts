@@ -7,6 +7,7 @@ import { TableModule } from '../shared/table/table.module';
 import { ClinicRoutingModule } from './clinic-routing.module';
 import { ClinicInfoComponent } from 'src/app/components/clinic/clinic-info/clinic-info.component';
 import { RaitingModule } from '../shared/raiting/star/star.module';
+import { EditBookingModule } from '../booking/edit-booking.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { RaitingModule } from '../shared/raiting/star/star.module';
     TableModule,
     ClinicRoutingModule,
     RaitingModule,
+    EditBookingModule,
     AgmCoreModule.forRoot({
       apiKey: ''
       /* apiKey is required, unless you are a

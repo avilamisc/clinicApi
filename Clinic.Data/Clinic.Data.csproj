@@ -160,10 +160,6 @@
     <Compile Include="Migrations\201903222219114_AddNotificationTable.Designer.cs">
       <DependentUpon>201903222219114_AddNotificationTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903241036369_UpdateCreationDateTypeToOffset.cs" />
-    <Compile Include="Migrations\201903241036369_UpdateCreationDateTypeToOffset.Designer.cs">
-      <DependentUpon>201903241036369_UpdateCreationDateTypeToOffset.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -238,9 +234,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903222219114_AddNotificationTable.resx">
       <DependentUpon>201903222219114_AddNotificationTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903241036369_UpdateCreationDateTypeToOffset.resx">
-      <DependentUpon>201903241036369_UpdateCreationDateTypeToOffset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
