@@ -116,6 +116,7 @@ export class EditComponent implements OnInit, OnChanges {
       this.fixedClinicList = true;
       if (this.clinics.length === 1) {
         const clinicId = this.clinics[0].Id;
+        this.editForm.controls['clinic'].setValue(clinicId);
         this.filterClinicians(clinicId);
       }
     } else {
