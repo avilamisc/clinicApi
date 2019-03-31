@@ -53,9 +53,8 @@
                       Upload more
                     </div>
                   </li>
-                  <li>
-                    <span class="list-group-item list-group-upload"
-                          *ngIf="notifications.length <= 0">No Events</span>
+                  <li *ngIf="notifications.length <= 0">
+                    <span class="list-group-item list-group-upload">No Events</span>
                   </li>
                 </ul>
              </p-accordionTab>
