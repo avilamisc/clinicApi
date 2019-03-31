@@ -71,7 +71,7 @@ export class ClinicComponent implements OnInit {
       .subscribe(result => {
         if (result.Data !== null) {
           // redirect or add toast notification
-          console.log('added: ', result)
+          console.log('added: ', result);
         }
       });
 
