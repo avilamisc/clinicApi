@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/core/services/auth/account.service';
 import { LoginModel } from 'src/app/core/models';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { CommonConstants } from 'src/app/utilities/common-constants';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-auth',
@@ -14,10 +15,8 @@ import { CommonConstants } from 'src/app/utilities/common-constants';
 })
 export class AuthComponent implements OnInit {
   public loginForm: FormGroup;
-  public validationMsg: string;
   private model: LoginModel = new LoginModel();
   private returnUrl: string = null;
-  private visibleAuthentication = true;
   // tslint:disable-next-line:max-line-length
   public googleAuthLink = 'https://accounts.google.com/o/oauth2/auth?redirect_uri=http://localhost:54865/api/account/google&response_type=code&client_id=433233257213-uoailm7olq0d7r1ds4pdlm0thqp4invk.apps.googleusercontent.com&scope=https://www.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile';
 
@@ -25,7 +24,8 @@ export class AuthComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private tokenService: TokenService,
-    private accountService: AccountService) { }
+    private accountService: AccountService,
+    private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
     this.createForm();
@@ -39,8 +39,9 @@ export class AuthComponent implements OnInit {
       .subscribe(result => {
         if (result && result.Data) {
           this.router.navigate([this.returnUrl || '/booking']);
+          this.notificationService.successAuthentication();
         } else {
-          this.validationMsg = result.ErrorMessage;
+          this.notificationService.showApiErrorMessage(result);
         }
       });
   }

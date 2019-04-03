@@ -13,6 +13,7 @@ import { AuthInterceptor } from '../../core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from '../../core/interceptors/error.interceptor';
 import { BootstrapModule } from '../bootstrap/bootstrap.module';
 import { LoaderInterceptorService } from 'src/app/core/interceptors/loader.interceptor';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LoaderInterceptorService } from 'src/app/core/interceptors/loader.inter
     BootstrapModule,
     ToolbarModule,
     BrowserAnimationsModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },

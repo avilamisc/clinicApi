@@ -10,6 +10,7 @@ import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { LocationService } from 'src/app/core/services/location.service';
 import { FormValidationService } from 'src/app/core/services/validation.service';
 import { ValidationMessages } from 'src/app/utilities/validation-messages';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-edit',
@@ -42,7 +43,8 @@ export class EditComponent implements OnInit, OnChanges {
     private bookingService: BookingService,
     private locationService: LocationService,
     private clinicianService: ClinicianService,
-    private formValidationService: FormValidationService) { }
+    private formValidationService: FormValidationService,
+    private notificationService: ToastNotificationService) { }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.model) {
@@ -66,15 +68,20 @@ export class EditComponent implements OnInit, OnChanges {
         : this.bookingService.updateBookings(this.model)
           .subscribe(result => {
             if (result.Data !== null) {
+              this.notificationService.successMessage(
+                `You have successfuly update booking ${this.model.name}`);
               this.currentClinic = {
                 Id : result.Data.ClinicId,
                 Name : result.Data.ClinicName,
               };
               this.onEditCompleted.emit(result.Data);
+            } else {
+              this.notificationService.showApiErrorMessage(result);
             }
           });
     } else {
       this.formValidationService.markFormGroupTouched();
+      this.notificationService.validationWarning();
       this.validateForm();
     }
   }

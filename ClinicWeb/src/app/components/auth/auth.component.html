@@ -1,9 +1,6 @@
   <form class="auth-form"
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()">
-    <div *ngIf="validationMsg" class="validation-error">
-      <span class="validation-text">{{validationMsg}}</span>
-    </div>
     <div class="form-label-group">
       <label type="email">
         Email:
