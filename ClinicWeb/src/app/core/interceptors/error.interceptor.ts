@@ -7,6 +7,7 @@ import { AccountService } from '../services/auth/account.service';
 import { RefreshTokenModel } from '../models';
 import { TokenService } from '../services/auth/token.service';
 import { ToastNotificationService } from '../services/notification.service';
+import { LoaderService } from '../services/loader/loader.service';
 
 
 @Injectable()
@@ -14,10 +15,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(
         private tokenService: TokenService,
+        private loaderService: LoaderService,
         private accountService: AccountService,
         private notificationService: ToastNotificationService) { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401) {
                 if (this.tokenService.getRefreshToken() === null) {
@@ -47,9 +49,14 @@ export class ErrorInterceptor implements HttpInterceptor {
                         }
                     }));
             } else {
+                this.hideLoader();
                 const errorMsg = err.error.message || err.statusText;
                 this.notificationService.showErrorMessage(errorMsg, err.status);
             }
         }));
     }
+
+    private hideLoader(): void {
+        this.loaderService.hide();
+      }
 }

@@ -10,7 +10,7 @@ import { LoaderService } from '../services/loader/loader.service';
 export class LoaderInterceptorService implements HttpInterceptor {
   constructor(private loaderService: LoaderService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
     return next.handle(req).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
@@ -21,12 +21,15 @@ export class LoaderInterceptorService implements HttpInterceptor {
         this.onEnd();
     }));
   }
+
   private onEnd(): void {
     this.hideLoader();
   }
+
   private showLoader(): void {
     this.loaderService.show();
   }
+
   private hideLoader(): void {
     this.loaderService.hide();
   }
