@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { PatientRegistrationModel } from 'src/app/core/models/auth/registration/patient-registration.model';
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
+
 @Component({
   selector: 'app-patient-registration',
   templateUrl: './patient-registration.component.html',
@@ -18,10 +20,11 @@ export class PatientRegistrationComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private tokenService: TokenService,
     private accountService: AccountService,
-    private tokenService: TokenService) { }
+    private notificationService: ToastNotificationService) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.createForm();
   }
 
@@ -31,8 +34,15 @@ export class PatientRegistrationComponent implements OnInit {
       this.tokenService.removeTokens();
       this.accountService.registerPatient(this.patientModel)
         .subscribe(result => {
-          this.router.navigate([this.returnUrl || '/booking']);
+          if (result.Data) {
+            this.router.navigate([this.returnUrl || '/booking']);
+            this.notificationService.successRegistration();
+          } else {
+            this.notificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
+          }
         });
+    } else {
+      this.notificationService.validationWarning();
     }
   }
 

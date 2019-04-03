@@ -11,6 +11,7 @@ import { PatientBookingTableConfiguration,
          ClinicianBookingTableConfiguration } from './table-config';
 import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { Column } from 'src/app/core/models/table/column.model';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-booking',
@@ -36,8 +37,9 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private bookingService: BookingService,
     private documentService: DocumentService,
-    private bookingService: BookingService) { }
+    private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
     this.initializeBookings();
@@ -63,6 +65,9 @@ export class BookingComponent implements OnInit {
         .subscribe(result => {
           if (result.Data !== null) {
             this.bookings.splice(0, 0, result.Data);
+            this.notificationService.createBooking();
+          } else {
+            this.notificationService.showApiErrorMessage(result);
           }
         });
     } else {
@@ -143,11 +148,15 @@ export class BookingComponent implements OnInit {
       value: newRate
     };
     this.bookingService.updateBookingRate(updateModel)
-      .subscribe(() => {
-        this.uploadBookings({
-          pageNumber: this.currentPage,
-          pageCount: this.tableRowAmount
-        });
+      .subscribe((result) => {
+        if (result.Data) {
+          this.uploadBookings({
+            pageNumber: this.currentPage,
+            pageCount: this.tableRowAmount
+          });
+        } else {
+          this.notificationService.showApiErrorMessage(result);
+        }
       });
   }
 
@@ -160,13 +169,17 @@ export class BookingComponent implements OnInit {
     this.bookingService.removeBookings(id)
       .subscribe(result => {
         if (!result.Data) {
-          console.log(result.StatusCode, ' ', result.ErrorMessage); // TO DO add toast notification
+          this.notificationService.showApiErrorMessage(result);
         } else if (!result.Data.IsRemoved) {
-          console.log(result.Data.Description); // TO DO add toast notification
+          this.notificationService.cannotDelete(result.Data.Description);
         } else {
           const bookingIndex = this.bookings.findIndex(b => b.Id === id);
           if (bookingIndex !== -1) {
+            this.notificationService.successMessage(
+              `Successfuly remove booking - ${this.bookings[bookingIndex].Name}`);
             this.bookings.splice(bookingIndex, 1);
+          } else {
+            this.notificationService.successMessage('Successfuly remove booking');
           }
         }
       });

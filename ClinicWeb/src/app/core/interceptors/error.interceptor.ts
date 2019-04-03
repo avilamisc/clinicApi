@@ -6,6 +6,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { AccountService } from '../services/auth/account.service';
 import { RefreshTokenModel } from '../models';
 import { TokenService } from '../services/auth/token.service';
+import { ToastNotificationService } from '../services/notification.service';
 
 
 @Injectable()
@@ -13,7 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(
         private tokenService: TokenService,
-        private accountService: AccountService) { }
+        private accountService: AccountService,
+        private notificationService: ToastNotificationService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
@@ -44,10 +46,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                             return empty();
                         }
                     }));
+            } else {
+                const errorMsg = err.error.message || err.statusText;
+                this.notificationService.showErrorMessage(errorMsg, err.status);
             }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
         }));
     }
 }

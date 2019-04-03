@@ -8,6 +8,7 @@ import { BookingService } from 'src/app/core/services/booking/booking.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { User } from 'src/app/core/models/user/user.model';
 import { UserRoles } from 'src/app/utilities/user-roles';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-clinic',
@@ -31,7 +32,8 @@ export class ClinicComponent implements OnInit {
     private userService: UserService,
     private clinicService: ClinicService,
     private bookingService: BookingService,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
     this.initializeLocation();
@@ -65,8 +67,9 @@ export class ClinicComponent implements OnInit {
     this.bookingService.createBookings(newBooking)
       .subscribe(result => {
         if (result.Data !== null) {
-          // redirect or add toast notification
-          console.log('added: ', result);
+          this.notificationService.createBooking();
+        } else {
+          this.notificationService.showApiErrorMessage(result);
         }
       });
 

@@ -6,6 +6,7 @@ import { RegistrationModel } from 'src/app/core/models/auth/registration/registr
 import { CommonConstants, ValidatorLengths, CommonRegEx } from 'src/app/utilities/common-constants';
 import { FormValidationService } from 'src/app/core/services/validation.service';
 import { ValidationMessages } from 'src/app/utilities/validation-messages';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-registration',
@@ -24,7 +25,8 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService) { }
+    private formValidationService: FormValidationService,
+    private notificationService: ToastNotificationService) { }
 
   ngOnInit() {
     this.createForm();
@@ -39,6 +41,7 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.formValidationService.markFormGroupTouched();
       this.validateForm();
+      this.notificationService.validationWarning();
     }
   }
 

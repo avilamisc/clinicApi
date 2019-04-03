@@ -7,6 +7,8 @@ import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { AccountService } from 'src/app/core/services/auth/account.service';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
+
 @Component({
   selector: 'app-clinician-registration',
   templateUrl: './clinician-registration.component.html',
@@ -24,8 +26,9 @@ export class ClinicianRegistrationComponent implements OnInit {
   constructor(
     private router: Router,
     private tokenService: TokenService,
+    private clinicService: ClinicService,
     private accountService: AccountService,
-    private clinicService: ClinicService) { }
+    private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
     this.initializeClinics();
@@ -43,8 +46,15 @@ export class ClinicianRegistrationComponent implements OnInit {
       this.tokenService.removeTokens();
       this.accountService.registerClinician(this.clinicianModel)
         .subscribe(result => {
-          this.router.navigate([this.returnUrl || '/booking']);
+          if (result.Data) {
+            this.router.navigate([this.returnUrl || '/booking']);
+            this.notificationService.successRegistration();
+          } else {
+            this.notificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
+          }
         });
+    } else {
+      this.notificationService.validationWarning();
     }
   }
 
