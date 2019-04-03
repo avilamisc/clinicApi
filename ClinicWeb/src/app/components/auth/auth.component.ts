@@ -41,7 +41,7 @@ export class AuthComponent implements OnInit {
           this.router.navigate([this.returnUrl || '/booking']);
           this.notificationService.successAuthentication();
         } else {
-          this.notificationService.showApiErrorMessage(result)
+          this.notificationService.showApiErrorMessage(result);
         }
       });
   }

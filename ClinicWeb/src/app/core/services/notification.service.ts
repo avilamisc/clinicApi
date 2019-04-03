@@ -9,11 +9,11 @@ export class ToastNotificationService {
     constructor(private toastr: ToastrManager) { }
 
     public showErrorMessage(errorMsg: string, statsCode: number): void {
-        this.toastr.errorToastr(errorMsg, `Oops - !${statsCode}`)
+        this.toastr.errorToastr(errorMsg, `Oops - !${statsCode}`);
     }
 
     public showApiErrorMessage(response: ApiResponse<any>): void {
-        this.toastr.errorToastr(response.ErrorMessage, `Oops - !${response.StatusCode}`)
+        this.toastr.errorToastr(response.ErrorMessage, `Oops - !${response.StatusCode}`);
     }
 
     public successAuthentication(): void {
@@ -25,7 +25,7 @@ export class ToastNotificationService {
     }
 
     public validationWarning(): void {
-        this.toastr.warningToastr('Please correctly set up all necessary fields.')
+        this.toastr.warningToastr('Please correctly set up all necessary fields.');
     }
 
     public successMessage(msg: string): void {
@@ -33,7 +33,7 @@ export class ToastNotificationService {
     }
 
     public cannotDelete(msg: string): void {
-        this.toastr.errorToastr(msg, 'Cannot delete!')
+        this.toastr.errorToastr(msg, 'Cannot delete!');
     }
 
     public createBooking(): void {
