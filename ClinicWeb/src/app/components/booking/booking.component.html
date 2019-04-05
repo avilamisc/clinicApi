@@ -25,14 +25,20 @@
 
 <ng-template let-data="data" #rateColumn>
   <div>
-    <app-rating [rating]="getCountOfStart(data?.ClinicianRate, data)"
-                [subRating]="data?.BookingRate"
+    <app-rating [rating]="data?.BookingRate"
                 [itemId]="data?.Id"
                 (ratingClick)="updateRate(data?.Id, $event?.rating)"></app-rating>
   </div>
 </ng-template>
 
 <ng-template let-data="data" #actionsColumn>
+  <div>
+    <button class="btn btn-danger"
+            (click)="removeBooking($event, data?.Id)">Remove</button>
+  </div>
+</ng-template>
+
+<ng-template let-data="data" #clinicianColumn>
   <div>
     <button class="btn btn-danger"
             (click)="removeBooking($event, data?.Id)">Remove</button>
