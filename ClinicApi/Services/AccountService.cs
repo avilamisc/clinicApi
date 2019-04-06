@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using Clinic.Core.DtoModels;
 using Clinic.Core.DtoModels.Account;
 using Clinic.Core.Encryption;
 using Clinic.Core.Entities;
@@ -81,7 +83,13 @@ namespace ClinicApi.Services
 
             try
             {
-                var user = await _unitOfWork.ClinicianRepository.CreateClinicianAsync(clinicianRegistrationDto);
+                var user = _unitOfWork.ClinicianRepository.CreateClinicianAsync(clinicianRegistrationDto);
+                await _unitOfWork.SaveChangesAsync();
+
+                var notificationDtos = CreateNotifications(user.ClinicClinicians, user.Id, $"{user.Name} {user.Surname}");
+                _unitOfWork.NotificationRepository.CreateNotifications(notificationDtos);
+                await _unitOfWork.SaveChangesAsync();
+
                 var loginResult = await GenerateTokenAsync(user);
 
                 return ApiResponse<LoginResultModel>.Ok(loginResult);
@@ -164,6 +172,22 @@ namespace ClinicApi.Services
             catch (Exception)
             {
                 return ApiResponse<LoginResultModel>.InternalError();
+            }
+        }
+
+        private IEnumerable<CreateNotificationDto> CreateNotifications(
+            IEnumerable<ClinicClinician> clinicClinicians, int userId, string userName)
+        {
+            foreach (var clinicClinician in clinicClinicians)
+            {
+                yield return new CreateNotificationDto
+                {
+                    AuthorId = userId,
+                    Content = $"{userName} has just assigned for your clinic!",
+                    CreationDate = DateTime.Now,
+                    IsRead = false,
+                    UserId = clinicClinician.ClinicId
+                };
             }
         }
 

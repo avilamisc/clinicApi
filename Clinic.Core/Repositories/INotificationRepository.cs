@@ -12,5 +12,6 @@ namespace Clinic.Core.Repositories
             PagingDto pagingDto);
 
         Notification CreateNotification(CreateNotificationDto dtoModel);
+        IEnumerable<Notification> CreateNotifications(IEnumerable<CreateNotificationDto> dtoModels);
     }
 }

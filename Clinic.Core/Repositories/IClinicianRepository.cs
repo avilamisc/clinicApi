@@ -9,6 +9,6 @@ namespace Clinic.Core.Repositories
     public interface IClinicianRepository: IRepository<Clinician>
     {
         Task<IEnumerable<ClinicianDto>> GetCliniciansAsync(int? clinicId);
-        Task<Clinician> CreateClinicianAsync(ClinicianRegistrationDto registrationDto);
+        Clinician CreateClinicianAsync(ClinicianRegistrationDto registrationDto);
     }
 }

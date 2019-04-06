@@ -22,7 +22,7 @@ namespace Clinic.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<Clinician> CreateClinicianAsync(ClinicianRegistrationDto registrationDto)
+        public Clinician CreateClinicianAsync(ClinicianRegistrationDto registrationDto)
         {
             var clinician = new Clinician
             {
@@ -37,7 +37,6 @@ namespace Clinic.Data.Repositories
 
             _context.ClinicClinicians.AddRange(clinicClinicians);
             _context.Clinicians.Add(clinician);
-            await _context.SaveChangesAsync();
 
             return clinician;
         }
