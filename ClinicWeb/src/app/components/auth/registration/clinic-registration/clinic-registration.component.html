@@ -1,7 +1,7 @@
 <div class="auth-form patient-registration-container">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-label-group"
-         [class.form-label-failed-group]="submitTouched && formErrors.city">
+         [class.form-label-failed-group]="submitTouched && formErrors.name">
       <label>
         Name:
         <input type="text" class="form-control" formControlName="name">

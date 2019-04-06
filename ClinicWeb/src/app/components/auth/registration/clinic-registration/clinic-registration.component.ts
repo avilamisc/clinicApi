@@ -24,7 +24,7 @@ export class ClinicRegistrationComponent implements OnInit {
   public longitude = 0;
   public markerIconUrl: string;
   public submitTouched = false;
-  public formErrors = {};
+  public formErrors: any = {};
 
   constructor(
     private router: Router,
