@@ -1,4 +1,5 @@
 export const UserRoles = {
     Patient:  'Patient',
-    Clinician: 'Clinician'
+    Clinician: 'Clinician',
+    Clinic: 'Clinic'
 };

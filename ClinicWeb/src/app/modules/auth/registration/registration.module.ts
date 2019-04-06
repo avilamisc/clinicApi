@@ -11,19 +11,29 @@ import {
 import {
   ClinicianRegistrationComponent
 } from 'src/app/components/auth/registration/clinician-registration/clinician-registration.component';
+import { ClinicRegistrationComponent } from 'src/app/components/auth/registration/clinic-registration/clinic-registration.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
     RegistrationComponent,
     PatientRegistrationComponent,
-    ClinicianRegistrationComponent
+    ClinicianRegistrationComponent,
+    ClinicRegistrationComponent
   ],
   imports: [
     CommonModule,
     RegistrationRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: ''
+      /* apiKey is required, unless you are a
+      premium customer, in which case you can
+      use clientId
+      */
+    })
   ]
 })
 export class RegistrationModule { }

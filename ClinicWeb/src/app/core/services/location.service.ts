@@ -17,5 +17,9 @@ export class LocationService implements OnInit {
             this.userLatitude = location.coords.latitude;
         });
     }
+
+    public getMapIconUrl(): string {
+        return `assets/images/4.png`;
+    }
 }
 

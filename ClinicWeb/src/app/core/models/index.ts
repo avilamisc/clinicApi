@@ -18,3 +18,4 @@ export * from './paging-result.model';
 export * from './notification/create-notification.model';
 export * from './notification/notification.model';
 export * from './notification/update-notification.model';
+export * from './auth/registration/clinic-registration.model';

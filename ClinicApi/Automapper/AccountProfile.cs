@@ -29,8 +29,8 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.UserMail, options => options.MapFrom(c => c[nameof(AdminRegisterModel.UserMail)]))
                 .ForMember(p => p.Password, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Password)]))
                 .ForMember(p => p.Name, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Name)]))
-                .ForMember(p => p.Lat, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Lat)]))
-                .ForMember(p => p.Long, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Long)]))
+                .ForMember(p => p.Lat, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Lat)].Replace('.', ',')))
+                .ForMember(p => p.Long, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Long)].Replace('.', ',')))
                 .ForMember(p => p.City, options => options.MapFrom(c => c[nameof(AdminRegisterModel.City)]));
 
             CreateMap<ClinicianRegisterModel, ClinicianRegistrationDto>()

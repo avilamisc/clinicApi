@@ -1,0 +1,57 @@
+<div class="auth-form patient-registration-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-label-group"
+         [class.form-label-failed-group]="submitTouched && formErrors.city">
+      <label>
+        Name:
+        <input type="text" class="form-control" formControlName="name">
+        <div *ngIf="submitTouched && formErrors.name" class="validation-error-text">
+          {{formErrors.name}}
+        </div>
+      </label>
+    </div>
+    <div class="form-label-group"
+         [class.form-label-failed-group]="submitTouched && formErrors.city">
+      <label>
+        City:
+        <input type="text" class="form-control" formControlName="city">
+        <div *ngIf="submitTouched && formErrors.city" class="validation-error-text">
+          {{formErrors.city}}
+        </div>
+      </label>
+    </div>
+    <div class="form-label-group">
+      <label>
+        Location:
+        <div class="map-container">
+          <agm-map
+            [zoomControl]="false"
+            [latitude]="latitude"
+            [longitude]="longitude"
+            [disableDoubleClickZoom]="true"
+            [fullscreenControl]="true">
+              <agm-marker
+                [iconUrl]="markerIconUrl"
+                [latitude]="latitude"
+                [longitude]="longitude"
+                [markerDraggable]="true"
+                (dragEnd)="updateLocation($event.coords.lat, $event.coords.lng)" >
+              </agm-marker>
+          </agm-map>
+        </div>
+      </label>
+    </div>
+    <div>
+      <button type="submit"
+              class="btn btn-secondary navigation-button"
+              [disabled]="submitTouched && !registerForm.valid">
+        Submit
+      </button>
+      <button type="button"
+              class="btn btn-secondary navigation-button"
+              (click)="movePreviousStep()">
+        Back
+      </button>
+    </div>
+  </form>
+</div>

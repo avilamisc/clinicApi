@@ -7,6 +7,7 @@ import { CommonConstants, ValidatorLengths, CommonRegEx } from 'src/app/utilitie
 import { FormValidationService } from 'src/app/core/services/validation.service';
 import { ValidationMessages } from 'src/app/utilities/validation-messages';
 import { ToastNotificationService } from 'src/app/core/services/notification.service';
+import { UserRoles } from 'src/app/utilities/user-roles';
 
 @Component({
   selector: 'app-registration',
@@ -17,10 +18,11 @@ export class RegistrationComponent implements OnInit {
   public registrationModel = new RegistrationModel();
   public registerForm: FormGroup;
   public isMainInfoSubmitted = false;
-  public isPatient = true;
+  public userRole = "Patient";
   public returnUrl: string = null;
   public formErrors = {};
   public submitTouched = false;
+  public userRoles = UserRoles;
 
   constructor(
     private router: Router,
@@ -28,9 +30,21 @@ export class RegistrationComponent implements OnInit {
     private formValidationService: FormValidationService,
     private notificationService: ToastNotificationService) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.createForm();
     this.initializeReturnUrl();
+  }
+
+  public get isPatient(): boolean {
+    return this.userRole === this.userRoles.Patient;
+  }
+
+  public get isClinician(): boolean {
+    return this.userRole === this.userRoles.Clinician;
+  }
+
+  public get isClinic(): boolean {
+    return this.userRole === this.userRoles.Clinic;
   }
 
   public onSubmit(): void {
@@ -47,6 +61,7 @@ export class RegistrationComponent implements OnInit {
 
   public showMainRegistration(): void {
     this.isMainInfoSubmitted = false;
+    this.userRoles.Clinician
   }
 
   public cancelRegistration(): void {
@@ -78,7 +93,7 @@ export class RegistrationComponent implements OnInit {
           Validators.minLength(ValidatorLengths.passwordMin),
           Validators.pattern(CommonRegEx.passwordAlphaNumber)
         ]),
-      userRole: new FormControl(this.isPatient ? 'Patient' : 'Clinician')
+      userRole: new FormControl(this.userRole)
     });
     this.formValidationService.setFormData(this.registerForm, ValidationMessages.RegistrationBase);
     this.registerForm.valueChanges.subscribe(() => this.validateForm());
@@ -89,7 +104,7 @@ export class RegistrationComponent implements OnInit {
     this.registrationModel.UserName = values.userName + ' ' + values.userSurname;
     this.registrationModel.UserMail = values.userMail;
     this.registrationModel.Password = values.password;
-    this.isPatient = values.userRole === 'Patient';
+    this.userRole = values.userRole;
   }
 
   private initializeReturnUrl(): void {
