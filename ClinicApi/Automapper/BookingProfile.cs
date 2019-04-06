@@ -75,7 +75,7 @@ namespace ClinicApi.Automapper
                 .ForMember(
                     b => b.PatientName,
                     options => options.MapFrom(m => $"{m.Patient.Name} {m.Patient.Surname}"))
-                .ForMember(b => b.ClinicName, options => options.MapFrom(m => m.ClinicClinician.Clinic.Name))
+                .ForMember(b => b.ClinicName, options => options.MapFrom(m => m.ClinicClinician.Clinic.ClinicName))
                 .ForMember(b => b.ClinicId, options => options.MapFrom(m => m.ClinicClinician.ClinicId))
                 .ForMember(b => b.ClinicianId, options => options.MapFrom(m => m.ClinicClinician.ClinicianId))
                 .ForMember(b => b.ClinicianRate, options => options.MapFrom(m => m.ClinicClinician.Clinician.Rate));
