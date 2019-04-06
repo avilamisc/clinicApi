@@ -51,5 +51,18 @@ namespace Clinic.Data.Repositories
 
             return entity;
         }
+
+        public IEnumerable<Notification> CreateNotifications(IEnumerable<CreateNotificationDto> dtoModels)
+        {
+            var newEntities = new List<Notification>();
+            foreach (var dto in dtoModels)
+            {
+                newEntities.Add(_mapper.Mapper.Map<Notification>(dto));
+            }
+
+            _context.Notifications.AddRange(newEntities);
+
+            return newEntities;
+        }
     }
 }

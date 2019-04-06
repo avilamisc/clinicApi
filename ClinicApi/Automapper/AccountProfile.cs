@@ -24,6 +24,15 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.ClinicsId, options => options.MapFrom(
                     c => JsonConvert.DeserializeObject<ICollection<int>>(c[nameof(ClinicianRegisterModel.ClinicsId)])));
 
+        CreateMap<NameValueCollection, AdminRegisterModel>()
+                .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(AdminRegisterModel.UserName)]))
+                .ForMember(p => p.UserMail, options => options.MapFrom(c => c[nameof(AdminRegisterModel.UserMail)]))
+                .ForMember(p => p.Password, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Password)]))
+                .ForMember(p => p.Name, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Name)]))
+                .ForMember(p => p.Lat, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Lat)].Replace('.', ',')))
+                .ForMember(p => p.Long, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Long)].Replace('.', ',')))
+                .ForMember(p => p.City, options => options.MapFrom(c => c[nameof(AdminRegisterModel.City)]));
+
             CreateMap<ClinicianRegisterModel, ClinicianRegistrationDto>()
                 .ForMember(dto => dto.Email, options => options.MapFrom(m => m.UserMail))
                 .ForMember(dto => dto.Name, options => options.MapFrom(m => m.UserName.Split(' ')[0]))

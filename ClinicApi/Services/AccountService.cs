@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using Clinic.Core.DtoModels;
 using Clinic.Core.DtoModels.Account;
 using Clinic.Core.Encryption;
 using Clinic.Core.Entities;
 using Clinic.Core.Enums;
+using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
@@ -20,6 +23,9 @@ namespace ClinicApi.Services
 {
     public class AccountService : IAccountService
     {
+        private const int MaxLongitudeValue = 180;
+        private const int MaxLatidudeValue = 90;
+
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IApiMapper _mapper;
@@ -77,8 +83,61 @@ namespace ClinicApi.Services
 
             try
             {
-                var user = await _unitOfWork.ClinicianRepository.CreateClinicianAsync(clinicianRegistrationDto);
+                var user = _unitOfWork.ClinicianRepository.CreateClinicianAsync(clinicianRegistrationDto);
+                await _unitOfWork.SaveChangesAsync();
+
+                var notificationDtos = CreateNotifications(user.ClinicClinicians, user.Id, $"{user.Name} {user.Surname}");
+                _unitOfWork.NotificationRepository.CreateNotifications(notificationDtos);
+                await _unitOfWork.SaveChangesAsync();
+
                 var loginResult = await GenerateTokenAsync(user);
+
+                return ApiResponse<LoginResultModel>.Ok(loginResult);
+            }
+            catch (Exception)
+            {
+                return ApiResponse<LoginResultModel>.InternalError();
+            }
+        }
+
+        public async Task<ApiResponse<LoginResultModel>> RegisterAdminAsync(HttpRequest request)
+        {
+            var registerModel = _mapper.SafeMap<AdminRegisterModel>(request.Form);
+            if (registerModel == null)
+            {
+                return ApiResponse<LoginResultModel>.BadRequest();
+            }
+
+            var validationError = ValidateRegistrationModel(registerModel);
+            if (validationError != null)
+            {
+                return validationError;
+            }
+
+            var clinicValidationError = ValidateAdminClinicRegistrationModel(registerModel);
+            if (clinicValidationError != null)
+            {
+                return validationError;
+            }
+
+            var newClinic = new Clinic.Core.Entities.Clinic
+            {
+                Name = registerModel.UserName.Split(' ')[0],
+                Surname = registerModel.UserName.Split(' ')[1],
+                Email = registerModel.UserMail,
+                Role = UserRole.Admin,
+                PasswordHash = Hashing.HashPassword(registerModel.Password),
+                City = registerModel.City,
+                Geolocation = GeographyExtensions.CreatePoint(registerModel.Long, registerModel.Lat),
+                ClinicName = registerModel.Name
+            };
+
+            try
+            {
+                var newUser = _unitOfWork.ClinicRepository.Create(newClinic);
+                await _unitOfWork.SaveChangesAsync();
+
+                var loginResult = await GenerateTokenAsync(newUser);
 
                 return ApiResponse<LoginResultModel>.Ok(loginResult);
             }
@@ -116,6 +175,22 @@ namespace ClinicApi.Services
             }
         }
 
+        private IEnumerable<CreateNotificationDto> CreateNotifications(
+            IEnumerable<ClinicClinician> clinicClinicians, int userId, string userName)
+        {
+            foreach (var clinicClinician in clinicClinicians)
+            {
+                yield return new CreateNotificationDto
+                {
+                    AuthorId = userId,
+                    Content = $"{userName} has just assigned for your clinic!",
+                    CreationDate = DateTime.Now,
+                    IsRead = false,
+                    UserId = clinicClinician.ClinicId
+                };
+            }
+        }
+
         private ApiResponse<LoginResultModel> ValidateRegistrationModel(UserRegisterModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Password))
@@ -127,6 +202,29 @@ namespace ClinicApi.Services
             {
                 return ApiResponse<LoginResultModel>
                     .ValidationError("User name is empty and must contains name and surname");
+            }
+
+            return null;
+        }
+
+        private ApiResponse<LoginResultModel> ValidateAdminClinicRegistrationModel(AdminRegisterModel registerModel)
+        {
+            if (string.IsNullOrWhiteSpace(registerModel.Name))
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Clinic Name is necessary.");
+            }
+
+            if (registerModel.Long > MaxLongitudeValue || registerModel.Long < -MaxLongitudeValue)
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Longitude is incorrect.");
+            }
+
+            if (registerModel.Lat > MaxLatidudeValue || registerModel.Lat < -MaxLatidudeValue)
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Latitude is incorrect.");
             }
 
             return null;

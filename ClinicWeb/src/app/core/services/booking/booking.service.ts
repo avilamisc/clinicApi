@@ -26,7 +26,7 @@ export class BookingService extends BaseService {
     private http: HttpClient,
     private userService: UserService,
     private notificationService: NotificationService) {
-    super();
+    super(notificationService);
   }
 
   public getPatientBookings(paging: Pagination): Observable<ApiResponse<PagingResult<PatientBookingModel>>> {
@@ -45,11 +45,9 @@ export class BookingService extends BaseService {
       .pipe(map(result => {
         if (result && result.Data) {
           const user = this.userService.getUserFromLocalStorage();
-          this.createNotification(
+          this.withNotification(
             `${user.UserName} has updated your booking ${result.Data.Name}.`,
-            user.Id,
-            result.Data
-          );
+            this.getUserId(user.Id, result.Data));
         }
         return result;
       }));
@@ -65,11 +63,9 @@ export class BookingService extends BaseService {
       .pipe(map(result => {
         if (result && result.Data) {
           const user = this.userService.getUserFromLocalStorage();
-          this.createNotification(
+          this.withNotification(
             `${user.UserName} created new booking for your (${result.Data.Name}).`,
-            user.Id,
-            result.Data
-          );
+            this.getUserId(user.Id, result.Data));
         }
         return result;
       }));
@@ -80,11 +76,9 @@ export class BookingService extends BaseService {
       .pipe(map(result => {
         if (result && result.Data) {
           const user = this.userService.getUserFromLocalStorage();
-          this.createNotification(
+          this.withNotification(
             `${user.UserName} ${result.Data.Description} ${result.Data.Value.Name}.`,
-            user.Id,
-            result.Data.Value
-          );
+            this.getUserId(user.Id, result.Data.Value));
         }
         return result;
       }));
@@ -100,16 +94,9 @@ export class BookingService extends BaseService {
     return formData;
   }
 
-  private createNotification(message: string, userId: number, booking: BookingModelResult): void {
-    const notificationUserId =
-      userId === booking.PatientId
+  private getUserId(userId: number, booking: BookingModelResult): number {
+    return userId === booking.PatientId
         ? booking.ClinicianId
         : booking.PatientId;
-    const newNotification: CreateNotificationModel = {
-      Content: message,
-      UserId: notificationUserId
-    };
-    this.notificationService.createNotification(newNotification)
-      .subscribe();
   }
 }

@@ -46,12 +46,16 @@
           Role:
           <br />
           <label class="radio-button-label">
-            <input type="radio" value="Patient" formControlName="userRole">
+            <input type="radio" [value]="userRoles.Patient" formControlName="userRole">
             <span>Patient</span>
           </label>
           <label class="radio-button-label">
-            <input type="radio" value="Clinician" formControlName="userRole">
+            <input type="radio" [value]="userRoles.Clinician" formControlName="userRole">
             <span>Clinician</span>
+          </label>
+          <label class="radio-button-label">
+            <input type="radio" [value]="userRoles.Clinic" formControlName="userRole">
+            <span>Clinic</span>
           </label>
         </label>
       </div>
@@ -72,9 +76,14 @@
                             [model]="registrationModel"
                             (cancel)="showMainRegistration()">
   </app-patient-registration>
-  <app-clinician-registration *ngIf="isMainInfoSubmitted && !isPatient"
+  <app-clinician-registration *ngIf="isMainInfoSubmitted && isClinician"
                               [returnUrl]="returnUrl"
                               [model]="registrationModel"
                               (cancel)="showMainRegistration()">
   </app-clinician-registration>
+  <app-clinic-registration *ngIf="isMainInfoSubmitted && isClinic"
+                           [returnUrl]="returnUrl"
+                           [model]="registrationModel"
+                           (cancel)="showMainRegistration()">
+  </app-clinic-registration>
 </div>

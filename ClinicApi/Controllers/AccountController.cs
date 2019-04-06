@@ -82,5 +82,21 @@ namespace ClinicApi.Controllers
                 "api/account/register/clinician",
                 await _accountService.RegisterClinicianAsync(HttpContext.Current.Request));
         }
+
+        [HttpPost]
+        [Route("api/account/register/admin")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(AdminRegisterModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
+        public async Task<IHttpActionResult> RegisterClinicAdmin()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return Ok(ApiResponse<LoginResultModel>.UnsupportedMediaType());
+            }
+
+            return Created(
+                "api/account/register/admin",
+                await _accountService.RegisterAdminAsync(HttpContext.Current.Request));
+        }
     }
 }

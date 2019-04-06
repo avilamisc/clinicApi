@@ -16,6 +16,14 @@ export const ValidationMessages = {
             pattern: 'Password should contain numbers and lettes'
         }
     },
+    RegistrationClinic: {
+        name: {
+            required: 'Name is required.',
+        },
+        city: {
+            required: 'City is required.'
+        },
+    },
     Booking: {
         reciept: {
             required: 'Receipt is required.'

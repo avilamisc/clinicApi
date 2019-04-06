@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import decode from 'jwt-decode';
 
-import { ApiResponse, LoginModel, LoginResultModel, RefreshTokenModel } from '../../models';
+import { ApiResponse, LoginModel, LoginResultModel, RefreshTokenModel, ClinicRegistrationModel } from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { TokenService } from './token.service';
 import { User } from '../../models/user/user.model';
@@ -38,6 +38,15 @@ export class AccountService extends BaseService {
   public registerPatient(model: PatientRegistrationModel): Observable<ApiResponse<LoginResultModel>> {
     const multipartData = this.getMultipartData(model);
     return this.http.post<ApiResponse<LoginResultModel>>(ApiRoutes.registerPatient, multipartData)
+      .pipe(map(result => {
+        this.updateLoginationData(result.Data);
+        return result;
+      }));
+  }
+
+  public registerClinic(model: ClinicRegistrationModel): Observable<ApiResponse<LoginResultModel>> {
+    const multipartData = this.getMultipartData(model);
+    return this.http.post<ApiResponse<LoginResultModel>>(ApiRoutes.registerClinic, multipartData)
       .pipe(map(result => {
         this.updateLoginationData(result.Data);
         return result;
