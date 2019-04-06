@@ -18,7 +18,7 @@ export class RegistrationComponent implements OnInit {
   public registrationModel = new RegistrationModel();
   public registerForm: FormGroup;
   public isMainInfoSubmitted = false;
-  public userRole = "Patient";
+  public userRole = 'Patient';
   public returnUrl: string = null;
   public formErrors = {};
   public submitTouched = false;
@@ -61,7 +61,6 @@ export class RegistrationComponent implements OnInit {
 
   public showMainRegistration(): void {
     this.isMainInfoSubmitted = false;
-    this.userRoles.Clinician
   }
 
   public cancelRegistration(): void {

@@ -35,7 +35,7 @@ export class ClinicRegistrationComponent implements OnInit {
     private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
-    this.initializeLocation()
+    this.initializeLocation();
     this.createForm();
   }
 
