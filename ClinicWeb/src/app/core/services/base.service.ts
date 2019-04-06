@@ -1,4 +1,10 @@
+import { CreateNotificationModel } from "../models";
+import { NotificationService } from "./notification/notification.service";
+
 export class BaseService {
+    constructor(private notificationBaseService: NotificationService = null) {
+    }
+    
     protected getMultipartData(model: any): FormData {
         const formData = new FormData();
 
@@ -15,5 +21,14 @@ export class BaseService {
         }
 
         return formData;
-      }
+    }
+
+    protected withNotification(message: string, userId: number): void {
+        const newNotification: CreateNotificationModel = {
+            Content: message,
+            UserId: userId
+        };
+        this.notificationBaseService.createNotification(newNotification)
+            .subscribe();
+    }
 }
