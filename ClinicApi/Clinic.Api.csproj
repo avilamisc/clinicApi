@@ -181,6 +181,7 @@
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Interfaces\INotificationService.cs" />
     <Compile Include="Interfaces\IServiceBase.cs" />
+    <Compile Include="Models\Account\Registration\AdminResultModel.cs" />
     <Compile Include="Models\Account\Registration\ClinicianRegisterModel.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
     <Compile Include="Models\Account\Registration\PatientRegisterModel.cs" />

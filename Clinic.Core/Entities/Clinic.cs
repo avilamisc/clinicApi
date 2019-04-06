@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 
 namespace Clinic.Core.Entities
 {
-    public class Clinic
+    public class Clinic : User
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string ClinicName { get; set; }
         public string City { get; set; }
         public DbGeography Geolocation { get; set; }
 

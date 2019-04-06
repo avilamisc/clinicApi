@@ -160,6 +160,18 @@
     <Compile Include="Migrations\201903222219114_AddNotificationTable.Designer.cs">
       <DependentUpon>201903222219114_AddNotificationTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904061011100_RemoveCliniClinicClinicianForeignKey.cs" />
+    <Compile Include="Migrations\201904061011100_RemoveCliniClinicClinicianForeignKey.Designer.cs">
+      <DependentUpon>201904061011100_RemoveCliniClinicClinicianForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904061021187_InheritClinicFromUser.cs" />
+    <Compile Include="Migrations\201904061021187_InheritClinicFromUser.Designer.cs">
+      <DependentUpon>201904061021187_InheritClinicFromUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904061040395_AddClinicClinicianForeignKey.cs" />
+    <Compile Include="Migrations\201904061040395_AddClinicClinicianForeignKey.Designer.cs">
+      <DependentUpon>201904061040395_AddClinicClinicianForeignKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -234,6 +246,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903222219114_AddNotificationTable.resx">
       <DependentUpon>201903222219114_AddNotificationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904061011100_RemoveCliniClinicClinicianForeignKey.resx">
+      <DependentUpon>201904061011100_RemoveCliniClinicClinicianForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904061021187_InheritClinicFromUser.resx">
+      <DependentUpon>201904061021187_InheritClinicFromUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904061040395_AddClinicClinicianForeignKey.resx">
+      <DependentUpon>201904061040395_AddClinicClinicianForeignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

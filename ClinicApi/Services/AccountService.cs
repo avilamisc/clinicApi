@@ -7,6 +7,7 @@ using Clinic.Core.DtoModels.Account;
 using Clinic.Core.Encryption;
 using Clinic.Core.Entities;
 using Clinic.Core.Enums;
+using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
@@ -20,6 +21,9 @@ namespace ClinicApi.Services
 {
     public class AccountService : IAccountService
     {
+        private const int MaxLongitudeValue = 180;
+        private const int MaxLatidudeValue = 90;
+
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IApiMapper _mapper;
@@ -88,6 +92,53 @@ namespace ClinicApi.Services
             }
         }
 
+        public async Task<ApiResponse<LoginResultModel>> RegisterAdminAsync(HttpRequest request)
+        {
+            var registerModel = _mapper.SafeMap<AdminRegisterModel>(request.Form);
+            if (registerModel == null)
+            {
+                return ApiResponse<LoginResultModel>.BadRequest();
+            }
+
+            var validationError = ValidateRegistrationModel(registerModel);
+            if (validationError != null)
+            {
+                return validationError;
+            }
+
+            var clinicValidationError = ValidateAdminClinicRegistrationModel(registerModel);
+            if (clinicValidationError != null)
+            {
+                return validationError;
+            }
+
+            var newClinic = new Clinic.Core.Entities.Clinic
+            {
+                Name = registerModel.UserName.Split(' ')[0],
+                Surname = registerModel.UserName.Split(' ')[1],
+                Email = registerModel.UserMail,
+                Role = UserRole.Admin,
+                PasswordHash = Hashing.HashPassword(registerModel.Password),
+                City = registerModel.City,
+                Geolocation = GeographyExtensions.CreatePoint(registerModel.Long, registerModel.Lat),
+                ClinicName = registerModel.Name
+            };
+
+            try
+            {
+                var newUser = _unitOfWork.ClinicRepository.Create(newClinic);
+                await _unitOfWork.SaveChangesAsync();
+
+                var loginResult = await GenerateTokenAsync(newUser);
+
+                return ApiResponse<LoginResultModel>.Ok(loginResult);
+            }
+            catch (Exception)
+            {
+                return ApiResponse<LoginResultModel>.InternalError();
+            }
+        }
+
         public async Task<ApiResponse<LoginResultModel>> RegisterPatientAsync(HttpRequest request)
         {
             var registerModel = _mapper.SafeMap<PatientRegisterModel>(request.Form);
@@ -127,6 +178,29 @@ namespace ClinicApi.Services
             {
                 return ApiResponse<LoginResultModel>
                     .ValidationError("User name is empty and must contains name and surname");
+            }
+
+            return null;
+        }
+
+        private ApiResponse<LoginResultModel> ValidateAdminClinicRegistrationModel(AdminRegisterModel registerModel)
+        {
+            if (string.IsNullOrWhiteSpace(registerModel.Name))
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Clinic Name is necessary.");
+            }
+
+            if (registerModel.Long > MaxLongitudeValue || registerModel.Long < -MaxLongitudeValue)
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Longitude is incorrect.");
+            }
+
+            if (registerModel.Lat > MaxLatidudeValue || registerModel.Lat < -MaxLatidudeValue)
+            {
+                return ApiResponse<LoginResultModel>
+                    .ValidationError("Latitude is incorrect.");
             }
 
             return null;
