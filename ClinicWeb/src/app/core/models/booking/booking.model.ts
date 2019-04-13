@@ -2,9 +2,12 @@ import { DocumentModel } from './document.model';
 
 export class BookingModel {
     Id: number;
-    Reciept: string;
     Name: string;
     Documents: DocumentModel[];
+    HeartRate: number;
+    Weight: number;
+    Height: number;
+    PatientDescription: string;
 }
 
 export class BookingModelResult extends BookingModel {
@@ -13,7 +16,7 @@ export class BookingModelResult extends BookingModel {
     ClinicName: string;
     PatientId?: number;
     PatientName?: string;
-    PatientLocation?: string;
+    PatientAge?: string;
     ClinicianId?: number;
     ClinicianName?: string;
     ClinicianRate?: number;

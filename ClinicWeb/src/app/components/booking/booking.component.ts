@@ -31,6 +31,7 @@ export class BookingComponent implements OnInit {
   private isAddingNewBooking = false;
   private currentPage = 0;
 
+  @ViewChild('updateDateColumn') updateDateColumn: TemplateRef<any>;
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
   @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
   @ViewChild('actionsColumn') actionsColumn: TemplateRef<any>;
@@ -50,7 +51,10 @@ export class BookingComponent implements OnInit {
     this.editedBookingIndex = index;
     this.bookingToUpdate = new UpdateBookingModel();
     this.bookingToUpdate.id = booking.Id;
-    this.bookingToUpdate.reciept = booking.Reciept;
+    this.bookingToUpdate.HeartRate = booking.HeartRate;
+    this.bookingToUpdate.Weight = booking.Weight;
+    this.bookingToUpdate.Height = booking.Height;
+    this.bookingToUpdate.PatientDescription = booking.PatientDescription;
     this.bookingToUpdate.name = booking.Name;
     this.bookingToUpdate.documents = booking.Documents;
     this.bookingToUpdate.clinicId = (booking as PatientBookingModel).ClinicId;
@@ -99,6 +103,10 @@ export class BookingComponent implements OnInit {
     const docConfig = config.get('Documents');
     docConfig.RowContent = this.documentsColumn;
     config.set('Documents', docConfig);
+
+    const updateDateConfig = config.get('UpdateDate');
+    updateDateConfig.RowContent = this.updateDateColumn;
+    config.set('UpdateDate', updateDateConfig);
 
     const actionsConfig = config.get('Actions');
     actionsConfig.RowContent = this.actionsColumn;

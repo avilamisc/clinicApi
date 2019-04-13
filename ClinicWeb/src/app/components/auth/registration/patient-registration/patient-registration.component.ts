@@ -6,6 +6,8 @@ import { PatientRegistrationModel } from 'src/app/core/models/auth/registration/
 import { AccountService } from 'src/app/core/services/auth/account.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { ToastNotificationService } from 'src/app/core/services/notification.service';
+import { FormValidationService } from 'src/app/core/services/validation.service';
+import { ValidationMessages } from 'src/app/utilities/validation-messages';
 
 @Component({
   selector: 'app-patient-registration',
@@ -17,11 +19,16 @@ export class PatientRegistrationComponent implements OnInit {
   @Input('returnUrl') public returnUrl: string = null;
   @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
   public registerForm: FormGroup;
+  public formErrors = {};
+  public submitTouched = false;
+  public minDateFrom = new Date(1919, 1, 1);
+  public maxDateFrom = new Date(Date.now());
 
   constructor(
     private router: Router,
     private tokenService: TokenService,
     private accountService: AccountService,
+    private formValidationService: FormValidationService,
     private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
@@ -29,6 +36,7 @@ export class PatientRegistrationComponent implements OnInit {
   }
 
   public onSubmit(): void {
+    this.submitTouched = true;
     if (this.registerForm.valid) {
       this.setValuesFromFormToModel();
       this.tokenService.removeTokens();
@@ -42,23 +50,37 @@ export class PatientRegistrationComponent implements OnInit {
           }
         });
     } else {
+      this.formValidationService.markFormGroupTouched();
       this.notificationService.validationWarning();
+      this.validateForm();
     }
   }
 
   public movePreviousStep(): void {
     this.cancelRegistrtion.emit();
   }
+  
+  public onSelectBornDate(bornDate: Date): void {
+    if (bornDate) {
+      this.registerForm.get('bornDate').patchValue(bornDate, { emitEvent: false });
+    }
+  }
+
+  private validateForm(): void {
+    this.formErrors = this.formValidationService.validateForm();
+  }
 
   private createForm(): void {
     this.registerForm = new FormGroup({
-      location: new FormControl(this.patientModel.Location, [Validators.required])
+      bornDate: new FormControl(this.patientModel.BornDate as Date, [Validators.required])
     });
+    this.formValidationService.setFormData(this.registerForm, ValidationMessages.RegistrationPatient);
+    this.registerForm.valueChanges.subscribe(() => this.validateForm());
   }
 
   private setValuesFromFormToModel(): void {
     const values = this.registerForm.getRawValue();
 
-    this.patientModel.Location = values.location;
+    this.patientModel.BornDate = values.bornDate;
   }
 }

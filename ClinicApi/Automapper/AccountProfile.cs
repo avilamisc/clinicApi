@@ -2,6 +2,7 @@
 using Clinic.Core.DtoModels.Account;
 using ClinicApi.Models.Account.Registration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -15,7 +16,7 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(PatientRegisterModel.UserName)]))
                 .ForMember(p => p.UserMail, options => options.MapFrom(c => c[nameof(PatientRegisterModel.UserMail)]))
                 .ForMember(p => p.Password, options => options.MapFrom(c => c[nameof(PatientRegisterModel.Password)]))
-                .ForMember(p => p.Location, options => options.MapFrom(c => c[nameof(PatientRegisterModel.Location)]));
+                .ForMember(p => p.BornDate, options => options.MapFrom(c => DateTime.Now));
 
             CreateMap<NameValueCollection, ClinicianRegisterModel>()
                 .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(ClinicianRegisterModel.UserName)]))

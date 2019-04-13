@@ -25,6 +25,7 @@ namespace ClinicApi.Services
     {
         private const int MaxLongitudeValue = 180;
         private const int MaxLatidudeValue = 90;
+        private static readonly DateTime MinPatientBornDate = new DateTime(1919, 1, 1);
 
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
@@ -156,7 +157,16 @@ namespace ClinicApi.Services
             }
 
             var validationError = ValidateRegistrationModel(registerModel);
-            if (validationError != null) return validationError;
+            if (validationError != null)
+            {
+                return validationError;
+            }
+
+            var patientValidationError = ValidatePatientRegistrationModel(registerModel);
+            if (validationError != null)
+            {
+                return validationError;
+            }
 
             var patientRegistrationDto = _mapper.Mapper.Map<PatientRegistrationDto>(registerModel);
             patientRegistrationDto.PasswordHash = Hashing.HashPassword(registerModel.Password);
@@ -189,6 +199,17 @@ namespace ClinicApi.Services
                     UserId = clinicClinician.ClinicId
                 };
             }
+        }
+
+        private ApiResponse<LoginResultModel> ValidatePatientRegistrationModel(PatientRegisterModel registerModel)
+        {
+            if (registerModel.BornDate > DateTime.Now ||
+                registerModel.BornDate < MinPatientBornDate)
+            {
+                return ApiResponse<LoginResultModel>.ValidationError("Wrong born date.");
+            }
+
+            return null;
         }
 
         private ApiResponse<LoginResultModel> ValidateRegistrationModel(UserRegisterModel model)

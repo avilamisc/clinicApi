@@ -23,6 +23,12 @@
   </div>
 </ng-template>
 
+<ng-template let-data="data" #updateDateColumn>
+  <span>
+    {{data.UpdateDate | date:"MM.dd.yyyy 'at' hh:mm"}}
+  </span>
+</ng-template>
+
 <ng-template let-data="data" #rateColumn>
   <div>
     <app-rating [rating]="data?.BookingRate"

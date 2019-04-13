@@ -1,4 +1,6 @@
-﻿namespace ClinicApi.Models.Booking
+﻿using System;
+
+namespace ClinicApi.Models.Booking
 {
     public class ClinicianBookingModel : BookingModel
     {
@@ -6,6 +8,8 @@
         public string ClinicName { get; set; }
         public int PatientId { get; set; }
         public string PatientName { get; set; }
-        public string PatientLocation { get; set; }
+        public string PatientAge { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

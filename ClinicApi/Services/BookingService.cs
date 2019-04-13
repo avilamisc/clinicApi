@@ -106,6 +106,8 @@ namespace ClinicApi.Services
             var newBooking = _mapper.Mapper.Map<Booking>(bookingModel);
             newBooking.PatientId = userId;
             newBooking.ClinicClinicianId = clinicClinician.Id;
+            newBooking.CreationDate = DateTime.Now;
+            newBooking.UpdateDate = DateTime.Now;
             AddNewDocuments(request, userId, newBooking);
 
             var result = _unitOfWork.BookingRepository.Create(newBooking);
@@ -154,6 +156,7 @@ namespace ClinicApi.Services
             _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
+            booking.UpdateDate = DateTime.Now;
             AddNewDocuments(request, userId, booking);
             booking.Documents = booking.Documents
                 .Where(b => bookingModel.DeletedDocuments.FirstOrDefault(d => d.Id == b.Id) == null)
@@ -198,6 +201,7 @@ namespace ClinicApi.Services
             try
             {
                 booking.Rate = rateValue;
+                booking.UpdateDate = DateTime.Now;
                  _unitOfWork.BookingRepository.UpdateWithRecalculatingRateAsync(booking);
                 await _unitOfWork.SaveChangesAsync();
             }
@@ -213,10 +217,11 @@ namespace ClinicApi.Services
             ClinicClinician clinicClinician,
             IEnumerable<Claim> claims)
         {
-            if (!model.IsValid())
+            var validationError = model.CheckValidationError();
+            if (validationError != null)
             {
                 return ApiResponse<BookingResultModel>
-                    .ValidationError(BookingErrorMessages.ValidationDataError);
+                    .ValidationError($"{BookingErrorMessages.ValidationDataError}\n {validationError}");
             }
 
             if (clinicClinician == null)

@@ -1,15 +1,30 @@
 <div class="patient-registration-container">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-label-group">
+    <div class="form-label-group"
+         [class.form-label-failed-group]="submitTouched && formErrors.bornDate">
       <label>
-        Location:
-        <input type="text" class="form-control" formControlName="location">
+        Born date:
+        <div class="date-picker-container">
+          <p-calendar [maxDate]="maxDateFrom"
+                      [yearNavigator]="true"
+                      [touchUI]="true"
+                      [showIcon]="true"
+                      dateFormat="dd.mm.yy"
+                      showButtonBar="true"
+                      yearRange="1919:2030"
+                      (onSelect)="onSelectBornDate($event)"
+                      formControlName="bornDate">
+          </p-calendar>
+        </div>
+        <div *ngIf="submitTouched && formErrors.bornDate" class="validation-error-text">
+          {{formErrors.bornDate}}
+        </div>
       </label>
     </div>
     <div>
       <button type="submit"
               class="btn btn-secondary navigation-button"
-              [disabled]="!registerForm.valid">
+              [disabled]="submitTouched && !registerForm.valid">
         Submit
       </button>
       <button type="button"

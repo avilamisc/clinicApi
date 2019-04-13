@@ -1,4 +1,5 @@
 ﻿using ClinicApi.Models.Document;
+using System;
 using System.Collections.Generic;
 
 namespace ClinicApi.Models.Booking
@@ -6,19 +7,47 @@ namespace ClinicApi.Models.Booking
     public class BookingModel
     {
         public int Id { get; set; }
-        public string Reciept { get; set; }
         public string Name { get; set; }
+        public float? Rate { get; set; }
+        public short? HeartRate { get; set; }
+        public float? Weight { get; set; }
+        public short? Height { get; set; }
+        public string PatientDescription { get; set; }
         public ICollection<DocumentModel> Documents { get; set; }
 
-        public virtual bool IsValid()
+        private const float minHeartRateValue = 20;
+        private const float maxHeartRateValue = 200;
+        private const float maxRateValue = 5;
+
+        public virtual string CheckValidationError()
         {
-            if (string.IsNullOrWhiteSpace(Reciept)) return false;
+            if (HeartRate.HasValue &&
+                (HeartRate.Value <= minHeartRateValue || HeartRate.Value >= maxHeartRateValue))
+            {
+                return $"Heart rate should be in range [{minHeartRateValue},{maxHeartRateValue}].";
+            }
 
-            if (string.IsNullOrWhiteSpace(Name)) return false;
+            if (Rate.HasValue && (Rate.Value < 0 || Rate.Value >= maxRateValue))
+            {
+                return $"Rate should be in range [{0},{maxRateValue}].";
+            }
 
-            if (Documents == null) return false;
+            if (Weight.HasValue && Weight < 0)
+            {
+                return $"Weight should be positive value.";
+            }
 
-            return true;
+            if (Height.HasValue && Height < 0)
+            {
+                return $"Height should be positive value.";
+            }
+
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                return $"Name is missed.";
+            }
+
+            return null;
         }
     }
 }

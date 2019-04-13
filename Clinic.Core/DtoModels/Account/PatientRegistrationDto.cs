@@ -1,7 +1,9 @@
-﻿namespace Clinic.Core.DtoModels.Account
+﻿using System;
+
+namespace Clinic.Core.DtoModels.Account
 {
     public class PatientRegistrationDto: UserRegistrationDto
     {
-        public string Location { get; set; }
+        public DateTime BornDate { get; set; }
     }
 }

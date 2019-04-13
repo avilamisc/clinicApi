@@ -24,6 +24,11 @@ export const ValidationMessages = {
             required: 'City is required.'
         },
     },
+    RegistrationPatient: {
+        bornDate: {
+            required: 'Born date is required.',
+        }
+    },
     Booking: {
         reciept: {
             required: 'Receipt is required.'

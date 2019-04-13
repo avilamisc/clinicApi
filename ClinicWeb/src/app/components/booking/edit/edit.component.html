@@ -6,16 +6,6 @@
   <div class="edit-container">
     <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
       <div class="form-label-group"
-           [class.form-label-failed-group]="submitTouched && formErrors.reciept">
-        <label>
-            Reciept:
-          <input type="text" class="form-control" formControlName="reciept">
-          <div *ngIf="submitTouched && formErrors.reciept" class="validation-error-text">
-            {{formErrors.reciept}}
-          </div>
-        </label>
-      </div>
-      <div class="form-label-group"
            [class.form-label-failed-group]="submitTouched && formErrors.name">
         <label>
             Name:
@@ -23,6 +13,31 @@
           <div *ngIf="submitTouched && formErrors.name" class="validation-error-text">
             {{formErrors.name}}
           </div>
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+            Heart Rate:
+          <input type="text" class="form-control" formControlName="heartRate">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+            Weight:
+          <input type="text" class="form-control" formControlName="weight">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+            Height:
+          <input type="text" class="form-control" formControlName="height">
+        </label>
+      </div>
+      <div class="form-label-group">
+        <label>
+            Patient Description:
+          <textarea type="text" class="form-control" formControlName="patientDescription">
+          </textarea>
         </label>
       </div>
       <div class="form-label-group" *ngIf="isPatient"

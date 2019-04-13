@@ -122,7 +122,10 @@ export class EditComponent implements OnInit, OnChanges {
   private setValuesFromFormToModel(): void {
     const values = this.editForm.getRawValue();
     this.model.name = values.name;
-    this.model.reciept = values.reciept;
+    this.model.HeartRate = values.heartRate;
+    this.model.Weight = values.weight;
+    this.model.Height = values.height;
+    this.model.PatientDescription = values.patientDescription;
     this.model.clinicId = values.clinic;
     this.model.clinicianId = values.clinician;
   }
@@ -168,7 +171,10 @@ export class EditComponent implements OnInit, OnChanges {
       : null;
 
     this.editForm = new FormGroup({
-      reciept: new FormControl(this.model.reciept, [Validators.required]),
+      heartRate: new FormControl(this.model.HeartRate),
+      height: new FormControl(this.model.Height),
+      weight: new FormControl(this.model.Weight),
+      patientDescription: new FormControl(this.model.PatientDescription),
       name: new FormControl(this.model.name, [Validators.required]),
       clinic: new FormControl(bookingClinic ? bookingClinic.Id : null, [Validators.required]),
       clinician: new FormControl(bookingClinician ? bookingClinician.Id : null, [Validators.required])

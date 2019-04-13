@@ -11,6 +11,12 @@ namespace Clinic.Data.Configurations
             HasKey(b => b.Id);
 
             Property(b => b.Name).IsRequired();
+            Property(b => b.CreationDate).IsRequired();
+            Property(b => b.UpdateDate).IsRequired();
+            Property(b => b.HeartRate).IsOptional();
+            Property(b => b.Height).IsOptional();
+            Property(b => b.Weight).IsOptional();
+            Property(b => b.PatientDescription).IsOptional();
             Property(b => b.Rate).IsOptional();
 
             HasRequired(b => b.ClinicClinician)

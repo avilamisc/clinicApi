@@ -172,6 +172,14 @@
     <Compile Include="Migrations\201904061040395_AddClinicClinicianForeignKey.Designer.cs">
       <DependentUpon>201904061040395_AddClinicClinicianForeignKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904071946233_RemovePatientLocationColumnAddBornDateColumn.cs" />
+    <Compile Include="Migrations\201904071946233_RemovePatientLocationColumnAddBornDateColumn.Designer.cs">
+      <DependentUpon>201904071946233_RemovePatientLocationColumnAddBornDateColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904112053451_UpdateBookingProperties.cs" />
+    <Compile Include="Migrations\201904112053451_UpdateBookingProperties.Designer.cs">
+      <DependentUpon>201904112053451_UpdateBookingProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClinicianRepository.cs" />
@@ -255,6 +263,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904061040395_AddClinicClinicianForeignKey.resx">
       <DependentUpon>201904061040395_AddClinicClinicianForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904071946233_RemovePatientLocationColumnAddBornDateColumn.resx">
+      <DependentUpon>201904071946233_RemovePatientLocationColumnAddBornDateColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904112053451_UpdateBookingProperties.resx">
+      <DependentUpon>201904112053451_UpdateBookingProperties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

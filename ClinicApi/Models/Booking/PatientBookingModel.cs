@@ -1,4 +1,6 @@
-﻿namespace ClinicApi.Models.Booking
+﻿using System;
+
+namespace ClinicApi.Models.Booking
 {
     public class PatientBookingModel : BookingModel
     {
@@ -8,12 +10,7 @@
         public string ClinicianName { get; set; }
         public float ClinicianRate { get; set; }
         public float? BookingRate { get; set; }
-
-        public override bool IsValid()
-        {
-            if (!base.IsValid()) return false;
-
-            return true;
-        }
+        public DateTime CreationDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

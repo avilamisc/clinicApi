@@ -2,7 +2,6 @@ import { DocumentModel } from './document.model';
 
 export class UpdateBookingModel {
     id: number;
-    reciept: string;
     name: string;
     documents: DocumentModel[];
     clinicId: number;
@@ -10,4 +9,8 @@ export class UpdateBookingModel {
     newFiles: any[] = [];
     deletedDocuments: DocumentModel[] = [];
     rate: number;
+    HeartRate: number;
+    Weight: number;
+    Height: number;
+    PatientDescription: string;
 }

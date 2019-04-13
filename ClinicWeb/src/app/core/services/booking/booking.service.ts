@@ -10,7 +10,6 @@ import {
   UpdateBookingModel,
   Pagination,
   PagingResult,
-  CreateNotificationModel,
   BookingModelResult} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { BaseService } from '../base.service';

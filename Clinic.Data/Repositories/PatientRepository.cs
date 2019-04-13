@@ -22,7 +22,7 @@ namespace Clinic.Data.Repositories
                 Role = registrationDto.Role,
                 Email = registrationDto.Email,
                 PasswordHash = registrationDto.PasswordHash,
-                Location = registrationDto.Location
+                BornDate = registrationDto.BornDate
             };
 
             _context.Patients.Add(patient);
