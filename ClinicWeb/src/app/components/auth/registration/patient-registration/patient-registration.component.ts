@@ -59,7 +59,7 @@ export class PatientRegistrationComponent implements OnInit {
   public movePreviousStep(): void {
     this.cancelRegistrtion.emit();
   }
-  
+
   public onSelectBornDate(bornDate: Date): void {
     if (bornDate) {
       this.registerForm.get('bornDate').patchValue(bornDate, { emitEvent: false });

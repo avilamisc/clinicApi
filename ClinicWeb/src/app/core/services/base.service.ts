@@ -17,9 +17,6 @@ export class BaseService {
                     }
                 } else if (model[property] instanceof Date) {
                     if (model[property] != null) {
-                        console.log((model[property]).toLocaleDateString,
-                        (model[property]).toUTCString,
-                        (model[property]).toLocaleDateString)
                         formData.append(property, (model[property]).toISOString());
                     }
                 } else {
