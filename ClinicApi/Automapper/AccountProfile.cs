@@ -16,7 +16,7 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(PatientRegisterModel.UserName)]))
                 .ForMember(p => p.UserMail, options => options.MapFrom(c => c[nameof(PatientRegisterModel.UserMail)]))
                 .ForMember(p => p.Password, options => options.MapFrom(c => c[nameof(PatientRegisterModel.Password)]))
-                .ForMember(p => p.BornDate, options => options.MapFrom(c => DateTime.Now));
+                .ForMember(p => p.BornDate, options => options.MapFrom(c => DateTime.Parse(c[nameof(PatientRegisterModel.BornDate)])));
 
             CreateMap<NameValueCollection, ClinicianRegisterModel>()
                 .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(ClinicianRegisterModel.UserName)]))

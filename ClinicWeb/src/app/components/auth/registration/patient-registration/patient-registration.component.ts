@@ -81,6 +81,6 @@ export class PatientRegistrationComponent implements OnInit {
   private setValuesFromFormToModel(): void {
     const values = this.registerForm.getRawValue();
 
-    this.patientModel.BornDate = values.bornDate;
+    this.patientModel.BornDate = new Date(values.bornDate);
   }
 }
