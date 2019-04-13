@@ -19,7 +19,7 @@ export class PatientRegistrationComponent implements OnInit {
   @Input('returnUrl') public returnUrl: string = null;
   @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
   public registerForm: FormGroup;
-  public formErrors = {};
+  public formErrors: any = {};
   public submitTouched = false;
   public minDateFrom = new Date(1919, 1, 1);
   public maxDateFrom = new Date(Date.now());
