@@ -1,12 +1,14 @@
-﻿using ClinicApi.Models.Document;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Clinic.Core.Enums;
+using ClinicApi.Models.Document;
 
 namespace ClinicApi.Models.Booking
 {
     public class BookingModel
     {
         public int Id { get; set; }
+        public Stage Stage { get; set; }
         public string Name { get; set; }
         public float? Rate { get; set; }
         public short? HeartRate { get; set; }

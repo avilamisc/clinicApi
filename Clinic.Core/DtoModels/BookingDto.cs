@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Clinic.Core.Enums;
+
 namespace Clinic.Core.DtoModels
 {
     public class BookingDto
     {
         public int Id { get; set; }
+        public Stage Stage { get; set; }
         public float? Rate { get; set; }
         public short? HeartRate { get; set; }
         public float? Weight { get; set; }

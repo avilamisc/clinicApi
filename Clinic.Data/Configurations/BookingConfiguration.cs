@@ -1,5 +1,6 @@
-﻿using Clinic.Core.Entities;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+
+using Clinic.Core.Entities;
 
 namespace Clinic.Data.Configurations
 {
@@ -13,6 +14,8 @@ namespace Clinic.Data.Configurations
             Property(b => b.Name).IsRequired();
             Property(b => b.CreationDate).IsRequired();
             Property(b => b.UpdateDate).IsRequired();
+            Property(b => b.Stage).IsRequired();
+
             Property(b => b.HeartRate).IsOptional();
             Property(b => b.Height).IsOptional();
             Property(b => b.Weight).IsOptional();

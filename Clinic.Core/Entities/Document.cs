@@ -1,8 +1,7 @@
 ﻿namespace Clinic.Core.Entities
 {
-    public class Document
+    public class Document : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string FilePath { get; set; }
 

@@ -53,7 +53,8 @@ namespace ClinicApi.Automapper
                 .ForMember(b => b.Patient, options => options.Ignore())
                 .ForMember(b => b.ClinicClinician, options => options.Ignore())
                 .ForMember(p => p.CreationDate, options => options.Ignore())
-                .ForMember(p => p.UpdateDate, options => options.Ignore());
+                .ForMember(p => p.UpdateDate, options => options.Ignore())
+                .ForMember(p => p.Stage, options => options.Ignore());
 
             CreateMap<NameValueCollection, PatientBookingModel>()
                 .ForMember(p => p.ClinicianId, options => options.MapFrom(c => c[nameof(PatientBookingModel.ClinicianId)]))

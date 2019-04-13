@@ -10,7 +10,8 @@ import {
   UpdateBookingModel,
   Pagination,
   PagingResult,
-  BookingModelResult} from '../../models';
+  BookingModelResult,
+  Stage} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { BaseService } from '../base.service';
 import { NotificationService } from '../notification/notification.service';
@@ -52,8 +53,12 @@ export class BookingService extends BaseService {
       }));
   }
 
-  public updateBookingRate(updateModel: any): Observable<ApiResponse<PatientBookingModel>> {
-    return this.http.patch<ApiResponse<PatientBookingModel>>(`${ApiRoutes.booking}/rate`, updateModel);
+  public updateBookingRate(updateModel: any): Observable<ApiResponse<number>> {
+    return this.http.patch<ApiResponse<number>>(`${ApiRoutes.booking}/rate`, updateModel);
+  }
+
+  public updateBookingStage(updateModel: any): Observable<ApiResponse<Stage>> {
+    return this.http.patch<ApiResponse<Stage>>(`${ApiRoutes.booking}/stage`, updateModel);
   }
 
   public createBookings(model: PatientBookingModel): Observable<ApiResponse<BookingModelResult>> {

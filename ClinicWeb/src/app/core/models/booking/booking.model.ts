@@ -1,5 +1,14 @@
 import { DocumentModel } from './document.model';
 
+export enum Stage {
+    Send = 1, // Patient send it but clinician didn`t approved it yet
+    Confirmed, // Clinician confirm it but haven`t sart working
+    InProgress, // Clinician set up all patients props
+    Rejected, // Clinician reject it at send stage
+    Canceled, // Clinician or patient has cancelled it
+    Completed // Clinician finish and set up Clinician decission property
+}
+
 export class BookingModel {
     Id: number;
     Name: string;
@@ -8,6 +17,7 @@ export class BookingModel {
     Weight: number;
     Height: number;
     PatientDescription: string;
+    Stage: Stage;
 }
 
 export class BookingModelResult extends BookingModel {

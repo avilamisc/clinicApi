@@ -1,20 +1,23 @@
-﻿using Clinic.Core.DtoModels;
-using Clinic.Core.Entities;
-using Clinic.Core.UnitOfWork;
-using ClinicApi.Automapper.Infrastructure;
-using ClinicApi.Infrastructure.Constants;
-using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
-using ClinicApi.Interfaces;
-using ClinicApi.Models;
-using ClinicApi.Models.Booking;
-using ClinicApi.Models.Pagination;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+
+using Clinic.Core.DtoModels;
+using Clinic.Core.Entities;
+using Clinic.Core.Enums;
+using Clinic.Core.UnitOfWork;
+using ClinicApi.Automapper.Infrastructure;
+using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
+using ClinicApi.Interfaces;
+using ClinicApi.Models;
+using ClinicApi.Models.Booking;
+using ClinicApi.Models.Notification;
+using ClinicApi.Models.Pagination;
+
 
 namespace ClinicApi.Services
 {
@@ -23,6 +26,7 @@ namespace ClinicApi.Services
         private readonly IApiMapper _mapper;
         private readonly IFileService _fileService;
         private readonly ITokenService _tokenService;
+        private readonly INotificationService _notificationService;
         private readonly IUnitOfWork _unitOfWork;
 
         private const float MaxRate = 5;
@@ -31,11 +35,13 @@ namespace ClinicApi.Services
             IApiMapper mapper,
             IFileService fileService,
             ITokenService tokenService,
+            INotificationService notificationService,
             IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _fileService = fileService;
             _tokenService = tokenService;
+            _notificationService = notificationService;
             _unitOfWork = unitOfWork;
         }
 
@@ -108,6 +114,7 @@ namespace ClinicApi.Services
             newBooking.ClinicClinicianId = clinicClinician.Id;
             newBooking.CreationDate = DateTime.Now;
             newBooking.UpdateDate = DateTime.Now;
+            newBooking.Stage = Stage.Send;
             AddNewDocuments(request, userId, newBooking);
 
             var result = _unitOfWork.BookingRepository.Create(newBooking);
@@ -153,7 +160,7 @@ namespace ClinicApi.Services
             var bookingsToDelete = booking.Documents
                 .Where(d => bookingModel.DeletedDocuments.FirstOrDefault(b => b.Id == d.Id) != null)
                 .ToList();
-            _mapper.Mapper.Map<BookingModel, Booking>(bookingModel, booking);
+            _mapper.Mapper.Map<UpdateBookingModel, Booking>(bookingModel, booking);
             booking.ClinicClinicianId = clinicClinician.Id;
             booking.PatientId = booking.PatientId;
             booking.UpdateDate = DateTime.Now;
@@ -172,6 +179,13 @@ namespace ClinicApi.Services
                 foreach (var file in bookingModel.DeletedDocuments)
                 {
                     _fileService.DeleteFile(file.FilePath);
+                }
+
+                if (CheckBookingForInProgressTage(booking))
+                {
+                    booking.Stage = Stage.InProgress;
+                    _unitOfWork.BookingRepository.Update(booking);
+                    await _unitOfWork.SaveChangesAsync();
                 }
 
                 return ApiResponse<BookingResultModel>.Ok(
@@ -198,10 +212,16 @@ namespace ClinicApi.Services
                 return ApiResponse<float>.BadRequest(BookingErrorMessages.UnexistingBooking);
             }
 
+            if (booking.Stage != Stage.Completed)
+            {
+                return ApiResponse<float>.ValidationError(BookingErrorMessages.CannotRateNotCompletedBooking);
+            }
+
             try
             {
                 booking.Rate = rateValue;
                 booking.UpdateDate = DateTime.Now;
+
                  _unitOfWork.BookingRepository.UpdateWithRecalculatingRateAsync(booking);
                 await _unitOfWork.SaveChangesAsync();
             }
@@ -210,6 +230,82 @@ namespace ClinicApi.Services
                 return new ApiResponse<float>(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
             }
             return ApiResponse<float>.Ok(booking.ClinicClinician.Clinician.Rate);
+        }
+
+        public async Task<ApiResponse<Stage>> UpdateStageAsync(IEnumerable<Claim> claims, int id, Stage newStage)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return new ApiResponse<Stage>(HttpStatusCode.BadRequest);
+            }
+
+            var booking = await _unitOfWork.BookingRepository.GetAsync(id, b => b.ClinicClinician);
+            if (booking == null)
+            {
+                return ApiResponse<Stage>.BadRequest(BookingErrorMessages.UnexistingBooking);
+            }
+
+            if (booking.PatientId != userId && booking.ClinicClinician.ClinicianId != userId)
+            {
+                return ApiResponse<Stage>.BadRequest(BookingErrorMessages.AccessIsDenied);
+            }
+
+            switch (newStage)
+            {
+                case Stage.Confirmed:
+                    if (booking.Stage != Stage.Send)
+                    {
+                        return ApiResponse<Stage>.ValidationError(BookingErrorMessages.CannotUpdateNotSendBooking);
+                    }
+                    break;
+                case Stage.InProgress:
+                    if (booking.Stage != Stage.Send && booking.Stage != Stage.Confirmed)
+                    {
+                        return ApiResponse<Stage>.ValidationError(BookingErrorMessages.CannotUpdateNotSendOrConfirmedBooking);
+                    }
+                    break;
+                case Stage.Rejected:
+                    if (booking.Stage != Stage.Send)
+                    {
+                        return ApiResponse<Stage>.ValidationError(BookingErrorMessages.CannotUpdateNotSendBooking);
+                    }
+                    break;
+                case Stage.Canceled:
+                    if (booking.Stage != Stage.Confirmed && booking.Stage != Stage.InProgress)
+                    {
+                        return ApiResponse<Stage>.ValidationError(BookingErrorMessages.CannotUpdateNotConfirmedOrInProgressBooking);
+                    }
+                    break;
+                case Stage.Completed:
+                    if (booking.Stage != Stage.InProgress)
+                    {
+                        return ApiResponse<Stage>.ValidationError(BookingErrorMessages.CannotUpdateNotInProgressBooking);
+                    }
+                    break;
+                default:
+                    return ApiResponse<Stage>.BadRequest();
+            }
+
+            try
+            {
+                booking.Stage = newStage;
+                _unitOfWork.BookingRepository.Update(booking);
+                await _unitOfWork.SaveChangesAsync();
+
+                var notification = new CreateNotificationModel
+                {
+                    Content = $"Booking {booking.Name} has been updated to {newStage} stage.",
+                    CreationDate = DateTime.Now,
+                    UserId = userId
+                };
+                await _notificationService.CreateNotificationAsync(claims, notification);
+            }
+            catch (InvalidOperationException)
+            {
+                return ApiResponse<Stage>.InternalError(BookingErrorMessages.UpdateError);
+            }
+
+            return ApiResponse<Stage>.Ok(booking.Stage);
         }
 
         private ApiResponse<BookingResultModel> CheckPatientBookingModel(
@@ -300,5 +396,12 @@ namespace ClinicApi.Services
             booking.Documents = new List<Document>();
         }
 
+        private bool CheckBookingForInProgressTage(Booking booking)
+        {
+            return booking.HeartRate.HasValue &&
+                booking.Height.HasValue &&
+                booking.Weight.HasValue &&
+                (booking.Stage == Stage.Send || booking.Stage == Stage.Confirmed);
+        }
     }
 }

@@ -91,12 +91,14 @@
     <Compile Include="Entities\ClinicClinician.cs" />
     <Compile Include="Entities\Clinician.cs" />
     <Compile Include="Entities\Document.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\RefreshToken.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Enums\ApiVersion.cs" />
     <Compile Include="Enums\DependencyLifetimeType.cs" />
+    <Compile Include="Enums\Stage.cs" />
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="GeographyExtensions\GeographyExtensions.cs" />
     <Compile Include="Repositories\IClinicianRepository.cs" />

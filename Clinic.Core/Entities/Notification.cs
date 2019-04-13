@@ -2,9 +2,8 @@
 
 namespace Clinic.Core.Entities
 {
-    public class Notification
+    public class Notification : Entity
     {
-        public int Id { get; set; }
         public string Content { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsRead { get; set; }

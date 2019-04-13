@@ -2,9 +2,8 @@
 
 namespace Clinic.Core.Entities
 {
-    public class RefreshToken
+    public class RefreshToken : Entity
     {
-        public int Id { get; set; }
         public DateTime  ExpiresUtc { get; set; }
         public string Value { get; set; }
 

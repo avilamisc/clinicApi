@@ -1,10 +1,14 @@
-﻿using ClinicApi.Models;
-using ClinicApi.Models.Booking;
-using ClinicApi.Models.Pagination;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+
+using Clinic.Core.Entities;
+using Clinic.Core.Enums;
+using ClinicApi.Models;
+using ClinicApi.Models.Booking;
+using ClinicApi.Models.Pagination;
+
 
 namespace ClinicApi.Interfaces
 {
@@ -24,5 +28,6 @@ namespace ClinicApi.Interfaces
             HttpRequest request);
         Task<ApiResponse<float>> UpdateBookingRateAsync(int id, float rateValue);
         Task<ApiResponse<RemoveResult<BookingResultModel>>> RemoveBookig(int id, IEnumerable<Claim> claims);
+        Task<ApiResponse<Stage>> UpdateStageAsync(IEnumerable<Claim> claims, int id, Stage newStage);
     }
 }

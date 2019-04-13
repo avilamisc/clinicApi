@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 
 import { BookingService } from 'src/app/core/services/booking/booking.service';
-import { BookingModel, PatientBookingModel, DocumentModel } from 'src/app/core/models';
+import { BookingModel, PatientBookingModel, DocumentModel, Stage } from 'src/app/core/models';
 import { UpdateBookingModel } from 'src/app/core/models/booking/update-booking.model';
 import { UserRoles } from 'src/app/utilities/user-roles';
 import { User } from 'src/app/core/models/user/user.model';
@@ -45,6 +45,30 @@ export class BookingComponent implements OnInit {
   public ngOnInit(): void {
     this.initializeBookings();
     this.initializeTableColumns();
+  }
+
+  public canComplete(booking: BookingModel): boolean {
+    return !this.isPatient && booking.Stage === Stage.InProgress;
+  }
+
+  public completeBooking($event: any, bookingId: number): void {
+    $event.stopPropagation();
+    const updateModel = {
+      id: bookingId,
+      value: Stage.Completed
+    };
+    this.bookingService.updateBookingStage(updateModel)
+    .subscribe((result) => {
+      if (result.Data) {
+        const pdatedBooking = this.bookings.find(b => b.Id === bookingId);
+        if (pdatedBooking) {
+          pdatedBooking.Stage = result.Data;
+          this.notificationService.successMessage('Congratulations! You have finished booking');
+        }
+      } else {
+        this.notificationService.showApiErrorMessage(result);
+      }
+    });
   }
 
   public openEditWindow(booking: BookingModel, index: number): void {

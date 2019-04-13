@@ -39,8 +39,11 @@
 
 <ng-template let-data="data" #actionsColumn>
   <div>
-    <button class="btn btn-danger"
+    <button class="btn btn-danger action-btn"
             (click)="removeBooking($event, data?.Id)">Remove</button>
+    <button *ngIf="canComplete(data)"
+            class="btn btn-secondary action-btn"
+            (click)="completeBooking($event, data?.Id)">Complete</button>
   </div>
 </ng-template>
 
