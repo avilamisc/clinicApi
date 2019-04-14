@@ -72,7 +72,7 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   public get canViewHealthInfo(): boolean {
-    return !this.isPatient || 
+    return !this.isPatient ||
               (this.isPatient &&
               !this.isNewBooking &&
                this.model.stage !== Stage.Send &&
@@ -180,8 +180,7 @@ export class EditComponent implements OnInit, OnChanges {
 
       this.updateClinics(this.clientLongitude, this.clientLatitude);
 
-      if (this.model.clinicId)
-      {
+      if (this.model.clinicId) {
         this.clinicService.getClinicById(this.model.clinicId)
           .subscribe(result => {
             if (result.Data !== null) {

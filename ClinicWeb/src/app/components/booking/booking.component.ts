@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { SelectItem } from 'primeng/components/common/selectitem';
 
 import { BookingService } from 'src/app/core/services/booking/booking.service';
 import { BookingModel, PatientBookingModel, DocumentModel, Stage } from 'src/app/core/models';
@@ -31,6 +32,8 @@ export class BookingComponent implements OnInit {
   public isClinician: boolean;
   public isClinic: boolean;
   public stage = Stage;
+  public stageForFlter: Stage = null;
+  public stages: SelectItem[];
   public completedNotificationMessage = NotificationMessages.Booking.UpdateToCompleteStage;
   public confirmedNotificationMessage = NotificationMessages.Booking.UpdateToConfirmedStage;
   private editedBookingIndex: number;
@@ -40,17 +43,36 @@ export class BookingComponent implements OnInit {
   @ViewChild('updateDateColumn') updateDateColumn: TemplateRef<any>;
   @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
   @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
+  @ViewChild('patientColumn') patientColumn: TemplateRef<any>;
   @ViewChild('actionsColumn') actionsColumn: TemplateRef<any>;
+  @ViewChild('actionsHeaderColumn') actionsHeaderColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
     private bookingService: BookingService,
     private documentService: DocumentService,
-    private notificationService: ToastNotificationService) { }
+    private notificationService: ToastNotificationService) {
+      this.stages = [
+        { label: 'All stages', value: null },
+        { label: 'Send', value: Stage.Send },
+        { label: 'Rejected', value: Stage.Rejected },
+        { label: 'InProgress', value: Stage.InProgress },
+        { label: 'Confirmed', value: Stage.Confirmed },
+        { label: 'Completed', value: Stage.Completed },
+        { label: 'Canceled', value: Stage.Canceled }
+      ];
+    }
 
   public ngOnInit(): void {
     this.initializeBookings();
     this.initializeTableColumns();
+  }
+
+  public onFilterStageChanged(): void {
+    this.uploadBookings({
+      pageNumber: 0,
+      pageCount: this.tableRowAmount
+    });
   }
 
   public canReject(booking: BookingModel): boolean {
@@ -66,7 +88,7 @@ export class BookingComponent implements OnInit {
   }
 
   public canCancel(booking: BookingModel): boolean {
-    return (this.isPatient || this.isClinic) && 
+    return (this.isPatient || this.isClinic) &&
            (booking.Stage === Stage.InProgress || booking.Stage === Stage.Confirmed);
   }
 
@@ -160,12 +182,19 @@ export class BookingComponent implements OnInit {
 
     const actionsConfig = config.get('Actions');
     actionsConfig.RowContent = this.actionsColumn;
+    actionsConfig.HeaderContent = this.actionsHeaderColumn;
     config.set('Actions', actionsConfig);
 
     if (this.isPatient) {
       const rateConfig = config.get('ClinicianRate');
       rateConfig.RowContent = this.rateColumn;
       config.set('ClinicianRate', rateConfig);
+    }
+
+    if (this.isClinician) {
+      const patientConfig = config.get('PatientName');
+      patientConfig.RowContent = this.patientColumn;
+      config.set('PatientName', patientConfig);
     }
 
     this.columns = Array.from(config.values());
@@ -184,20 +213,20 @@ export class BookingComponent implements OnInit {
   public uploadBookings(pagination: Pagination): void {
     this.currentPage = pagination.pageNumber;
     this.isPatient
-      ? this.bookingService.getPatientBookings(pagination)
-        .subscribe(res => {
-          if (res.Data !== null) {
-            this.bookings = res.Data.DataCollection;
-            this.totalDataAmount = res.Data.TotalCount;
-          }
-        })
-      : this.bookingService.getClinicianBookings(pagination)
-        .subscribe(res => {
-          if (res.Data !== null) {
-            this.bookings = res.Data.DataCollection;
-            this.totalDataAmount = res.Data.TotalCount;
-          }
-        });
+      ? this.bookingService.getPatientBookings(pagination, this.stageForFlter)
+          .subscribe(res => {
+            if (res.Data !== null) {
+              this.bookings = res.Data.DataCollection;
+              this.totalDataAmount = res.Data.TotalCount;
+            }
+          })
+      : this.bookingService.getClinicianBookings(pagination, this.stageForFlter)
+          .subscribe(res => {
+            if (res.Data !== null) {
+              this.bookings = res.Data.DataCollection;
+              this.totalDataAmount = res.Data.TotalCount;
+            }
+          });
   }
 
   public updateRate(bookingId: number, newRate: number): void {

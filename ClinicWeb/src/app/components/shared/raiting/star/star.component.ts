@@ -9,7 +9,7 @@ export class StarRatingComponent implements OnInit {
   @Input('rating') public rating: number;
   @Input('subRating') public subRating: number;
   @Input('itemId') public itemId: number;
-  @Input('disabled') public disabled: boolean = false;
+  @Input('disabled') public disabled = false;
   @Output('ratingClick') public ratingClick: EventEmitter<any> = new EventEmitter<any>();
 
   public inputName: string;

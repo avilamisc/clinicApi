@@ -15,7 +15,7 @@ export class EditDocumentComponent implements OnInit, OnChanges {
   public displayedDocuments: DocumentModel[];
 
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
-  @Input('disabled') public disabled: boolean = false;
+  @Input('disabled') public disabled = false;
 
   constructor(private userService: UserService) { }
 

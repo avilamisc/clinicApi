@@ -38,6 +38,15 @@
   </div>
 </ng-template>
 
+<ng-template let-data="data" #actionsHeaderColumn>
+  <div>
+    <p-dropdown [options]="stages"
+                [dropdownIcon]="''"
+                [(ngModel)]="stageForFlter"
+                (onChange)="onFilterStageChanged()"></p-dropdown>
+  </div>
+</ng-template>
+
 <ng-template let-data="data" #actionsColumn>
   <div class="status-column">
     <div [attr.class]="'staging-item staging-item-' + getStage(data)">{{getStage(data)}}</div>
@@ -68,11 +77,8 @@
   </div>
 </ng-template>
 
-<ng-template let-data="data" #clinicianColumn>
-  <div>
-    <button class="btn btn-danger"
-            (click)="removeBooking($event, data?.Id)">Remove</button>
-  </div>
+<ng-template let-data="data" #patientColumn>
+  <span>{{data.PatientName}} ({{data.PatientAge}} y.o.)</span>
 </ng-template>
 
 <app-edit *ngIf="bookingToUpdate"

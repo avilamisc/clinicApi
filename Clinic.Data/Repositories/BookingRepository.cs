@@ -39,7 +39,8 @@ namespace Clinic.Data.Repositories
 
             var totalCount = _context.Bookings
                 .Include(b => b.ClinicClinician)
-                .Where(b => b.ClinicClinician.ClinicianId == clinicianId).Count();
+                .Where(b => b.ClinicClinician.ClinicianId == clinicianId &&
+                            (!stage.HasValue || b.Stage == stage.Value)).Count();
 
             return new PagingResultDto<BookingDto>
                     {
@@ -60,7 +61,8 @@ namespace Clinic.Data.Repositories
                 .ToListAsync();
 
             var totalCount = _context.Bookings
-                .Where(b => b.PatientId == patinetId).Count();
+                .Where(b => b.PatientId == patinetId &&
+                            (!stage.HasValue || b.Stage == stage.Value)).Count();
 
             return new PagingResultDto<BookingDto>
             {
