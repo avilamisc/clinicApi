@@ -31,22 +31,22 @@ namespace ClinicApi.Controllers
         [BearerAuthorization(Roles = "Patient")]
         [Route("patient")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PagingResult<PatientBookingModel>>))]
-        public async Task<IHttpActionResult> PatientBookingsAsync([FromUri]PaginationModel model)
+        public async Task<IHttpActionResult> PatientBookingsAsync([FromUri]PaginationModel model, Stage? stage = null)
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims, model));
+            return Ok(await _bookingService.GetAllBookingsForPatientAsync(identity.Claims, model, stage));
         }
 
         [HttpGet]
         [BearerAuthorization(Roles = "Clinician")]
         [Route("clinician")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PagingResult<ClinicianBookingModel>>))]
-        public async Task<IHttpActionResult> ClinicianBookingsAsync([FromUri]PaginationModel model)
+        public async Task<IHttpActionResult> ClinicianBookingsAsync([FromUri]PaginationModel model, Stage? stage = null)
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims, model));
+            return Ok(await _bookingService.GetAllBookingsForClinicianAsync(identity.Claims, model, stage));
         }
 
         [HttpPost]

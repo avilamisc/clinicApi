@@ -1,14 +1,17 @@
-﻿using Clinic.Core.DtoModels;
-using Clinic.Core.Entities;
-using Clinic.Core.Repositories;
-using Clinic.Data.Automapper.Infrastructure;
-using Clinic.Data.Common;
-using Clinic.Data.Context;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Clinic.Core.DtoModels;
+using Clinic.Core.Entities;
+using Clinic.Core.Enums;
+using Clinic.Core.Repositories;
+using Clinic.Data.Automapper.Infrastructure;
+using Clinic.Data.Common;
+using Clinic.Data.Context;
+
 
 namespace Clinic.Data.Repositories
 {
@@ -24,13 +27,13 @@ namespace Clinic.Data.Repositories
         }
 
         public async Task<PagingResultDto<BookingDto>> GetForClinicianAsync(
-            PagingDto pagingDto, int clinicianId)
+            PagingDto pagingDto, int clinicianId, Stage? stage)
         {
-            DbGeography g = DbGeography.FromText($"POINT({10} {10})");
             var result = await _context.Bookings
                 .BookingInclude()
                 .Include(b => b.Patient)
-                .Where(b => b.ClinicClinician.ClinicianId == clinicianId)
+                .Where(b => b.ClinicClinician.ClinicianId == clinicianId &&
+                            (!stage.HasValue || b.Stage == stage.Value))
                 .Paging(pagingDto)
                 .ToListAsync();
 
@@ -46,12 +49,13 @@ namespace Clinic.Data.Repositories
         }
 
         public async Task<PagingResultDto<BookingDto>> GetForPatientAsync(
-            PagingDto pagingDto, int patinetId)
+            PagingDto pagingDto, int patinetId, Stage? stage)
         {
             var result = await _context.Bookings
                 .BookingInclude()
                 .Include(b => b.ClinicClinician.Clinician)
-                .Where(b => b.PatientId == patinetId)
+                .Where(b => b.PatientId == patinetId &&
+                            (!stage.HasValue || b.Stage == stage.Value))
                 .Paging(pagingDto)
                 .ToListAsync();
 

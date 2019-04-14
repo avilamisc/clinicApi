@@ -46,8 +46,7 @@ namespace ClinicApi.Services
         }
 
         public async Task<ApiResponse<PagingResult<PatientBookingModel>>> GetAllBookingsForPatientAsync(
-            IEnumerable<Claim> claims,
-            PaginationModel model)
+            IEnumerable<Claim> claims, PaginationModel model, Stage? stage)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
@@ -55,7 +54,7 @@ namespace ClinicApi.Services
             }
 
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
-            var pagingResult = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId);
+            var pagingResult = await _unitOfWork.BookingRepository.GetForPatientAsync(pagingDto, userId, stage);
 
             return ApiResponse<PagingResult<PatientBookingModel>>.Ok(
                 new PagingResult<PatientBookingModel>
@@ -67,8 +66,7 @@ namespace ClinicApi.Services
         }
 
         public async Task<ApiResponse<PagingResult<ClinicianBookingModel>>> GetAllBookingsForClinicianAsync(
-            IEnumerable<Claim> claims,
-            PaginationModel model)
+            IEnumerable<Claim> claims, PaginationModel model, Stage? stage)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
@@ -78,7 +76,7 @@ namespace ClinicApi.Services
             var pagingDto = _mapper.Mapper.Map<PagingDto>(model);
 
             var pagingResult = await _unitOfWork.BookingRepository
-                .GetForClinicianAsync(pagingDto, userId);
+                .GetForClinicianAsync(pagingDto, userId, stage);
 
             return ApiResponse<PagingResult<ClinicianBookingModel>>.Ok(
                 new PagingResult<ClinicianBookingModel>
