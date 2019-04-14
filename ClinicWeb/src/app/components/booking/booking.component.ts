@@ -12,6 +12,7 @@ import { PatientBookingTableConfiguration,
 import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { Column } from 'src/app/core/models/table/column.model';
 import { ToastNotificationService } from 'src/app/core/services/notification.service';
+import { NotificationMessages } from 'src/app/utilities/notification-message';
 
 @Component({
   selector: 'app-booking',
@@ -27,6 +28,11 @@ export class BookingComponent implements OnInit {
   public isEditWindowOpen = false;
   public tableRowAmount = 5;
   public isPatient: boolean;
+  public isClinician: boolean;
+  public isClinic: boolean;
+  public stage = Stage;
+  public completedNotificationMessage = NotificationMessages.Booking.UpdateToCompleteStage;
+  public confirmedNotificationMessage = NotificationMessages.Booking.UpdateToConfirmedStage;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private currentPage = 0;
@@ -47,28 +53,45 @@ export class BookingComponent implements OnInit {
     this.initializeTableColumns();
   }
 
-  public canComplete(booking: BookingModel): boolean {
-    return !this.isPatient && booking.Stage === Stage.InProgress;
+  public canReject(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.Send;
   }
 
-  public completeBooking($event: any, bookingId: number): void {
+  public canConfirm(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.Send;
+  }
+
+  public canComplete(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.InProgress;
+  }
+
+  public canCancel(booking: BookingModel): boolean {
+    return (this.isPatient || this.isClinic) && 
+           (booking.Stage === Stage.InProgress || booking.Stage === Stage.Confirmed);
+  }
+
+  public canRateBooking(booking: BookingModel): boolean {
+    return this.isPatient && booking.Stage === Stage.Completed;
+  }
+
+  public updateStage($event: any, bookingId: number, stage: Stage, notificationMsg: string): void {
     $event.stopPropagation();
     const updateModel = {
       id: bookingId,
-      value: Stage.Completed
+      value: stage
     };
     this.bookingService.updateBookingStage(updateModel)
-    .subscribe((result) => {
-      if (result.Data) {
-        const pdatedBooking = this.bookings.find(b => b.Id === bookingId);
-        if (pdatedBooking) {
-          pdatedBooking.Stage = result.Data;
-          this.notificationService.successMessage('Congratulations! You have finished booking');
+      .subscribe((result) => {
+        if (result.Data) {
+          const updatedBooking = this.bookings.find(b => b.Id === bookingId);
+          if (updatedBooking) {
+            updatedBooking.Stage = result.Data;
+            this.notificationService.successMessage(notificationMsg);
+          }
+        } else {
+          this.notificationService.showApiErrorMessage(result);
         }
-      } else {
-        this.notificationService.showApiErrorMessage(result);
-      }
-    });
+      });
   }
 
   public openEditWindow(booking: BookingModel, index: number): void {
@@ -81,6 +104,7 @@ export class BookingComponent implements OnInit {
     this.bookingToUpdate.PatientDescription = booking.PatientDescription;
     this.bookingToUpdate.name = booking.Name;
     this.bookingToUpdate.documents = booking.Documents;
+    this.bookingToUpdate.stage = booking.Stage;
     this.bookingToUpdate.clinicId = (booking as PatientBookingModel).ClinicId;
     this.bookingToUpdate.clinicianId = (booking as PatientBookingModel).ClinicianId || this.user.Id;
     this.isAddingNewBooking = false;
@@ -113,6 +137,8 @@ export class BookingComponent implements OnInit {
   public initializeBookings(): void {
     this.user = this.userService.getUserFromLocalStorage();
     this.isPatient = this.user.UserRole === UserRoles.Patient;
+    this.isClinic = this.user.UserRole === UserRoles.Clinic;
+    this.isClinician = this.user.UserRole === UserRoles.Clinician;
     this.uploadBookings({
         pageNumber: 0,
         pageCount: this.tableRowAmount
@@ -215,5 +241,17 @@ export class BookingComponent implements OnInit {
           }
         }
       });
+  }
+
+  public getStage(booking: BookingModel): string {
+    switch (booking.Stage) {
+      case Stage.Send: return 'Send';
+      case Stage.InProgress: return 'InProgress';
+      case Stage.Canceled: return 'Canceled';
+      case Stage.Confirmed: return 'Confirmed';
+      case Stage.Rejected: return 'Rejected';
+      case Stage.Completed: return 'Completed';
+      default: return '';
+    }
   }
 }

@@ -229,7 +229,7 @@ namespace ClinicApi.Services
             {
                 return new ApiResponse<float>(HttpStatusCode.InternalServerError, BookingErrorMessages.UpdateError);
             }
-            return ApiResponse<float>.Ok(booking.ClinicClinician.Clinician.Rate);
+            return ApiResponse<float>.Ok(booking.Rate.Value);
         }
 
         public async Task<ApiResponse<Stage>> UpdateStageAsync(IEnumerable<Claim> claims, int id, Stage newStage)
@@ -296,7 +296,7 @@ namespace ClinicApi.Services
                 {
                     Content = $"Booking {booking.Name} has been updated to {newStage} stage.",
                     CreationDate = DateTime.Now,
-                    UserId = userId
+                    UserId = booking.PatientId
                 };
                 await _notificationService.CreateNotificationAsync(claims, notification);
             }

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UpdateBookingModel } from 'src/app/core/models/booking/update-booking.model';
 import { BookingService } from 'src/app/core/services/booking/booking.service';
-import { ClinicModel, ClinicianModel } from 'src/app/core/models';
+import { ClinicModel, ClinicianModel, Stage } from 'src/app/core/models';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { ClinicianService } from 'src/app/core/services/clinician/clinician.service';
 import { Pagination } from 'src/app/core/models/table/pagination.model';
@@ -35,6 +35,8 @@ export class EditComponent implements OnInit, OnChanges {
   @Input('model') public model: UpdateBookingModel = new UpdateBookingModel();
   @Input('new') public isNewBooking = false;
   @Input('isPatient') public isPatient = true;
+  @Input('isClinician') public isClinician;
+  @Input('isClinic') public isClinic;
   @Output('closeEditWindow') public closeEditWindow = new EventEmitter<any>();
   @Output('editCompleted') public onEditCompleted = new EventEmitter<any>();
 
@@ -57,12 +59,45 @@ export class EditComponent implements OnInit, OnChanges {
     this.initializeForm();
   }
 
+  public get canEditName(): boolean {
+    return this.isNewBooking ||
+            (this.isPatient && this.model.stage === Stage.Send);
+  }
+
+  public get canEditHealthInfo(): boolean {
+    return this.isClinician &&
+            (this.model.stage === Stage.Send ||
+             this.model.stage === Stage.Confirmed ||
+             this.model.stage === Stage.InProgress);
+  }
+
+  public get canViewHealthInfo(): boolean {
+    return !this.isPatient || 
+              (this.isPatient &&
+              !this.isNewBooking &&
+               this.model.stage !== Stage.Send &&
+               this.model.stage !== Stage.Confirmed);
+  }
+
+  public get canEditDescription(): boolean {
+    return this.isNewBooking || (this.isPatient && this.model.stage === Stage.Send);
+  }
+
+  public get canEditClinicClinician(): boolean {
+    return this.isNewBooking && this.isPatient;
+  }
+
+  public get canEditDocuments(): boolean {
+    return this.isNewBooking ||
+            (this.model.stage === Stage.Send ||
+             this.model.stage === Stage.InProgress ||
+             this.model.stage === Stage.Confirmed);
+  }
+
   public onSubmit(): void {
     this.submitTouched = true;
     if (this.canSubmit()) {
-      if (this.isPatient) {
-        this.setValuesFromFormToModel();
-      }
+      this.setValuesFromFormToModel();
       this.isNewBooking
         ? this.onEditCompleted.emit(this.model)
         : this.bookingService.updateBookings(this.model)
@@ -145,16 +180,19 @@ export class EditComponent implements OnInit, OnChanges {
 
       this.updateClinics(this.clientLongitude, this.clientLatitude);
 
-      this.clinicService.getClinicById(this.model.clinicId)
-        .subscribe(result => {
-          if (result.Data !== null) {
-            this.currentClinic = result.Data;
-            if (this.clinics) {
-              this.clinics.push(this.currentClinic);
+      if (this.model.clinicId)
+      {
+        this.clinicService.getClinicById(this.model.clinicId)
+          .subscribe(result => {
+            if (result.Data !== null) {
+              this.currentClinic = result.Data;
+              if (this.clinics) {
+                this.clinics.push(this.currentClinic);
+              }
+              this.createForm();
             }
-            this.createForm();
-          }
-        });
+          });
+      }
     }
   }
 

@@ -17,6 +17,8 @@ export class BookingModel {
     Weight: number;
     Height: number;
     PatientDescription: string;
+    CreationDate: Date;
+    UpdateDate: Date;
     Stage: Stage;
 }
 

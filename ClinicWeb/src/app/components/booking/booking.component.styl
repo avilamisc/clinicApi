@@ -17,3 +17,34 @@
 .action-btn
     width 100px
     margin .5em
+
+.status-action-btn
+    background-color lightgray
+    border none
+    color black
+
+.status-column
+    display flex
+    flex-wrap wrap
+    justify-content center
+    .update-name
+        flex-basis 100%
+        text-align left
+        font-size 1.2em
+    .staging-item
+        text-align center
+        flex-grow 1
+        padding .2em
+        margin 1em
+        border-radius 1em
+        background-color #333
+        color #ffffff
+    .staging-item-Confirmed
+        background-color #38d160
+    .staging-item-InProgress
+        background-color #1a7799
+    .staging-item-Rejected,
+    .staging-item-Canceled
+        background-color #72103a
+    .staging-item-Completed
+        background-color #a89b10

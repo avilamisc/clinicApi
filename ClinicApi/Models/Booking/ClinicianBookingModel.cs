@@ -9,7 +9,5 @@ namespace ClinicApi.Models.Booking
         public int PatientId { get; set; }
         public string PatientName { get; set; }
         public string PatientAge { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime UpdateDate { get; set; }
     }
 }

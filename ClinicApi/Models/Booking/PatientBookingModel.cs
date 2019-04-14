@@ -10,7 +10,5 @@ namespace ClinicApi.Models.Booking
         public string ClinicianName { get; set; }
         public float ClinicianRate { get; set; }
         public float? BookingRate { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime UpdateDate { get; set; }
     }
 }

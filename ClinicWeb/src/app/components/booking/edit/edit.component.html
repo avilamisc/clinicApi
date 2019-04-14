@@ -8,35 +8,50 @@
       <div class="form-label-group"
            [class.form-label-failed-group]="submitTouched && formErrors.name">
         <label>
-            Name:
-          <input type="text" class="form-control" formControlName="name">
+            Name: {{canEditName}}
+          <input type="text"
+                 class="form-control"
+                 formControlName="name"
+                 [attr.disabled]="!canEditName ? '' : null">
           <div *ngIf="submitTouched && formErrors.name" class="validation-error-text">
             {{formErrors.name}}
           </div>
         </label>
       </div>
-      <div class="form-label-group">
+      <div *ngIf="canViewHealthInfo" class="form-label-group">
         <label>
             Heart Rate:
-          <input type="text" class="form-control" formControlName="heartRate">
+          <input type="text"
+                 class="form-control"
+                 formControlName="heartRate"
+                 [attr.disabled]="!canEditHealthInfo ? '' : null">
         </label>
       </div>
-      <div class="form-label-group">
+      <div *ngIf="canViewHealthInfo" class="form-label-group">
         <label>
             Weight:
-          <input type="text" class="form-control" formControlName="weight">
+          <input type="text"
+                 class="form-control"
+                 formControlName="weight"
+                 [attr.disabled]="!canEditHealthInfo ? '' : null">
         </label>
       </div>
-      <div class="form-label-group">
+      <div *ngIf="canViewHealthInfo" class="form-label-group">
         <label>
             Height:
-          <input type="text" class="form-control" formControlName="height">
+          <input type="text"
+                 class="form-control"
+                 formControlName="height"
+                 [attr.disabled]="!canEditHealthInfo ? '' : null">
         </label>
       </div>
       <div class="form-label-group">
         <label>
             Patient Description:
-          <textarea type="text" class="form-control" formControlName="patientDescription">
+          <textarea type="text"
+                    class="form-control"
+                    formControlName="patientDescription"
+                    [attr.disabled]="!canEditDescription ? '' : null">
           </textarea>
         </label>
       </div>
@@ -46,10 +61,11 @@
             Clinic:
           <select class="form-control"
                   (change)="filterClinicians($event.target.value)"
-                  formControlName="clinic">
-            <option selected> -- select an option -- </option>
+                  formControlName="clinic"
+                  [attr.disabled]="!canEditClinicClinician ? '' : null">
+            <option> -- select an option -- </option>
             <option *ngFor="let clinic of clinics"
-                    [attr.selected]="clinic.id === model.clinicId"
+                    [attr.selected]="model.clinicId && clinic.id === model.clinicId"
                     [attr.value]="clinic.Id">{{clinic.Name}}</option>
             <option *ngIf="!fixedClinicList" [attr.value]="loadClinicsOptionId">Upload Clinics...</option>
           </select>
@@ -62,10 +78,12 @@
            [class.form-label-failed-group]="submitTouched && formErrors.clinician">
         <label>
             Clinician:
-          <select class="form-control" formControlName="clinician">
-            <option selected> -- select an option -- </option>
+          <select class="form-control"
+                  formControlName="clinician"
+                  [attr.disabled]="!canEditClinicClinician ? '' : null">
+            <option> -- select an option -- </option>
             <option *ngFor="let clinician of clinicians"
-                    [attr.selected]="clinician.id === model.clinicianId"
+                    [attr.selected]="model.clinicianId && clinician.id === model.clinicianId"
                     [attr.value]="clinician.Id">{{clinician.Name}}</option>
           </select>
           <div *ngIf="submitTouched && formErrors.clinician" class="validation-error-text">
@@ -73,7 +91,8 @@
           </div>
         </label>
       </div>
-      <app-edit-document [model]="model"></app-edit-document>
+      <app-edit-document [model]="model"
+                         [disabled]="!canEditDocuments"></app-edit-document>
     </form>
   </div>
   <div m-footer>

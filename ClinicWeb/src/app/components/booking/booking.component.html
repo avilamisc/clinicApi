@@ -25,7 +25,7 @@
 
 <ng-template let-data="data" #updateDateColumn>
   <span>
-    {{data.UpdateDate | date:"MM.dd.yyyy 'at' hh:mm"}}
+      {{data.UpdateDate | date:"MM.dd.yy 'at' hh:mm"}}
   </span>
 </ng-template>
 
@@ -33,17 +33,38 @@
   <div>
     <app-rating [rating]="data?.BookingRate"
                 [itemId]="data?.Id"
+                [disabled]="!canRateBooking(data)"
                 (ratingClick)="updateRate(data?.Id, $event?.rating)"></app-rating>
   </div>
 </ng-template>
 
 <ng-template let-data="data" #actionsColumn>
-  <div>
-    <button class="btn btn-danger action-btn"
-            (click)="removeBooking($event, data?.Id)">Remove</button>
-    <button *ngIf="canComplete(data)"
+  <div class="status-column">
+    <div [attr.class]="'staging-item staging-item-' + getStage(data)">{{getStage(data)}}</div>
+    <button *ngIf="isClinic" class="btn btn-danger action-btn"
+            (click)="removeBooking($event, data?.Id)">
+      Remove
+    </button>
+    <button *ngIf="canConfirm(data)"
             class="btn btn-secondary action-btn"
-            (click)="completeBooking($event, data?.Id)">Complete</button>
+            (click)="updateStage($event, data?.Id, stage.Confirmed, confirmedNotificationMessage)">
+      Confirm
+    </button>
+    <button *ngIf="canReject(data)"
+        class="btn btn-secondary action-btn status-action-btn"
+        (click)="updateStage($event, data?.Id, stage.Rejected, confirmedNotificationMessage)">
+      Reject
+    </button>
+    <button *ngIf="canCancel(data)"
+        class="btn btn-secondary action-btn status-action-btn"
+        (click)="updateStage($event, data?.Id, stage.Canceled, confirmedNotificationMessage)">
+      Cancel
+    </button>
+    <button *ngIf="canComplete(data)"
+            class="btn btn-secondary action-btn status-action-btn"
+            (click)="updateStage($event, data?.Id, stage.Completed, completedNotificationMessage)">
+      Complete
+    </button>
   </div>
 </ng-template>
 
@@ -59,6 +80,8 @@
           [model]="bookingToUpdate"
           [new]="isAddingNewBooking"
           [isPatient]="isPatient"
+          [isClinician]="isClinician"
+          [isClinic]="isClinic"
           (closeEditWindow)="closeEditWindow()"
           (editCompleted)="editBooking($event)">
 </app-edit>

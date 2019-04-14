@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Clinic.Core.Enums;
 using ClinicApi.Models.Document;
@@ -14,6 +15,8 @@ namespace ClinicApi.Models.Booking
         public short? HeartRate { get; set; }
         public float? Weight { get; set; }
         public short? Height { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime UpdateDate { get; set; }
         public string PatientDescription { get; set; }
         public ICollection<DocumentModel> Documents { get; set; }
 

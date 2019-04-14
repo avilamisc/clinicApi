@@ -11,12 +11,17 @@
   <div *ngFor="let file of model.newFiles;let index = index">
     <button type="button"
             class="btn btn-danger remove-btn"
-            (click)="removeNewDocument(index)">
+            (click)="removeNewDocument(index)"
+            [disabled]="disabled">
       <span aria-hidden="true">&times;</span>
     </button>
     <span>{{file.name}}</span>
   </div>
   <div class="custom-file">
-    <input type="file" class="custom-file-input" id="customFile" (change)="uploadNewDocument($event)">
+    <input type="file"
+           class="custom-file-input"
+           id="customFile"
+           [attr.disabled]="disabled ? '' : null"
+           (change)="uploadNewDocument($event)">
     <label class="custom-file-label" for="customFile">Choose file</label>
   </div>
