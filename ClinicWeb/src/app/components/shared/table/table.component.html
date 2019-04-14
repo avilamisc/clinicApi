@@ -7,6 +7,14 @@
         </ng-template>
       </th>
     </thead>
+    <!--<tr class="table-filters" *ngIf="filtersEnabled">
+        <th *ngFor="let column of columns" class="filter-column">
+            <input class="header-filter ui-inputtext ui-corner-all" *ngIf="!column.filterContent; else customTemplate" type="text"
+                (keyup)="onFilter(column.path, $event.target.value)">
+            <ng-template #customTemplate *ngTemplateOutlet="column.filterContent;  context: { columnPath: column.path };">
+            </ng-template>
+        </th>
+    </tr>-->
     <tbody>
       <tr (click)="rowClicked({data: item, index: index})" *ngFor="let item of data;let index = index">
         <td *ngFor="let column of columns">

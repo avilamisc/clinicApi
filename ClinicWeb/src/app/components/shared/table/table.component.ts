@@ -18,11 +18,12 @@ export class TableComponent implements OnInit {
   @Input('mobileWidth') public minAvaliableWidth;
   @Input('rowAmount') public rowAmount = 10;
   @Input('totalAmount') public totalAmount = 0;
+  // @Input('filtersEnabled') public filtersEnabled = true;
   @Output('rowClicked') public onRowClicked = new EventEmitter<any>();
   @Output('pageChanged') public onPageChanged = new EventEmitter<Pagination>();
 
   @HostListener('window:resize', ['$event'])
-  onResize(event): void {
+  public onResize(event): void {
     this.checkMobileCompability(event.target.innerWidth);
   }
 
