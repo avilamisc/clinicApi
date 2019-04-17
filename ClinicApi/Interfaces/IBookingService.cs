@@ -8,7 +8,6 @@ using ClinicApi.Models;
 using ClinicApi.Models.Booking;
 using ClinicApi.Models.Pagination;
 
-
 namespace ClinicApi.Interfaces
 {
     public interface IBookingService : IServiceBase

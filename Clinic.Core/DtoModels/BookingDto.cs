@@ -25,5 +25,15 @@ namespace Clinic.Core.DtoModels
         public int PatientId { get; set; }
         public PatientDto Patient { get; set; }
         public IEnumerable<DocumentDto> Documents { get; set; }
+
+        public int Age
+        {
+            get
+            {
+                DateTime currentDate = DateTime.Now;
+                int age = currentDate.Year - Patient.BornDate.Year;
+                return Patient.BornDate > currentDate.AddYears(-age) ? age - 1 : age;
+            }
+        }
     }
 }

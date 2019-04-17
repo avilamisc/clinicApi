@@ -45,12 +45,12 @@ namespace Clinic.Data.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetAsync(long id)
+        public async Task<TEntity> GetAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity> GetAsync(long id, params Expression<Func<TEntity, object>>[] includeProperties)
+        public async Task<TEntity> GetAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = Include(includeProperties);
             return await query.FirstOrDefaultAsync(e => e.Id == id);

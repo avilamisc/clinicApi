@@ -1,6 +1,8 @@
 export const NotificationMessages = {
     Booking: {
-        UpdateToCompleteStage: 'Congratulations! You have finished booking.',
-        UpdateToConfirmedStage: 'Clinician has confirmed your booking.'
+        UpdateToCompletedStage: 'Congratulations! You have finished booking)',
+        UpdateToConfirmedStage: 'Clinician has confirmed your booking)',
+        UpdateToRejectedStage: 'Unfortunatelly Clinician has rejected your booking(',
+        UpdateToCanceledStage: 'Unfortunatelly Patient has canceled your booking('
     }
 };

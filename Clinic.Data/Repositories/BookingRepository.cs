@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -98,7 +97,7 @@ namespace Clinic.Data.Repositories
             float totalRate = countBooking > 0
                 ? _context.Bookings
                           .Where(b => b.Rate != null && b.ClinicClinician.ClinicianId == clinicianId)
-                          .Sum(b => b.Rate.Value)
+                          .Sum(b => b.Rate ?? 0)
                 : 0;
 
             return totalRate / countBooking;
@@ -109,10 +108,13 @@ namespace Clinic.Data.Repositories
             int countBooking = _context.Bookings
                 .Where(b => b.Rate != null &&
                        b.ClinicClinician.ClinicianId == clinicianId &&
-                        b.Id != booking.Id)
+                       b.Id != booking.Id)
                 .Count();
 
-            if (countBooking == 0) return booking.Rate.Value;
+            if (countBooking == 0)
+            {
+                return booking.Rate ?? 0;
+            }
 
             float totalRate = countBooking > 0
                 ? _context.Bookings
@@ -122,7 +124,7 @@ namespace Clinic.Data.Repositories
                     .Sum(b => b.Rate.Value)
                 : 0;
 
-            return (booking.Rate.Value + totalRate) / countBooking;
+            return ((booking.Rate ?? 0) + totalRate) / countBooking;
         }
     }
 }

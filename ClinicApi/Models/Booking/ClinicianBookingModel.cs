@@ -8,6 +8,6 @@ namespace ClinicApi.Models.Booking
         public string ClinicName { get; set; }
         public int PatientId { get; set; }
         public string PatientName { get; set; }
-        public string PatientAge { get; set; }
+        public int PatientAge { get; set; }
     }
 }

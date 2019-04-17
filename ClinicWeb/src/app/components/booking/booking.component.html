@@ -10,7 +10,9 @@
   <div *ngIf="isPatient" class="create-container">
     <button class="btn btn-dark"
             type="button"
-            (click)="crateNewBooking()">Create</button>
+            (click)="crateNewBooking()">
+      Create
+    </button>
   </div>
 </div>
 
@@ -18,14 +20,16 @@
   <div class="document-list">
     <ul>
       <li *ngFor="let document of data?.Documents"
-          (click)="downloadDocument($event, document)">{{document.Name}}</li>
+          (click)="downloadDocument($event, document)">
+        {{document.Name}}
+      </li>
     </ul>
   </div>
 </ng-template>
 
 <ng-template let-data="data" #updateDateColumn>
   <span>
-      {{data.UpdateDate | date:"MM.dd.yy 'at' hh:mm"}}
+    {{data.UpdateDate | date:"MM.dd.yy 'at' hh:mm"}}
   </span>
 </ng-template>
 
@@ -34,7 +38,7 @@
     <app-rating [rating]="data?.BookingRate"
                 [itemId]="data?.Id"
                 [disabled]="!canRateBooking(data)"
-                (ratingClick)="updateRate(data?.Id, $event?.rating)"></app-rating>
+                (ratingClick)="updateRate(data?.Id, $event?.rating)" />
   </div>
 </ng-template>
 
@@ -43,13 +47,15 @@
     <p-dropdown [options]="stages"
                 [dropdownIcon]="''"
                 [(ngModel)]="stageForFlter"
-                (onChange)="onFilterStageChanged()"></p-dropdown>
+                (onChange)="onFilterStageChanged()" />
   </div>
 </ng-template>
 
 <ng-template let-data="data" #actionsColumn>
   <div class="status-column">
-    <div [attr.class]="'staging-item staging-item-' + getStage(data)">{{getStage(data)}}</div>
+    <div [attr.class]="'staging-item staging-item-' + getStageLabel(data)">
+      {{getStageLabel(data)}}
+    </div>
     <button *ngIf="isClinic" class="btn btn-danger action-btn"
             (click)="removeBooking($event, data?.Id)">
       Remove
@@ -61,12 +67,12 @@
     </button>
     <button *ngIf="canReject(data)"
         class="btn btn-secondary action-btn status-action-btn"
-        (click)="updateStage($event, data?.Id, stage.Rejected, confirmedNotificationMessage)">
+        (click)="updateStage($event, data?.Id, stage.Rejected, rejectedNotificationMessage)">
       Reject
     </button>
     <button *ngIf="canCancel(data)"
         class="btn btn-secondary action-btn status-action-btn"
-        (click)="updateStage($event, data?.Id, stage.Canceled, confirmedNotificationMessage)">
+        (click)="updateStage($event, data?.Id, stage.Canceled, canceledNotificationMessage)">
       Cancel
     </button>
     <button *ngIf="canComplete(data)"

@@ -18,18 +18,17 @@ using ClinicApi.Models.Booking;
 using ClinicApi.Models.Notification;
 using ClinicApi.Models.Pagination;
 
-
 namespace ClinicApi.Services
 {
     public class BookingService : ServiceBase, IBookingService
     {
+        private const float MaxRate = 5;
+
         private readonly IApiMapper _mapper;
         private readonly IFileService _fileService;
         private readonly ITokenService _tokenService;
         private readonly INotificationService _notificationService;
         private readonly IUnitOfWork _unitOfWork;
-
-        private const float MaxRate = 5;
 
         public BookingService(
             IApiMapper mapper,
@@ -179,7 +178,7 @@ namespace ClinicApi.Services
                     _fileService.DeleteFile(file.FilePath);
                 }
 
-                if (CheckBookingForInProgressTage(booking))
+                if (CheckBookingForInProgressStage(booking))
                 {
                     booking.Stage = Stage.InProgress;
                     _unitOfWork.BookingRepository.Update(booking);
@@ -394,12 +393,12 @@ namespace ClinicApi.Services
             booking.Documents = new List<Document>();
         }
 
-        private bool CheckBookingForInProgressTage(Booking booking)
+        private bool CheckBookingForInProgressStage(Booking booking)
         {
             return booking.HeartRate.HasValue &&
                 booking.Height.HasValue &&
                 booking.Weight.HasValue &&
-                (booking.Stage == Stage.Send || booking.Stage == Stage.Confirmed);
+               (booking.Stage == Stage.Send || booking.Stage == Stage.Confirmed);
         }
     }
 }

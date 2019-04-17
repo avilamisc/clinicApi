@@ -60,8 +60,7 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   public get canEditName(): boolean {
-    return this.isNewBooking ||
-            (this.isPatient && this.model.stage === Stage.Send);
+    return this.isNewBooking || (this.isPatient && this.model.stage === Stage.Send);
   }
 
   public get canEditHealthInfo(): boolean {

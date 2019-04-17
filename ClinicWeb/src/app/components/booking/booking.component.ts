@@ -34,18 +34,20 @@ export class BookingComponent implements OnInit {
   public stage = Stage;
   public stageForFlter: Stage = null;
   public stages: SelectItem[];
-  public completedNotificationMessage = NotificationMessages.Booking.UpdateToCompleteStage;
-  public confirmedNotificationMessage = NotificationMessages.Booking.UpdateToConfirmedStage;
+  public completedNotificationMessage = NotificationMessages.Booking.UpdateToConfirmedStage;
+  public confirmedNotificationMessage = NotificationMessages.Booking.UpdateToCompletedStage;
+  public rejectedNotificationMessage = NotificationMessages.Booking.UpdateToRejectedStage;
+  public canceledNotificationMessage = NotificationMessages.Booking.UpdateToCanceledStage;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private currentPage = 0;
 
-  @ViewChild('updateDateColumn') updateDateColumn: TemplateRef<any>;
-  @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
-  @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
-  @ViewChild('patientColumn') patientColumn: TemplateRef<any>;
-  @ViewChild('actionsColumn') actionsColumn: TemplateRef<any>;
-  @ViewChild('actionsHeaderColumn') actionsHeaderColumn: TemplateRef<any>;
+  @ViewChild('updateDateColumn') public updateDateColumn: TemplateRef<any>;
+  @ViewChild('documetsColumn') public documentsColumn: TemplateRef<any>;
+  @ViewChild('rateColumn') public rateColumn: TemplateRef<any>;
+  @ViewChild('patientColumn') public patientColumn: TemplateRef<any>;
+  @ViewChild('actionsColumn') public actionsColumn: TemplateRef<any>;
+  @ViewChild('actionsHeaderColumn') public actionsHeaderColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
@@ -272,7 +274,7 @@ export class BookingComponent implements OnInit {
       });
   }
 
-  public getStage(booking: BookingModel): string {
+  public getStageLabel(booking: BookingModel): string {
     switch (booking.Stage) {
       case Stage.Send: return 'Send';
       case Stage.InProgress: return 'InProgress';
