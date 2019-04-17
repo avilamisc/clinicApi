@@ -22,7 +22,7 @@ export class TableComponent implements OnInit {
   @Output('pageChanged') public onPageChanged = new EventEmitter<Pagination>();
 
   @HostListener('window:resize', ['$event'])
-  public onResize(event): void {
+  public onResize(event: any): void {
     this.checkMobileCompability(event.target.innerWidth);
   }
 

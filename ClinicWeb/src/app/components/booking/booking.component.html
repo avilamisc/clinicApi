@@ -38,7 +38,8 @@
     <app-rating [rating]="data?.BookingRate"
                 [itemId]="data?.Id"
                 [disabled]="!canRateBooking(data)"
-                (ratingClick)="updateRate(data?.Id, $event?.rating)" />
+                (ratingClick)="updateRate(data?.Id, $event?.rating)" >
+    </app-rating>
   </div>
 </ng-template>
 
@@ -47,7 +48,8 @@
     <p-dropdown [options]="stages"
                 [dropdownIcon]="''"
                 [(ngModel)]="stageForFlter"
-                (onChange)="onFilterStageChanged()" />
+                (onChange)="onFilterStageChanged()">
+    </p-dropdown>
   </div>
 </ng-template>
 
@@ -84,7 +86,9 @@
 </ng-template>
 
 <ng-template let-data="data" #patientColumn>
-  <span>{{data.PatientName}} ({{data.PatientAge}} y.o.)</span>
+  <span>
+    {{data.PatientName}} ({{data.PatientAge}} y.o.)
+  </span>
 </ng-template>
 
 <app-edit *ngIf="bookingToUpdate"
