@@ -6,6 +6,4 @@ export class ClinicianBookingModel extends BookingModel {
     PatientId: number;
     PatientName: string;
     PatientAge: string;
-    CreationDate: Date;
-    UpdateDate: Date;
 }

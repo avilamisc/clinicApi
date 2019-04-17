@@ -25,9 +25,7 @@ namespace ClinicApi.Automapper
 
             CreateMap<BookingDto, ClinicianBookingModel>()
                 .ForMember(p => p.PatientName, options => options.MapFrom(b => $"{b.Patient.Name} {b.Patient.Surname}"))
-                .ForMember(p => p.PatientAge, options => options.MapFrom(b => DateTime.Now.Year - b.Patient.BornDate.Year))
-                .ForMember(p => p.CreationDate, options => options.Ignore())
-                .ForMember(p => p.UpdateDate, options => options.Ignore());
+                .ForMember(p => p.PatientAge, options => options.MapFrom(b => b.Age));
             CreateMap<ClinicianBookingModel, BookingDto>()
                 .ForMember(p => p.CreationDate, options => options.Ignore())
                 .ForMember(p => p.UpdateDate, options => options.Ignore());
@@ -53,7 +51,8 @@ namespace ClinicApi.Automapper
                 .ForMember(b => b.Patient, options => options.Ignore())
                 .ForMember(b => b.ClinicClinician, options => options.Ignore())
                 .ForMember(p => p.CreationDate, options => options.Ignore())
-                .ForMember(p => p.UpdateDate, options => options.Ignore());
+                .ForMember(p => p.UpdateDate, options => options.Ignore())
+                .ForMember(p => p.Stage, options => options.Ignore());
 
             CreateMap<NameValueCollection, PatientBookingModel>()
                 .ForMember(p => p.ClinicianId, options => options.MapFrom(c => c[nameof(PatientBookingModel.ClinicianId)]))

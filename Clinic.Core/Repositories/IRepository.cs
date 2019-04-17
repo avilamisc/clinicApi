@@ -17,7 +17,9 @@ namespace Clinic.Core.Repositories
 
         Task<IEnumerable<TEntity>> GetAsync();
 
-        Task<TEntity> GetAsync(long id);
+        Task<TEntity> GetAsync(int id);
+
+        Task<TEntity> GetAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties);
 
         Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
 

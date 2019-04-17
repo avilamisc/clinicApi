@@ -1,4 +1,5 @@
 import { DocumentModel } from './document.model';
+import { Stage } from '..';
 
 export class UpdateBookingModel {
     id: number;
@@ -13,4 +14,5 @@ export class UpdateBookingModel {
     Weight: number;
     Height: number;
     PatientDescription: string;
+    stage: Stage;
 }

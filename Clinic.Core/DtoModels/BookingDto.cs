@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Clinic.Core.Enums;
+
 namespace Clinic.Core.DtoModels
 {
     public class BookingDto
     {
         public int Id { get; set; }
+        public Stage Stage { get; set; }
         public float? Rate { get; set; }
         public short? HeartRate { get; set; }
         public float? Weight { get; set; }
@@ -22,5 +25,15 @@ namespace Clinic.Core.DtoModels
         public int PatientId { get; set; }
         public PatientDto Patient { get; set; }
         public IEnumerable<DocumentDto> Documents { get; set; }
+
+        public int Age
+        {
+            get
+            {
+                DateTime currentDate = DateTime.Now;
+                int age = currentDate.Year - Patient.BornDate.Year;
+                return Patient.BornDate > currentDate.AddYears(-age) ? age - 1 : age;
+            }
+        }
     }
 }

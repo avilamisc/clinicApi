@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { SelectItem } from 'primeng/components/common/selectitem';
 
 import { BookingService } from 'src/app/core/services/booking/booking.service';
-import { BookingModel, PatientBookingModel, DocumentModel } from 'src/app/core/models';
+import { BookingModel, PatientBookingModel, DocumentModel, Stage } from 'src/app/core/models';
 import { UpdateBookingModel } from 'src/app/core/models/booking/update-booking.model';
 import { UserRoles } from 'src/app/utilities/user-roles';
 import { User } from 'src/app/core/models/user/user.model';
@@ -12,6 +13,7 @@ import { PatientBookingTableConfiguration,
 import { Pagination } from 'src/app/core/models/table/pagination.model';
 import { Column } from 'src/app/core/models/table/column.model';
 import { ToastNotificationService } from 'src/app/core/services/notification.service';
+import { NotificationMessages } from 'src/app/utilities/notification-message';
 
 @Component({
   selector: 'app-booking',
@@ -27,24 +29,93 @@ export class BookingComponent implements OnInit {
   public isEditWindowOpen = false;
   public tableRowAmount = 5;
   public isPatient: boolean;
+  public isClinician: boolean;
+  public isClinic: boolean;
+  public stage = Stage;
+  public stageForFlter: Stage = null;
+  public stages: SelectItem[];
+  public completedNotificationMessage = NotificationMessages.Booking.UpdateToConfirmedStage;
+  public confirmedNotificationMessage = NotificationMessages.Booking.UpdateToCompletedStage;
+  public rejectedNotificationMessage = NotificationMessages.Booking.UpdateToRejectedStage;
+  public canceledNotificationMessage = NotificationMessages.Booking.UpdateToCanceledStage;
   private editedBookingIndex: number;
   private isAddingNewBooking = false;
   private currentPage = 0;
 
-  @ViewChild('updateDateColumn') updateDateColumn: TemplateRef<any>;
-  @ViewChild('documetsColumn') documentsColumn: TemplateRef<any>;
-  @ViewChild('rateColumn') rateColumn: TemplateRef<any>;
-  @ViewChild('actionsColumn') actionsColumn: TemplateRef<any>;
+  @ViewChild('updateDateColumn') public updateDateColumn: TemplateRef<any>;
+  @ViewChild('documetsColumn') public documentsColumn: TemplateRef<any>;
+  @ViewChild('rateColumn') public rateColumn: TemplateRef<any>;
+  @ViewChild('patientColumn') public patientColumn: TemplateRef<any>;
+  @ViewChild('actionsColumn') public actionsColumn: TemplateRef<any>;
+  @ViewChild('actionsHeaderColumn') public actionsHeaderColumn: TemplateRef<any>;
 
   constructor(
     private userService: UserService,
     private bookingService: BookingService,
     private documentService: DocumentService,
-    private notificationService: ToastNotificationService) { }
+    private notificationService: ToastNotificationService) {
+      this.stages = [
+        { label: 'All stages', value: null },
+        { label: 'Send', value: Stage.Send },
+        { label: 'Rejected', value: Stage.Rejected },
+        { label: 'InProgress', value: Stage.InProgress },
+        { label: 'Confirmed', value: Stage.Confirmed },
+        { label: 'Completed', value: Stage.Completed },
+        { label: 'Canceled', value: Stage.Canceled }
+      ];
+    }
 
   public ngOnInit(): void {
     this.initializeBookings();
     this.initializeTableColumns();
+  }
+
+  public onFilterStageChanged(): void {
+    this.uploadBookings({
+      pageNumber: 0,
+      pageCount: this.tableRowAmount
+    });
+  }
+
+  public canReject(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.Send;
+  }
+
+  public canConfirm(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.Send;
+  }
+
+  public canComplete(booking: BookingModel): boolean {
+    return this.isClinician && booking.Stage === Stage.InProgress;
+  }
+
+  public canCancel(booking: BookingModel): boolean {
+    return (this.isPatient || this.isClinic) &&
+           (booking.Stage === Stage.InProgress || booking.Stage === Stage.Confirmed);
+  }
+
+  public canRateBooking(booking: BookingModel): boolean {
+    return this.isPatient && booking.Stage === Stage.Completed;
+  }
+
+  public updateStage($event: any, bookingId: number, stage: Stage, notificationMsg: string): void {
+    $event.stopPropagation();
+    const updateModel = {
+      id: bookingId,
+      value: stage
+    };
+    this.bookingService.updateBookingStage(updateModel)
+      .subscribe((result) => {
+        if (result.Data) {
+          const updatedBooking = this.bookings.find(b => b.Id === bookingId);
+          if (updatedBooking) {
+            updatedBooking.Stage = result.Data;
+            this.notificationService.successMessage(notificationMsg);
+          }
+        } else {
+          this.notificationService.showApiErrorMessage(result);
+        }
+      });
   }
 
   public openEditWindow(booking: BookingModel, index: number): void {
@@ -57,6 +128,7 @@ export class BookingComponent implements OnInit {
     this.bookingToUpdate.PatientDescription = booking.PatientDescription;
     this.bookingToUpdate.name = booking.Name;
     this.bookingToUpdate.documents = booking.Documents;
+    this.bookingToUpdate.stage = booking.Stage;
     this.bookingToUpdate.clinicId = (booking as PatientBookingModel).ClinicId;
     this.bookingToUpdate.clinicianId = (booking as PatientBookingModel).ClinicianId || this.user.Id;
     this.isAddingNewBooking = false;
@@ -89,6 +161,8 @@ export class BookingComponent implements OnInit {
   public initializeBookings(): void {
     this.user = this.userService.getUserFromLocalStorage();
     this.isPatient = this.user.UserRole === UserRoles.Patient;
+    this.isClinic = this.user.UserRole === UserRoles.Clinic;
+    this.isClinician = this.user.UserRole === UserRoles.Clinician;
     this.uploadBookings({
         pageNumber: 0,
         pageCount: this.tableRowAmount
@@ -110,12 +184,19 @@ export class BookingComponent implements OnInit {
 
     const actionsConfig = config.get('Actions');
     actionsConfig.RowContent = this.actionsColumn;
+    actionsConfig.HeaderContent = this.actionsHeaderColumn;
     config.set('Actions', actionsConfig);
 
     if (this.isPatient) {
       const rateConfig = config.get('ClinicianRate');
       rateConfig.RowContent = this.rateColumn;
       config.set('ClinicianRate', rateConfig);
+    }
+
+    if (this.isClinician) {
+      const patientConfig = config.get('PatientName');
+      patientConfig.RowContent = this.patientColumn;
+      config.set('PatientName', patientConfig);
     }
 
     this.columns = Array.from(config.values());
@@ -134,20 +215,20 @@ export class BookingComponent implements OnInit {
   public uploadBookings(pagination: Pagination): void {
     this.currentPage = pagination.pageNumber;
     this.isPatient
-      ? this.bookingService.getPatientBookings(pagination)
-        .subscribe(res => {
-          if (res.Data !== null) {
-            this.bookings = res.Data.DataCollection;
-            this.totalDataAmount = res.Data.TotalCount;
-          }
-        })
-      : this.bookingService.getClinicianBookings(pagination)
-        .subscribe(res => {
-          if (res.Data !== null) {
-            this.bookings = res.Data.DataCollection;
-            this.totalDataAmount = res.Data.TotalCount;
-          }
-        });
+      ? this.bookingService.getPatientBookings(pagination, this.stageForFlter)
+          .subscribe(res => {
+            if (res.Data !== null) {
+              this.bookings = res.Data.DataCollection;
+              this.totalDataAmount = res.Data.TotalCount;
+            }
+          })
+      : this.bookingService.getClinicianBookings(pagination, this.stageForFlter)
+          .subscribe(res => {
+            if (res.Data !== null) {
+              this.bookings = res.Data.DataCollection;
+              this.totalDataAmount = res.Data.TotalCount;
+            }
+          });
   }
 
   public updateRate(bookingId: number, newRate: number): void {
@@ -191,5 +272,17 @@ export class BookingComponent implements OnInit {
           }
         }
       });
+  }
+
+  public getStageLabel(booking: BookingModel): string {
+    switch (booking.Stage) {
+      case Stage.Send: return 'Send';
+      case Stage.InProgress: return 'InProgress';
+      case Stage.Canceled: return 'Canceled';
+      case Stage.Confirmed: return 'Confirmed';
+      case Stage.Rejected: return 'Rejected';
+      case Stage.Completed: return 'Completed';
+      default: return '';
+    }
   }
 }

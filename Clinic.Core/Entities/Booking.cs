@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Clinic.Core.Enums;
+
 namespace Clinic.Core.Entities
 {
-    public class Booking
+    public class Booking : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public float? Rate { get; set; }
         public short? HeartRate { get; set; }
@@ -14,6 +15,7 @@ namespace Clinic.Core.Entities
         public string PatientDescription { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime UpdateDate { get; set; }
+        public Stage Stage { get; set; }
 
         public int ClinicClinicianId { get; set; }
         public ClinicClinician ClinicClinician { get; set; }
