@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
+using System.Web.Http.Routing;
 
 using Clinic.Core.DtoModels;
 using Clinic.Core.DtoModels.Account;
@@ -31,21 +33,23 @@ namespace ClinicApi.Services
         private static readonly DateTime MinPatientBornDate = new DateTime(1919, 1, 1);
 
         private readonly ITokenService _tokenService;
+        private readonly IFileService _fileService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IApiMapper _mapper;
 
-
         public AccountService(
             ITokenService tokenService,
+            IFileService fileService,
             IUnitOfWork unitOfWork,
             IApiMapper mapper)
         {
             _tokenService = tokenService;
+            _fileService = fileService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<PatientProfileViewModel>> GetPatientProfile(IEnumerable<Claim> claims)
+        public async Task<ApiResponse<PatientProfileViewModel>> GetPatientProfile(IEnumerable<Claim> claims, UrlHelper urlHelper)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
@@ -58,10 +62,13 @@ namespace ClinicApi.Services
                 return ApiResponse<PatientProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
             }
 
-            return ApiResponse<PatientProfileViewModel>.Ok(_mapper.Mapper.Map<PatientProfileViewModel>(patient));
+            var patientModel = _mapper.Mapper.Map<PatientProfileViewModel>(patient);
+            patientModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, patient.ImageUrl);
+
+            return ApiResponse<PatientProfileViewModel>.Ok(patientModel);
         }
 
-        public async Task<ApiResponse<ClinicProfileViewModel>> GetClinicProfile(IEnumerable<Claim> claims)
+        public async Task<ApiResponse<ClinicProfileViewModel>> GetClinicProfile(IEnumerable<Claim> claims, UrlHelper urlHelper)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
@@ -74,10 +81,13 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
             }
 
-            return ApiResponse<ClinicProfileViewModel>.Ok(_mapper.Mapper.Map<ClinicProfileViewModel>(clinic));
+            var clinicModel = _mapper.Mapper.Map<ClinicProfileViewModel>(clinic);
+            clinicModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, clinic.ImageUrl);
+
+            return ApiResponse<ClinicProfileViewModel>.Ok(clinicModel);
         }
 
-        public async Task<ApiResponse<ClinicianProfileViewModel>> GetClinicianProfile(IEnumerable<Claim> claims)
+        public async Task<ApiResponse<ClinicianProfileViewModel>> GetClinicianProfile(IEnumerable<Claim> claims, UrlHelper urlHelper)
         {
             if (!CheckUserIdInClaims(claims, out int userId))
             {
@@ -90,7 +100,183 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicianProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
             }
 
-            return ApiResponse<ClinicianProfileViewModel>.Ok(_mapper.Mapper.Map<ClinicianProfileViewModel>(clinician));
+            var clinicianModel = _mapper.Mapper.Map<ClinicianProfileViewModel>(clinician);
+            clinicianModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, clinician.ImageUrl);
+
+            return ApiResponse<ClinicianProfileViewModel>.Ok(clinicianModel);
+        }
+
+        public async Task<ApiResponse<PatientProfileViewModel>> UpdatePatientProfile(HttpRequest request,
+            IEnumerable<Claim> claims, UrlHelper urlHelper)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<PatientProfileViewModel>.BadRequest();
+            }
+
+            var patient = await _unitOfWork.PatientRepository.GetAsync(userId);
+            if (patient == null)
+            {
+                return ApiResponse<PatientProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            var updateModel = _mapper.SafeMap<PatientUpdateModel>(request.Form);
+            if (updateModel == null)
+            {
+                return ApiResponse<PatientProfileViewModel>.BadRequest();
+            }
+
+            var validationErrorMessage = ValidateUserProfileModel(updateModel);
+            if (validationErrorMessage != null)
+            {
+                return ApiResponse<PatientProfileViewModel>.ValidationError(validationErrorMessage);
+            }
+
+            var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
+            if (newImage != null)
+            {
+                patient.ImageUrl = newImage;
+            }
+
+            patient.BornDate = updateModel.BornDate;
+            patient.Email = updateModel.Mail;
+            patient.Name = updateModel.Name.Split(' ')[0];
+            patient.Surname = updateModel.Name.Split(' ')[1];
+
+            try
+            {
+                _unitOfWork.PatientRepository.Update(patient);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                if (newImage != null)
+                {
+                    _fileService.DeleteFile(HostingEnvironment.MapPath(newImage));
+                }
+
+                return ApiResponse<PatientProfileViewModel>.InternalError("Cannot update your user");
+            }
+
+            var resultModel = _mapper.Mapper.Map<PatientProfileViewModel>(patient);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+
+            return ApiResponse<PatientProfileViewModel>.Ok(resultModel);
+        }
+
+        public async Task<ApiResponse<ClinicProfileViewModel>> UpdateClinicProfile(HttpRequest request,
+            IEnumerable<Claim> claims, UrlHelper urlHelper)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<ClinicProfileViewModel>.BadRequest();
+            }
+
+            var clinic = await _unitOfWork.ClinicRepository.GetAsync(userId);
+            if (clinic == null)
+            {
+                return ApiResponse<ClinicProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            var updateModel = _mapper.SafeMap<ClinicUpdateModel>(request.Form);
+            if (updateModel == null)
+            {
+                return ApiResponse<ClinicProfileViewModel>.BadRequest();
+            }
+
+            var validationErrorMessage = ValidateUserProfileModel(updateModel);
+            if (validationErrorMessage != null)
+            {
+                return ApiResponse<ClinicProfileViewModel>.ValidationError(validationErrorMessage);
+            }
+
+            var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
+            if (newImage != null)
+            {
+                clinic.ImageUrl = newImage;
+            }
+
+            clinic.Email = updateModel.Mail;
+            clinic.Name = updateModel.Name.Split(' ')[0];
+            clinic.Surname = updateModel.Name.Split(' ')[1];
+            clinic.ClinicName = updateModel.ClinicName;
+
+            try
+            {
+                _unitOfWork.ClinicRepository.Update(clinic);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                if (newImage != null)
+                {
+                    _fileService.DeleteFile(HostingEnvironment.MapPath(newImage));
+                }
+
+                return ApiResponse<ClinicProfileViewModel>.InternalError("Cannot update your user");
+            }
+
+            var resultModel = _mapper.Mapper.Map<ClinicProfileViewModel>(clinic);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+
+            return ApiResponse<ClinicProfileViewModel>.Ok(resultModel);
+        }
+
+        public async Task<ApiResponse<ClinicianProfileViewModel>> UpdateClinicianProfile(HttpRequest request,
+            IEnumerable<Claim> claims, UrlHelper urlHelper)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<ClinicianProfileViewModel>.BadRequest();
+            }
+
+            var clinician = await _unitOfWork.ClinicianRepository.GetAsync(userId);
+            if (clinician == null)
+            {
+                return ApiResponse<ClinicianProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            var updateModel = _mapper.SafeMap<ClinicianUpdateModel>(request.Form);
+            if (updateModel == null)
+            {
+                return ApiResponse<ClinicianProfileViewModel>.BadRequest();
+            }
+
+            var validationErrorMessage = ValidateUserProfileModel(updateModel);
+            if (validationErrorMessage != null)
+            {
+                return ApiResponse<ClinicianProfileViewModel>.ValidationError(validationErrorMessage);
+            }
+
+            var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
+            if (newImage != null)
+            {
+                clinician.ImageUrl = newImage;
+            }
+
+            clinician.Email = updateModel.Mail;
+            clinician.Name = updateModel.Name.Split(' ')[0];
+            clinician.Surname = updateModel.Name.Split(' ')[1];
+
+            try
+            {
+                _unitOfWork.ClinicianRepository.Update(clinician);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                if (newImage != null)
+                {
+                    _fileService.DeleteFile(HostingEnvironment.MapPath(newImage));
+                }
+
+                return ApiResponse<ClinicianProfileViewModel>.InternalError("Cannot update your user");
+            }
+
+            var resultModel = _mapper.Mapper.Map<ClinicianProfileViewModel>(clinician);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+
+            return ApiResponse<ClinicianProfileViewModel>.Ok(resultModel);
         }
 
         public async Task<ApiResponse<LoginResultModel>> AuthenticateAsync(string email, string password)
@@ -128,10 +314,13 @@ namespace ClinicApi.Services
                 return ApiResponse<LoginResultModel>.ValidationError("Unexisting clinic is selected.");
             }
 
+            var profileImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
+
             var clinicianRegistrationDto = _mapper.Mapper.Map<ClinicianRegistrationDto>(registerModel);
             clinicianRegistrationDto.RelatedClinics = clinics;
             clinicianRegistrationDto.PasswordHash = Hashing.HashPassword(registerModel.Password);
             clinicianRegistrationDto.Role = UserRole.Clinician;
+            clinicianRegistrationDto.UserImage = profileImage;
 
             try
             {
@@ -148,6 +337,7 @@ namespace ClinicApi.Services
             }
             catch (Exception)
             {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(profileImage));
                 return ApiResponse<LoginResultModel>.InternalError();
             }
         }
@@ -172,6 +362,8 @@ namespace ClinicApi.Services
                 return validationError;
             }
 
+            var profileImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
+
             var newClinic = new Clinic.Core.Entities.Clinic
             {
                 Name = registerModel.UserName.Split(' ')[0],
@@ -181,7 +373,9 @@ namespace ClinicApi.Services
                 PasswordHash = Hashing.HashPassword(registerModel.Password),
                 City = registerModel.City,
                 Geolocation = GeographyExtensions.CreatePoint(registerModel.Long, registerModel.Lat),
-                ClinicName = registerModel.Name
+                ClinicName = registerModel.Name,
+                RegistrationDate = DateTime.Now,
+                ImageUrl = profileImage
             };
 
             try
@@ -195,6 +389,7 @@ namespace ClinicApi.Services
             }
             catch (Exception)
             {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(profileImage));
                 return ApiResponse<LoginResultModel>.InternalError();
             }
         }
@@ -214,14 +409,17 @@ namespace ClinicApi.Services
             }
 
             var patientValidationError = ValidatePatientRegistrationModel(registerModel);
-            if (validationError != null)
+            if (patientValidationError != null)
             {
-                return validationError;
+                return patientValidationError;
             }
+
+            var profileImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
 
             var patientRegistrationDto = _mapper.Mapper.Map<PatientRegistrationDto>(registerModel);
             patientRegistrationDto.PasswordHash = Hashing.HashPassword(registerModel.Password);
             patientRegistrationDto.Role = UserRole.Patient;
+            patientRegistrationDto.UserImage = profileImage;
 
             try
             {
@@ -232,12 +430,13 @@ namespace ClinicApi.Services
             }
             catch (Exception)
             {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(profileImage));
                 return ApiResponse<LoginResultModel>.InternalError();
             }
         }
 
-        private IEnumerable<CreateNotificationDto> CreateNotifications(
-            IEnumerable<ClinicClinician> clinicClinicians, int userId, string userName)
+        private IEnumerable<CreateNotificationDto> CreateNotifications(IEnumerable<ClinicClinician> clinicClinicians,
+            int userId, string userName)
         {
             foreach (var clinicClinician in clinicClinicians)
             {
@@ -324,6 +523,42 @@ namespace ClinicApi.Services
                 UserId = user.Id,
                 UserName = user.Name
             };
+        }
+
+        private string GetUserImageFromRequest(HttpRequest request, string imageFieldName, string imagesFolder)
+        {
+            string fileUrl = null;
+
+            if (request.Files.Count > 0)
+            {
+                var image = request.Files.Get(imageFieldName);
+                if (image != null)
+                {
+                    fileUrl = _fileService.UploadFile(imagesFolder, image);
+                }
+            }
+
+            return fileUrl;
+        }
+
+        private string ValidateUserProfileModel(ProfileUpdateModel profileViewModel)
+        {
+            if (string.IsNullOrWhiteSpace(profileViewModel.Name))
+            {
+                return "Name is required";
+            }
+
+            if (profileViewModel.Name.Split(' ').Count() != 2)
+            {
+                return "Wrong name format";
+            }
+
+            if (string.IsNullOrWhiteSpace(profileViewModel.Mail))
+            {
+                return "Mail is required";
+            }
+
+            return null;
         }
     }
 }

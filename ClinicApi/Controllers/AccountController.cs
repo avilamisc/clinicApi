@@ -88,7 +88,7 @@ namespace ClinicApi.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            return Ok(await _accountService.GetPatientProfile(identity.Claims));
+            return Ok(await _accountService.GetPatientProfile(identity.Claims, Url));
         }
 
         [HttpGet]
@@ -99,7 +99,7 @@ namespace ClinicApi.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            return Ok(await _accountService.GetClinicianProfile(identity.Claims));
+            return Ok(await _accountService.GetClinicianProfile(identity.Claims, Url));
         }
 
         [HttpGet]
@@ -110,22 +110,43 @@ namespace ClinicApi.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
 
-            return Ok(await _accountService.GetClinicProfile(identity.Claims));
+            return Ok(await _accountService.GetClinicProfile(identity.Claims, Url));
         }
 
-        //[HttpPut]
-        //[Authorize]
-        //[Route("profile")]
-        //[SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(EditUserProfileModel))]
-        //[SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResult<ProfileViewModel>))]
-        //public async Task<IHttpActionResult> EditUserProfile()
-        //{
-        //    var identity = (ClaimsIdentity)User.Identity;
+        [HttpPut]
+        [BearerAuthorization(Roles = "Patient")]
+        [Route("profile/patient")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(PatientUpdateModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<PatientProfileViewModel>))]
+        public async Task<IHttpActionResult> EditPatientProfile()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
 
-        //    var result = await _accountService.EditUserProfileAsync(identity.Claims, HttpContext.Current.Request, Url);
-        //    if (result.GetCode() == HttpStatusCode.OK) return Ok(result);
+            return Ok(await _accountService.UpdatePatientProfile(HttpContext.Current.Request, identity.Claims, Url));
+        }
 
-        //    return new StatusCodeResult(result.GetCode(), this);
-        //}
+        [HttpPut]
+        [BearerAuthorization(Roles = "Clinician")]
+        [Route("profile/clinician")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(ClinicianUpdateModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<ClinicianProfileViewModel>))]
+        public async Task<IHttpActionResult> EditClinicianProfile()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _accountService.UpdateClinicianProfile(HttpContext.Current.Request, identity.Claims, Url));
+        }
+
+        [HttpPut]
+        [BearerAuthorization(Roles = "Admin")]
+        [Route("profile/admin")]
+        [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(ClinicUpdateModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<ClinicProfileViewModel>))]
+        public async Task<IHttpActionResult> EditClinicProfile()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _accountService.UpdateClinicProfile(HttpContext.Current.Request, identity.Claims, Url));
+        }
     }
 }

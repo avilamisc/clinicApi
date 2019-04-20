@@ -261,7 +261,7 @@ __pycache__/
 *.pyc
 
 # Uploaded Files
-uploads/
+App_Data/
 
 # Signing keys
 *.snk

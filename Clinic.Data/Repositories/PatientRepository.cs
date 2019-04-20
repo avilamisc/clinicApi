@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+
 using Clinic.Core.DtoModels.Account;
 using Clinic.Core.Entities;
 using Clinic.Core.Repositories;
@@ -8,8 +10,7 @@ namespace Clinic.Data.Repositories
 {
     public class PatientRepository : Repository<Patient>, IPatientRepository
     {
-        public PatientRepository(
-            ClinicDb context) : base(context)
+        public PatientRepository(ClinicDb context) : base(context)
         {
         }
 
@@ -22,7 +23,9 @@ namespace Clinic.Data.Repositories
                 Role = registrationDto.Role,
                 Email = registrationDto.Email,
                 PasswordHash = registrationDto.PasswordHash,
-                BornDate = registrationDto.BornDate
+                BornDate = registrationDto.BornDate,
+                RegistrationDate = DateTime.Now,
+                ImageUrl = registrationDto.UserImage
             };
 
             _context.Patients.Add(patient);

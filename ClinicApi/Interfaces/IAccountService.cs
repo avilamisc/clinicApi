@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Routing;
 
 using ClinicApi.Models;
 using ClinicApi.Models.Account;
@@ -15,8 +16,11 @@ namespace ClinicApi.Interfaces
         Task<ApiResponse<LoginResultModel>> RegisterPatientAsync(HttpRequest request);
         Task<ApiResponse<LoginResultModel>> RegisterClinicianAsync(HttpRequest request);
         Task<ApiResponse<LoginResultModel>> RegisterAdminAsync(HttpRequest request);
-        Task<ApiResponse<ClinicianProfileViewModel>> GetClinicianProfile(IEnumerable<Claim> claims);
-        Task<ApiResponse<PatientProfileViewModel>> GetPatientProfile(IEnumerable<Claim> claims);
-        Task<ApiResponse<ClinicProfileViewModel>> GetClinicProfile(IEnumerable<Claim> claims);
+        Task<ApiResponse<ClinicianProfileViewModel>> GetClinicianProfile(IEnumerable<Claim> claims, UrlHelper urlHelper);
+        Task<ApiResponse<PatientProfileViewModel>> GetPatientProfile(IEnumerable<Claim> claims, UrlHelper urlHelper);
+        Task<ApiResponse<ClinicProfileViewModel>> GetClinicProfile(IEnumerable<Claim> claims, UrlHelper urlHelper);
+        Task<ApiResponse<PatientProfileViewModel>> UpdatePatientProfile(HttpRequest request, IEnumerable<Claim> claims, UrlHelper urlHelper);
+        Task<ApiResponse<ClinicProfileViewModel>> UpdateClinicProfile(HttpRequest request, IEnumerable<Claim> claims, UrlHelper urlHelper);
+        Task<ApiResponse<ClinicianProfileViewModel>> UpdateClinicianProfile(HttpRequest request, IEnumerable<Claim> claims, UrlHelper urlHelper);
     }
 }

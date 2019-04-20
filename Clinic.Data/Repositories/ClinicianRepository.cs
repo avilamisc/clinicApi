@@ -4,6 +4,7 @@ using Clinic.Core.Entities;
 using Clinic.Core.Repositories;
 using Clinic.Data.Automapper.Infrastructure;
 using Clinic.Data.Context;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -31,6 +32,8 @@ namespace Clinic.Data.Repositories
                 Role = registrationDto.Role,
                 Email = registrationDto.Email,
                 PasswordHash = registrationDto.PasswordHash,
+                RegistrationDate = DateTime.Now,
+                ImageUrl = registrationDto.UserImage
             };
             var clinicClinicians = registrationDto.RelatedClinics
                 .Select(c => new ClinicClinician { ClinicId = c.Id, Clinician = clinician });

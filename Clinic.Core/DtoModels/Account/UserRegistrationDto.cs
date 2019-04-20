@@ -1,4 +1,6 @@
-﻿using Clinic.Core.Enums;
+﻿using System;
+
+using Clinic.Core.Enums;
 
 namespace Clinic.Core.DtoModels.Account
 {
@@ -9,5 +11,6 @@ namespace Clinic.Core.DtoModels.Account
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public UserRole Role { get; set; }
+        public string UserImage { get; set; }
     }
 }

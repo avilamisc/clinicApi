@@ -166,6 +166,7 @@
     <Compile Include="Controllers\ClinicianController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\StorageController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Automapper\BookingProfile.cs" />
     <Compile Include="Infrastructure\Auth\HasAccessTokenAttribute.cs" />
@@ -183,8 +184,12 @@
     <Compile Include="Interfaces\INotificationService.cs" />
     <Compile Include="Interfaces\IServiceBase.cs" />
     <Compile Include="Models\Profile\ClinicianProfileViewModel.cs" />
+    <Compile Include="Models\Profile\ClinicianUpdateModel.cs" />
     <Compile Include="Models\Profile\ClinicProfileViewModel.cs" />
+    <Compile Include="Models\Profile\ClinicUpdateModel.cs" />
     <Compile Include="Models\Profile\PatientProfileViewModel.cs" />
+    <Compile Include="Models\Profile\PatientUpdateModel.cs" />
+    <Compile Include="Models\Profile\ProfileUpdateModel.cs" />
     <Compile Include="Models\Profile\ProfileViewModel.cs" />
     <Compile Include="Models\Account\Registration\AdminResultModel.cs" />
     <Compile Include="Models\Account\Registration\ClinicianRegisterModel.cs" />
