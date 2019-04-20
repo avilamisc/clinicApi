@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable, throwError, empty } from 'rxjs';
+import { Observable, empty } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 
 import { AccountService } from '../services/auth/account.service';
-import { RefreshTokenModel } from '../models';
+import { RefreshTokenModel, RevokeTokenModel } from '../models';
 import { TokenService } from '../services/auth/token.service';
 import { ToastNotificationService } from '../services/notification.service';
 import { LoaderService } from '../services/loader/loader.service';
@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 };
                 return this.accountService.refreshToken(refreshModel)
                     .pipe(mergeMap(res => {
-                        if (res.Data !== null) {
+                        if (res.Data && res.Data.AccessToken && res.Data.RefreshToken) {
                             this.tokenService.setAccessToken(res.Data.AccessToken);
                             this.tokenService.setRefreshToken(res.Data.RefreshToken);
                             request = request.clone({
@@ -43,8 +43,21 @@ export class ErrorInterceptor implements HttpInterceptor {
 
                             return next.handle(request);
                         } else {
-                            this.tokenService.removeTokens();
-                            location.reload(true);
+                            const revokeModel: RevokeTokenModel = {
+                                token: this.tokenService.getAccessToken(),
+                                refreshToken: this.tokenService.getRefreshToken()
+                            };
+                            this.accountService.revokeToken(revokeModel)
+                                .subscribe(result => {
+                                    this.tokenService.removeTokens();
+                                    if (result.Data) {
+                                        this.accountService.logOut();
+                                    } else {
+                                        this.notificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
+                                    }
+                                    location.reload(true);
+                                });
+
                             return empty();
                         }
                     }));
@@ -58,5 +71,5 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     private hideLoader(): void {
         this.loaderService.hide();
-      }
+    }
 }

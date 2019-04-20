@@ -1,5 +1,4 @@
 ﻿using Clinic.Core.Entities;
-using Clinic.Core.DtoModels;
 
 namespace Clinic.Core.Repositories
 {

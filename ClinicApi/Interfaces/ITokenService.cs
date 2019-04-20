@@ -13,6 +13,7 @@ namespace ClinicApi.Interfaces
     {
         Task UpdateRefreshTokenAsync(RefreshToken refreshToken, string newValue, DateTime newExpirationDate);
         Task<ApiResponse<LoginResultModel>> RefreshTokenAsync(RefreshTokenModel refreshTokenModel);
+        Task<ApiResponse<bool>> RemoveTokenAsync(IEnumerable<Claim> claims, RevokeTokenModel revokeTokenModel);
         Task<RefreshToken> GetUserRefreshTokenAsync(string refreshToken);
         Task<bool> AddRefreshTokenAsync(RefreshToken refreshToken);
         RefreshToken GenerateRefreshToken(int userId, int size = 32);
