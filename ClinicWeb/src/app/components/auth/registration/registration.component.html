@@ -71,6 +71,17 @@
       </button>
     </form>
   </div>
+  <div *ngIf="isMainInfoSubmitted" class="user-image-container">
+    <div class="image-container">
+      <img [src]=registrationModel.UserImageUrl />
+    </div>
+    <div class="buttons-container">
+      <button type="button" class="change-btn upload-image">
+          Upload user image
+        <input type="file" class="change-btn" [accept]="inputFileAcceptImageTypes" (change)="uploadNewCompanyLogo($event)" />
+      </button>
+    </div>
+  </div>
   <app-patient-registration *ngIf="isMainInfoSubmitted && isPatient"
                             [returnUrl]="returnUrl"
                             [model]="registrationModel"

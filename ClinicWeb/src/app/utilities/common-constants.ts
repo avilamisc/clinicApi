@@ -17,3 +17,7 @@ export const CommonRegEx = {
     notNumber: /[^0-9]/,
     currencyReg: /\w K/
 };
+
+export const InputFileAccepts = {
+    imageTypes: '.jpeg,.png,.jpg'
+};

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { RegistrationModel } from 'src/app/core/models/auth/registration/registration.model';
-import { CommonConstants, ValidatorLengths, CommonRegEx } from 'src/app/utilities/common-constants';
+import { CommonConstants, ValidatorLengths, CommonRegEx, InputFileAccepts } from 'src/app/utilities/common-constants';
 import { FormValidationService } from 'src/app/core/services/validation.service';
 import { ValidationMessages } from 'src/app/utilities/validation-messages';
 import { ToastNotificationService } from 'src/app/core/services/notification.service';
@@ -23,6 +23,7 @@ export class RegistrationComponent implements OnInit {
   public formErrors = {};
   public submitTouched = false;
   public userRoles = UserRoles;
+  public inputFileAcceptImageTypes: string;
 
   constructor(
     private router: Router,
@@ -31,6 +32,7 @@ export class RegistrationComponent implements OnInit {
     private notificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
+    this.setConstatns();
     this.createForm();
     this.initializeReturnUrl();
   }
@@ -65,6 +67,18 @@ export class RegistrationComponent implements OnInit {
 
   public cancelRegistration(): void {
     this.router.navigate(['login']);
+  }
+
+  public uploadNewCompanyLogo(event: any): void {
+    if (event.target.files.length > 0) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = () => this.registrationModel.UserImageUrl = reader.result;
+        reader.readAsDataURL(file);
+
+        this.registrationModel.UserImage = file;
+    }
   }
 
   private validateForm(): void {
@@ -108,5 +122,9 @@ export class RegistrationComponent implements OnInit {
 
   private initializeReturnUrl(): void {
     this.returnUrl = this.route.snapshot.queryParams[CommonConstants.returnUrlSnapshot];
+  }
+
+  private setConstatns(): void {
+    this.inputFileAcceptImageTypes = InputFileAccepts.imageTypes;
   }
 }
