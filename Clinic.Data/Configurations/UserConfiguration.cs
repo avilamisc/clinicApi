@@ -1,5 +1,6 @@
-﻿using Clinic.Core.Entities;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+
+using Clinic.Core.Entities;
 
 namespace Clinic.Data.Configurations
 {
@@ -14,6 +15,9 @@ namespace Clinic.Data.Configurations
             Property(u => u.Surname).IsRequired();
             Property(u => u.Email).IsRequired();
             Property(u => u.PasswordHash).IsRequired();
+            Property(u => u.RegistrationDate).IsRequired();
+
+            Property(u => u.ImageUrl).IsOptional();
 
             HasMany(u => u.Documents)
                 .WithRequired(d => d.User)

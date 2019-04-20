@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+
 using Clinic.Core.DtoModels;
 using Clinic.Core.DtoModels.Account;
 using Clinic.Core.Encryption;
@@ -11,6 +12,7 @@ using Clinic.Core.Entities;
 using Clinic.Core.Enums;
 using Clinic.Core.GeographyExtensions;
 using Clinic.Core.UnitOfWork;
+
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants;
 using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
@@ -18,10 +20,11 @@ using ClinicApi.Interfaces;
 using ClinicApi.Models;
 using ClinicApi.Models.Account;
 using ClinicApi.Models.Account.Registration;
+using ClinicApi.Models.Profile;
 
 namespace ClinicApi.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : ServiceBase, IAccountService
     {
         private const int MaxLongitudeValue = 180;
         private const int MaxLatidudeValue = 90;
@@ -40,6 +43,54 @@ namespace ClinicApi.Services
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task<ApiResponse<PatientProfileViewModel>> GetPatientProfile(IEnumerable<Claim> claims)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<PatientProfileViewModel>.BadRequest();
+            }
+
+            var patient = await _unitOfWork.PatientRepository.GetAsync(userId);
+            if (patient == null)
+            {
+                return ApiResponse<PatientProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            return ApiResponse<PatientProfileViewModel>.Ok(_mapper.Mapper.Map<PatientProfileViewModel>(patient));
+        }
+
+        public async Task<ApiResponse<ClinicProfileViewModel>> GetClinicProfile(IEnumerable<Claim> claims)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<ClinicProfileViewModel>.BadRequest();
+            }
+
+            var clinic = await _unitOfWork.ClinicRepository.GetAsync(userId);
+            if (clinic == null)
+            {
+                return ApiResponse<ClinicProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            return ApiResponse<ClinicProfileViewModel>.Ok(_mapper.Mapper.Map<ClinicProfileViewModel>(clinic));
+        }
+
+        public async Task<ApiResponse<ClinicianProfileViewModel>> GetClinicianProfile(IEnumerable<Claim> claims)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<ClinicianProfileViewModel>.BadRequest();
+            }
+
+            var clinician = await _unitOfWork.ClinicianRepository.GetAsync(userId);
+            if (clinician == null)
+            {
+                return ApiResponse<ClinicianProfileViewModel>.NotFound(ProfileMessages.NotFoundUser);
+            }
+
+            return ApiResponse<ClinicianProfileViewModel>.Ok(_mapper.Mapper.Map<ClinicianProfileViewModel>(clinician));
         }
 
         public async Task<ApiResponse<LoginResultModel>> AuthenticateAsync(string email, string password)

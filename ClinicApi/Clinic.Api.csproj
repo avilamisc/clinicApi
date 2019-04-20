@@ -174,6 +174,7 @@
     <Compile Include="Infrastructure\Constants\ConfigKeyConstants.cs" />
     <Compile Include="Infrastructure\Constants\ValidationErrorMessages\AuthErrorMessages.cs" />
     <Compile Include="Infrastructure\Constants\ValidationErrorMessages\BookingErrorMessages.cs" />
+    <Compile Include="Infrastructure\Constants\ValidationErrorMessages\ProfileMessages.cs" />
     <Compile Include="Interfaces\IClinicClinicianService.cs" />
     <Compile Include="Interfaces\IClinicianService.cs" />
     <Compile Include="Interfaces\IClinicService.cs" />
@@ -181,6 +182,10 @@
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Interfaces\INotificationService.cs" />
     <Compile Include="Interfaces\IServiceBase.cs" />
+    <Compile Include="Models\Profile\ClinicianProfileViewModel.cs" />
+    <Compile Include="Models\Profile\ClinicProfileViewModel.cs" />
+    <Compile Include="Models\Profile\PatientProfileViewModel.cs" />
+    <Compile Include="Models\Profile\ProfileViewModel.cs" />
     <Compile Include="Models\Account\Registration\AdminResultModel.cs" />
     <Compile Include="Models\Account\Registration\ClinicianRegisterModel.cs" />
     <Compile Include="Models\Account\LoginResultModel.cs" />
@@ -230,7 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="connectionStrings.config" />
-    <Content Include="KlymenkoInc.snk" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -257,10 +261,11 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>KlymenkoInc.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

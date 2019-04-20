@@ -1,10 +1,15 @@
-﻿using AutoMapper;
-using Clinic.Core.DtoModels.Account;
-using ClinicApi.Models.Account.Registration;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+
+using AutoMapper;
+
+using Clinic.Core.DtoModels.Account;
+using Clinic.Core.Entities;
+using ClinicApi.Models.Account.Registration;
+using ClinicApi.Models.Profile;
+
+using Newtonsoft.Json;
 
 namespace ClinicApi.Automapper
 {
@@ -25,7 +30,7 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.ClinicsId, options => options.MapFrom(
                     c => JsonConvert.DeserializeObject<ICollection<int>>(c[nameof(ClinicianRegisterModel.ClinicsId)])));
 
-        CreateMap<NameValueCollection, AdminRegisterModel>()
+            CreateMap<NameValueCollection, AdminRegisterModel>()
                 .ForMember(p => p.UserName, options => options.MapFrom(c => c[nameof(AdminRegisterModel.UserName)]))
                 .ForMember(p => p.UserMail, options => options.MapFrom(c => c[nameof(AdminRegisterModel.UserMail)]))
                 .ForMember(p => p.Password, options => options.MapFrom(c => c[nameof(AdminRegisterModel.Password)]))
@@ -48,6 +53,22 @@ namespace ClinicApi.Automapper
                 .ForMember(dto => dto.Surname, options => options.MapFrom(m => m.UserName.Split(' ')[1]))
                 .ForMember(dto => dto.Role, options => options.Ignore())
                 .ForMember(dto => dto.PasswordHash, options => options.Ignore());
+
+            CreateMap<Clinician, ClinicianProfileViewModel>()
+                .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
+                .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
+                .ForMember(p => p.Rate, options => options.MapFrom(c => c.Rate));
+
+            CreateMap<Clinic.Core.Entities.Clinic, ClinicProfileViewModel>()
+                .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
+                .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
+                .ForMember(p => p.City, options => options.MapFrom(c => c.City))
+                .ForMember(p => p.ClinicName, options => options.MapFrom(c => c.ClinicName));
+
+            CreateMap<Patient, PatientProfileViewModel>()
+                .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
+                .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
+                .ForMember(p => p.BornDate, options => options.MapFrom(c => c.BornDate));
         }
     }
 }

@@ -30,8 +30,8 @@ namespace ClinicApi.Models
         public static ApiResponse InternalError(string errorMessage = null) =>
             new ApiResponse { StatusCode = (int)HttpStatusCode.InternalServerError, ErrorMessage = errorMessage };
 
-        public static ApiResponse NotFound() =>
-            new ApiResponse { StatusCode = (int)HttpStatusCode.NotFound };
+        public static ApiResponse NotFound(string errorMessage = null) =>
+            new ApiResponse { StatusCode = (int)HttpStatusCode.NotFound, ErrorMessage = errorMessage };
     }
 
     public class ApiResponse<T> : ApiResponse
@@ -61,7 +61,7 @@ namespace ClinicApi.Models
         public static new ApiResponse<T> InternalError(string errorMessage = null) =>
             new ApiResponse<T> { StatusCode = (int)HttpStatusCode.InternalServerError, ErrorMessage = errorMessage };
 
-        public static new ApiResponse<T> NotFound() =>
-            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.NotFound };
+        public static new ApiResponse<T> NotFound(string errorMessage = null) =>
+            new ApiResponse<T> { StatusCode = (int)HttpStatusCode.NotFound, ErrorMessage = errorMessage };
     }
 }

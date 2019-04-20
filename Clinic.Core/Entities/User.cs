@@ -1,5 +1,7 @@
-﻿using Clinic.Core.Enums;
+﻿using System;
 using System.Collections.Generic;
+
+using Clinic.Core.Enums;
 
 namespace Clinic.Core.Entities
 {
@@ -10,6 +12,8 @@ namespace Clinic.Core.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public UserRole Role { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime RegistrationDate { get; set; }
 
         public ICollection<Document> Documents { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
