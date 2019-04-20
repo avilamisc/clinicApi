@@ -42,5 +42,13 @@ export const ValidationMessages = {
         clinician: {
             required: 'Please select some clinician.'
         }
+    },
+    UpdateProfile: {
+        userName: {
+            required: 'Receipt is required.'
+        },
+        userMail: {
+            required: 'Name is required.'
+        }
     }
 };

@@ -8,12 +8,20 @@ export const ApiRoutes = {
     refreshToken: `${environment.serverUrl}/tokens/refresh`,
     revokeToken: `${environment.serverUrl}/tokens/revoke`,
 
+    booking: `${environment.serverUrl}/bookings`,
     patientBookings: `${environment.serverUrl}/bookings/patient`,
     clinicianBookings: `${environment.serverUrl}/bookings/clinician`,
-    booking: `${environment.serverUrl}/bookings`,
+
     clinics: `${environment.serverUrl}/clinics`,
     clinicsClinician: `${environment.serverUrl}/clinics/clinicians`,
+
     clinicians: `${environment.serverUrl}/clinicians`,
+
     documents: `${environment.serverUrl}/documents`,
-    notifications: `${environment.serverUrl}/notifications`
+    
+    notifications: `${environment.serverUrl}/notifications`,
+
+    patientProfile: `${environment.serverUrl}/account/profile/patient`,
+    clinicProfile: `${environment.serverUrl}/account/profile/admin`,
+    clinicianProfile: `${environment.serverUrl}/account/profile/clinician`
 };

@@ -92,6 +92,7 @@ export class AccountService extends BaseService {
         UserName: loginResult.UserName
       } as User;
       this.user = user;
+      this.tokenService.setUserRole(user.UserRole);
       this.userService.setUserInLocalStorage(user);
     }
   }

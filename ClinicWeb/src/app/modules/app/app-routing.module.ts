@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: '../auth/auth.module#AuthModule'
   },
   {
+    path: 'profile',
+    loadChildren: '../profile/profile.module#ProfileModule'
+  },
+  {
     path: 'registration',
     loadChildren: '../auth/registration/registration.module#RegistrationModule'
   }

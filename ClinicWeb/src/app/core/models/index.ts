@@ -27,3 +27,12 @@ export * from './paging-result.model';
 export * from './notification/create-notification.model';
 export * from './notification/notification.model';
 export * from './notification/update-notification.model';
+
+export * from './profile/clinic-profile.model';
+export * from './profile/clinician-profile.model';
+export * from './profile/patient-profile.model';
+export * from './profile/profile.model';
+export * from './profile/update-patient.model';
+export * from './profile/update-clinic.model';
+export * from './profile/update-clinician.model';
+export * from './profile/update-profile.model';

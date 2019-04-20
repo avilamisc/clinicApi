@@ -21,3 +21,5 @@ export const CommonRegEx = {
 export const InputFileAccepts = {
     imageTypes: '.jpeg,.png,.jpg'
 };
+
+export const ImageFieldName =  'profileImage';

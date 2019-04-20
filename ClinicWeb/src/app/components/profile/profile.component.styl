@@ -1,0 +1,41 @@
+@import '~src/styles/form.styl'
+@import '~src/styles/auth-form.styl'
+
+.profile-container
+    display flex
+    padding 5em 0
+    .user-info
+        display flex
+        flex-grow 1
+    .additional-info
+        display flex
+        flex-grow 1
+
+.user-image-container
+    margin 1em 0
+
+    .image-container
+        text-align center
+        margin 1em
+        img
+            max-height 200px
+            max-width 150px
+    
+    .buttons-container
+        margin-top 0
+        button
+            width 100%
+        .upload-image
+            position relative
+            input[type=file]
+                position absolute
+                left 0
+                top 0
+                width 100%
+                height 100%
+                opacity 0
+                cursor pointer
+
+.user-info
+    form
+        width 80%
