@@ -21,7 +21,7 @@ namespace Clinic.Data.UnitOfWork
 
             UserRepository = new UserRepository(mapper, context);
             BookingRepository = new BookingRepository(mapper, context);
-            RefreshTokenRepository = new RefreshTokenRepository(mapper, context);
+            RefreshTokenRepository = new RefreshTokenRepository(context);
             ClinicClinicianRepository = new ClinicClinicianRepository(context);
             DocumentRepository = new DocumentRepository(context);
             ClinicRepository = new ClinicRepository(mapper, context);

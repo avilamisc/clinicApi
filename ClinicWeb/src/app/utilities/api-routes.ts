@@ -6,6 +6,7 @@ export const ApiRoutes = {
     registerClinician: `${environment.serverUrl}/account/register/clinician`,
     registerClinic: `${environment.serverUrl}/account/register/admin`,
     refreshToken: `${environment.serverUrl}/tokens/refresh`,
+    revokeToken: `${environment.serverUrl}/tokens/revoke`,
 
     patientBookings: `${environment.serverUrl}/bookings/patient`,
     clinicianBookings: `${environment.serverUrl}/bookings/clinician`,

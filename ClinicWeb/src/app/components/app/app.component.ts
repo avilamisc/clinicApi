@@ -6,8 +6,9 @@ import { AccountService } from 'src/app/core/services/auth/account.service';
 import { TokenService } from 'src/app/core/services/auth/token.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { NotificationModel, Pagination } from 'src/app/core/models';
+import { NotificationModel, Pagination, RevokeTokenModel } from 'src/app/core/models';
 import { LoaderService, LoaderState } from 'src/app/core/services/loader/loader.service';
+import { ToastNotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,8 @@ export class AppComponent implements OnInit {
     private loaderService: LoaderService,
     private accountService: AccountService,
     private locationService: LocationService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private toastNotificationService: ToastNotificationService) { }
 
   public ngOnInit(): void {
     this.locationService.initializeLocation();
@@ -37,8 +39,20 @@ export class AppComponent implements OnInit {
   }
 
   public logOutUser(): void {
-    this.accountService.logOut();
-    this.router.navigate(['/login']);
+    const revokeModel: RevokeTokenModel = {
+      token: this.tokenService.getAccessToken(),
+      refreshToken: this.tokenService.getRefreshToken()
+    };
+
+    this.accountService.revokeToken(revokeModel)
+      .subscribe(result => {
+        if (result.Data) {
+          this.accountService.logOut();
+          this.router.navigate(['/login']);
+        } else {
+          this.toastNotificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
+        }
+      })
   }
 
   public get isAuthenticated(): boolean {

@@ -4,7 +4,12 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import decode from 'jwt-decode';
 
-import { ApiResponse, LoginModel, LoginResultModel, RefreshTokenModel, ClinicRegistrationModel } from '../../models';
+import { ApiResponse,
+         LoginModel,
+         LoginResultModel,
+         RefreshTokenModel,
+         ClinicRegistrationModel,
+         RevokeTokenModel } from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { TokenService } from './token.service';
 import { User } from '../../models/user/user.model';
@@ -69,6 +74,10 @@ export class AccountService extends BaseService {
 
   public refreshToken(model: RefreshTokenModel): Observable<ApiResponse<LoginResultModel>> {
     return this.http.post<ApiResponse<LoginResultModel>>(`${ApiRoutes.refreshToken}`, model);
+  }
+
+  public revokeToken(model: RevokeTokenModel): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(`${ApiRoutes.revokeToken}`, model);
   }
 
   private updateLoginationData(loginResult: LoginResultModel): void {

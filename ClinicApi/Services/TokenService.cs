@@ -1,12 +1,4 @@
-﻿using Clinic.Core.Entities;
-using ClinicApi.Infrastructure.Constants;
-using ClinicApi.Infrastructure;
-using ClinicApi.Interfaces;
-using ClinicApi.Models;
-using ClinicApi.Models.Account;
-using ClinicApi.Models.Token;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -15,13 +7,24 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Clinic.Core.UnitOfWork;
+
+using ClinicApi.Infrastructure.Constants;
+using ClinicApi.Infrastructure;
+using ClinicApi.Interfaces;
+using ClinicApi.Models;
+using ClinicApi.Models.Account;
+using ClinicApi.Models.Token;
 using ClinicApi.Automapper.Infrastructure;
 using ClinicApi.Infrastructure.Constants.ValidationErrorMessages;
 
+using Clinic.Core.UnitOfWork;
+using Clinic.Core.Entities;
+
+using Microsoft.IdentityModel.Tokens;
+
 namespace ClinicApi.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService : ServiceBase, ITokenService
     {
         private readonly IApiMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -68,6 +71,47 @@ namespace ClinicApi.Services
                     RefreshToken = newRefreshToken.Value,
                     RefreshTokenExpireTime = newRefreshToken.ExpiresUtc
                 });
+        }
+
+        public async Task<ApiResponse<bool>> RemoveTokenAsync(IEnumerable<Claim> claims, RevokeTokenModel revokeTokenModel)
+        {
+            var userPrincipal = GetPrincipalFromToken(revokeTokenModel.Token);
+
+            if (!int.TryParse(userPrincipal.Claims.Single(c => c.Type == ApiConstants.UserIdClaimName).Value, out int tokenUserOwnerId))
+            {
+                return ApiResponse<bool>.BadRequest();
+            }
+
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<bool>.BadRequest();
+            }
+
+            if (tokenUserOwnerId != userId)
+            {
+                return ApiResponse<bool>.BadRequest(AuthErrorMessages.CannotRevokeToken);
+            }
+
+            var user = await _unitOfWork.UserRepository.GetAsync(userId);
+            if (user == null) return new ApiResponse<bool>(HttpStatusCode.NotFound);
+
+            var refreshToken = await GetUserRefreshTokenAsync(revokeTokenModel.RefreshToken);
+            if (refreshToken == null || refreshToken.UserId != userId)
+            {
+                return ApiResponse<bool>.ValidationError(AuthErrorMessages.InvalidRevokeToken);
+            }
+
+            try
+            {
+                _unitOfWork.RefreshTokenRepository.Remove(refreshToken);
+                await _unitOfWork.SaveChangesAsync();
+
+                return ApiResponse<bool>.Ok(true);
+            }
+            catch (InvalidOperationException)
+            {
+                return ApiResponse<bool>.InternalError();
+            }
         }
 
         public async Task<RefreshToken> GetUserRefreshTokenAsync(string refreshToken)
