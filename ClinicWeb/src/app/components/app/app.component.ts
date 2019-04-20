@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
         } else {
           this.toastNotificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
         }
-      })
+      });
   }
 
   public get isAuthenticated(): boolean {

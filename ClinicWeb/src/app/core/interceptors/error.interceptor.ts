@@ -56,7 +56,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                                         this.notificationService.showErrorMessage(result.ErrorMessage, result.StatusCode);
                                     }
                                     location.reload(true);
-                                })
+                                });
 
                             return empty();
                         }
