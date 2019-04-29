@@ -1,3 +1,21 @@
-<p>
-  clinic-profile works!
-</p>
+<div class="clinic-profile-container">
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+      <div class="form-label-group"
+           [class.form-label-failed-group]="submitTouched && formErrors.clinicName">
+        <label>
+          Clinic Name:
+          <input type="text" class="form-control" formControlName="clinicName">
+          <div *ngIf="submitTouched && formErrors.clinicName" class="validation-error-text">
+            {{formErrors.clinicName}}
+          </div>
+        </label>
+      </div>
+      <div class="buttons-container">
+        <button type="submit"
+                class="btn btn-secondary navigation-button"
+                [disabled]="submitTouched && !updateForm.valid">
+          Update profile
+        </button>
+      </div>
+    </form>
+  </div>

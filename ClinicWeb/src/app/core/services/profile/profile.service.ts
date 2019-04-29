@@ -7,7 +7,8 @@ import { ApiResponse,
          UpdateClinicianModel,
          UpdatePatientModel,
          ClinicProfileModel,
-         ClinicianProfileModel} from '../../models';
+         ClinicianProfileModel,
+         UpdateClinicModel} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { BaseService } from '../base.service';
 import { ImageFieldName } from 'src/app/utilities/common-constants';
@@ -41,7 +42,7 @@ export class ProfileService extends BaseService {
     return this.http.put<ApiResponse<ClinicianProfileModel>>(ApiRoutes.clinicianProfile, formData);
   }
 
-  public updateClinicProfle(updateModel: UpdateClinicianModel): Observable<ApiResponse<ClinicProfileModel>> {
+  public updateClinicProfle(updateModel: UpdateClinicModel): Observable<ApiResponse<ClinicProfileModel>> {
     console.log('update clinic', updateModel);
     var formData = this.getMultipartData(updateModel);
     console.log('update clinic', formData);
@@ -58,6 +59,6 @@ export class ProfileService extends BaseService {
         formData.append(ImageFieldName, updateModel.UserImage);
     }
     
-    return this.http.put<ApiResponse<PatientProfileModel>>(ApiRoutes.clinicianProfile, formData);
+    return this.http.put<ApiResponse<PatientProfileModel>>(ApiRoutes.patientProfile, formData);
   }
 }

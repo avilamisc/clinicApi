@@ -1,3 +1,32 @@
-<p>
-  patient-profile works!
-</p>
+<div class="patient-profile-container">
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <div class="form-label-group"
+         [class.form-label-failed-group]="submitTouched && formErrors.bornDate">
+      <label>
+        Born date:
+        <div class="date-picker-container">
+          <p-calendar [maxDate]="maxDateFrom"
+                      [minDate]="minDateFrom"
+                      [yearNavigator]="true"
+                      [showIcon]="true"
+                      [defaultDate]="defaultBornDate()"
+                      dateFormat="dd.mm.yy"
+                      showButtonBar="true"
+                      yearRange="1919:2030"
+                      (onSelect)="onSelectBornDate($event)">
+          </p-calendar>
+        </div>
+        <div *ngIf="submitTouched && formErrors.bornDate" class="validation-error-text">
+          {{formErrors.bornDate}}
+        </div>
+      </label>
+    </div>
+    <div class="buttons-container">
+      <button type="submit"
+              class="btn btn-secondary navigation-button"
+              [disabled]="submitTouched && !updateForm.valid">
+        Update profile
+      </button>
+    </div>
+  </form>
+</div>

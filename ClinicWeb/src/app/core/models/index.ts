@@ -13,6 +13,7 @@ export * from './auth/refresh-token.model';
 export * from './auth/revoke-token.model';
 export * from './auth/login-result.model';
 export * from './auth/login.model';
+export * from './auth/reset-passprd.model';
 
 export * from './clinic/clinic.model';
 export * from './clinician/clinician.model';

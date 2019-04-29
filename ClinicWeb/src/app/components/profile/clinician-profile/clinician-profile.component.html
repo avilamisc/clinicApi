@@ -1,3 +1,14 @@
-<p>
-  clinician-profile works!
-</p>
+<div class="clinician-profile-container">
+  <app-rating [rating]="model?.Rate"
+              [itemId]="model?.Id"
+              [disabled]="true">
+  </app-rating>
+</div>
+<div class="buttons-container">
+  <button type="submit"
+          (click)="onSubmit()"
+          class="btn btn-secondary navigation-button"
+          [disabled]="submitTouched && !updateForm.valid">
+    Update profile
+  </button>
+</div>

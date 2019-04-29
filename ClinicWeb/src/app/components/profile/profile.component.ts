@@ -9,6 +9,7 @@ import { ToastNotificationService } from 'src/app/core/services/notification.ser
 import { FormValidationService } from 'src/app/core/services/validation.service';
 import { ValidationMessages } from 'src/app/utilities/validation-messages';
 import { InputFileAccepts } from 'src/app/utilities/common-constants';
+import { NotificationMessages } from 'src/app/utilities/notification-message';
 
 @Component({
   selector: 'app-profile',
@@ -40,9 +41,9 @@ export class ProfileComponent implements OnInit {
     this.uploadUser();
   }
 
-  public onSubmit(): void {
+  public onSubmit(isRelatedValid: boolean): void {
     this.submitTouched = true;
-    if (this.updateForm.valid) {
+    if (this.updateForm.valid && isRelatedValid) {
       this.setValuesFromFormToModel();
       this.updateProfile();
     } else {
@@ -111,6 +112,8 @@ export class ProfileComponent implements OnInit {
           this.userModel = result.Data;
           this.setUpdatedModel(result.Data);
 
+          (this.updateUserModel as UpdateClinicianModel).Rate = result.Data.Rate;
+
           this.createForm();
           this.isLoaded = true;
         } else {
@@ -173,7 +176,7 @@ export class ProfileComponent implements OnInit {
           this.userModel.RegistrationDate = result.Data.RegistrationDate;
           this.userModel.UserImageUrl = result.Data.UserImageUrl;
 
-          this.toastNotification.successMessage('');
+          this.toastNotification.successMessage(NotificationMessages.Profile.SuccessUpdate);
         } else {
           this.toastNotification.showErrorMessage(result.ErrorMessage, result.StatusCode);
         }

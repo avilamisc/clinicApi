@@ -9,7 +9,8 @@ import { ApiResponse,
          LoginResultModel,
          RefreshTokenModel,
          ClinicRegistrationModel,
-         RevokeTokenModel } from '../../models';
+         RevokeTokenModel, 
+         ResetPasswordModel} from '../../models';
 import { ApiRoutes } from 'src/app/utilities/api-routes';
 import { TokenService } from './token.service';
 import { User } from '../../models/user/user.model';
@@ -34,6 +35,14 @@ export class AccountService extends BaseService {
 
   public authenticate(model: LoginModel): Observable<ApiResponse<LoginResultModel>> {
     return this.http.post<ApiResponse<LoginResultModel>>(ApiRoutes.authenticate, model)
+      .pipe(map(result => {
+        this.updateLoginationData(result.Data);
+        return result;
+      }));
+  }
+
+  public resetPassword(model: ResetPasswordModel): Observable<ApiResponse<LoginResultModel>> {
+    return this.http.post<ApiResponse<LoginResultModel>>(ApiRoutes.resetPassword, model)
       .pipe(map(result => {
         this.updateLoginationData(result.Data);
         return result;

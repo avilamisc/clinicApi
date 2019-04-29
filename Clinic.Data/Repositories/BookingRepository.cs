@@ -124,7 +124,7 @@ namespace Clinic.Data.Repositories
                     .Sum(b => b.Rate.Value)
                 : 0;
 
-            return ((booking.Rate ?? 0) + totalRate) / countBooking;
+            return ((booking.Rate ?? 0) + totalRate) / (countBooking + 1);
         }
     }
 }

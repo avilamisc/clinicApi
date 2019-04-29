@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -19,9 +19,11 @@ export class AppComponent implements OnInit {
   public notifications: NotificationModel[] = [];
   public totalNotificationsCount = 0;
   public hasLoadedResources = false;
+  public screenWidth: number;
   private notificationPagination: Pagination;
   private defaultPaginationAmount = 2;
   private subscription: Subscription;
+  private minWidthForNavDropDown = 768;
 
   constructor(
     private router: Router,
@@ -32,10 +34,20 @@ export class AppComponent implements OnInit {
     private notificationService: NotificationService,
     private toastNotificationService: ToastNotificationService) { }
 
+  @HostListener('window:resize', ['$event'])
+    onResize(event?) {
+      this.initializeScreenWidth();
+  }
+
   public ngOnInit(): void {
     this.locationService.initializeLocation();
     this.setUpdateNotificationEvent();
-    this.setLoaderState();
+    this.setLoaderState()
+    this.initializeScreenWidth();
+  }
+
+  public showNavigationDropDown(): boolean {
+    return this.screenWidth <= this.minWidthForNavDropDown;
   }
 
   public logOutUser(): void {
@@ -128,5 +140,9 @@ export class AppComponent implements OnInit {
       .subscribe((state: LoaderState) => {
         this.hasLoadedResources = state.show;
       });
+  }
+
+  private initializeScreenWidth(): void {
+    this.screenWidth = window.innerWidth;
   }
 }

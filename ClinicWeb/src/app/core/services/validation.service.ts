@@ -24,9 +24,10 @@ export class FormValidationService {
 
         Object.keys(this.form.controls).forEach(controlName => {
             const control = this.form.get(controlName);
-
+            console.log('con: ', control);
             if ((control.invalid && (control.dirty || control.touched))) {
                 const messages = this.validationMessages[controlName];
+                console.log('err: ', messages);
 
                 // tslint:disable-next-line:forin
                 for (const key in control.errors) {

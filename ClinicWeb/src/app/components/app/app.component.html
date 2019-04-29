@@ -66,6 +66,18 @@
         </li>
       </ul>
     </div>
+    <div *ngIf="showNavigationDropDown()" class="dropdown select-links">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" routerLink="/booking">Booking</a>
+          <a class="dropdown-item" routerLink="/clinic">Closest Clinics</a>
+          <a class="dropdown-item" routerLink="/profile">Profile</a>
+          <a *ngIf="!isAuthenticated" class="dropdown-item" routerLink="/login">Login</a>
+          <a *ngIf="isAuthenticated" class="dropdown-item" (click)="logOutUser()">Logout</a>
+        </div>
+    </div>
   </nav>
   <router-outlet></router-outlet>
   <div *ngIf="hasLoadedResources" class="loader-conatainer">

@@ -73,23 +73,20 @@ namespace ClinicApi.Automapper
                 .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
                 .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
                 .ForMember(p => p.Rate, options => options.MapFrom(c => c.Rate))
-                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate))
-                .ForMember(p => p.UserImageUrl, options => options.Ignore());
+                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate));
 
             CreateMap<Clinic.Core.Entities.Clinic, ClinicProfileViewModel>()
                 .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
                 .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
                 .ForMember(p => p.City, options => options.MapFrom(c => c.City))
                 .ForMember(p => p.ClinicName, options => options.MapFrom(c => c.ClinicName))
-                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate))
-                .ForMember(p => p.UserImageUrl, options => options.Ignore());
+                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate));
 
             CreateMap<Patient, PatientProfileViewModel>()
                 .ForMember(p => p.Name, options => options.MapFrom(c => $"{c.Name} {c.Surname}"))
                 .ForMember(p => p.Mail, options => options.MapFrom(c => c.Email))
                 .ForMember(p => p.BornDate, options => options.MapFrom(c => c.BornDate))
-                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate))
-                .ForMember(p => p.UserImageUrl, options => options.Ignore());
+                .ForMember(p => p.RegistrationDate, options => options.MapFrom(c => c.RegistrationDate));
         }
     }
 }

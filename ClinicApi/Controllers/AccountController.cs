@@ -35,6 +35,17 @@ namespace ClinicApi.Controllers
         }
 
         [HttpPost]
+        [BearerAuthorization]
+        [Route("password")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]
+        public async Task<IHttpActionResult> ResetPasswod(ResetPasswordModel resetModel)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+
+            return Ok(await _accountService.ResetPassword(resetModel, identity.Claims));
+        }
+
+        [HttpPost]
         [Route("register/patient")]
         [SwaggerResponse(HttpStatusCode.Accepted, Type = typeof(PatientRegisterModel))]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ApiResponse<LoginResultModel>))]

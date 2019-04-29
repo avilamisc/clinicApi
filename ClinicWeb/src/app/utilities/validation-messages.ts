@@ -49,6 +49,21 @@ export const ValidationMessages = {
         },
         userMail: {
             required: 'Name is required.'
+        },
+        clinicName: {
+            required: 'Clinic name is required.'
+        }
+    },
+    ResetPassword: {
+        oldPassword: {
+            required: 'Please set up your old password.'
+        },
+        newPassword: {
+            required: 'Please set up new password.'
+        },
+        repeatPassword: {
+            required: 'Please repeat new password.',
+            mustMatch: 'Passwords do not match'
         }
     }
 };

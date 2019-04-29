@@ -15,14 +15,16 @@ import { ValidationMessages } from 'src/app/utilities/validation-messages';
   styleUrls: ['./patient-registration.component.styl']
 })
 export class PatientRegistrationComponent implements OnInit {
-  @Input('model') public patientModel: PatientRegistrationModel;
-  @Input('returnUrl') public returnUrl: string = null;
-  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
   public registerForm: FormGroup;
   public formErrors: any = {};
   public submitTouched = false;
   public minDateFrom = new Date(1919, 1, 1);
   public maxDateFrom = new Date(Date.now());
+
+  @Input('model') public patientModel: PatientRegistrationModel;
+  @Input('returnUrl') public returnUrl: string = null;
+
+  @Output('cancel') public cancelRegistrtion = new EventEmitter<any>();
 
   constructor(
     private router: Router,
@@ -67,7 +69,9 @@ export class PatientRegistrationComponent implements OnInit {
   }
 
   private validateForm(): void {
+    console.log('validate form');
     this.formErrors = this.formValidationService.validateForm();
+    console.log(this.formErrors);
   }
 
   private createForm(): void {

@@ -132,6 +132,7 @@ namespace ClinicApi.Services
                 return ApiResponse<PatientProfileViewModel>.ValidationError(validationErrorMessage);
             }
 
+            var oldImage = patient.ImageUrl;
             var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
             if (newImage != null)
             {
@@ -158,8 +159,13 @@ namespace ClinicApi.Services
                 return ApiResponse<PatientProfileViewModel>.InternalError("Cannot update your user");
             }
 
+            if (oldImage != null && newImage != null)
+            {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(oldImage));
+            }
+
             var resultModel = _mapper.Mapper.Map<PatientProfileViewModel>(patient);
-            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage != null ? newImage : oldImage);
 
             return ApiResponse<PatientProfileViewModel>.Ok(resultModel);
         }
@@ -190,6 +196,7 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicProfileViewModel>.ValidationError(validationErrorMessage);
             }
 
+            var oldImage = clinic.ImageUrl;
             var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
             if (newImage != null)
             {
@@ -216,8 +223,13 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicProfileViewModel>.InternalError("Cannot update your user");
             }
 
+            if (oldImage != null && newImage != null)
+            {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(oldImage));
+            }
+
             var resultModel = _mapper.Mapper.Map<ClinicProfileViewModel>(clinic);
-            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage != null ? newImage : oldImage);
 
             return ApiResponse<ClinicProfileViewModel>.Ok(resultModel);
         }
@@ -248,6 +260,7 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicianProfileViewModel>.ValidationError(validationErrorMessage);
             }
 
+            var oldImage = clinician.ImageUrl;
             var newImage = GetUserImageFromRequest(request, ApiConstants.ImageFieldName, ApiConstants.PatientProfileImagesFolder);
             if (newImage != null)
             {
@@ -273,8 +286,13 @@ namespace ClinicApi.Services
                 return ApiResponse<ClinicianProfileViewModel>.InternalError("Cannot update your user");
             }
 
+            if (oldImage != null && newImage != null)
+            {
+                _fileService.DeleteFile(HostingEnvironment.MapPath(oldImage));
+            }
+
             var resultModel = _mapper.Mapper.Map<ClinicianProfileViewModel>(clinician);
-            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage);
+            resultModel.UserImageUrl = _fileService.GetValidUrl(urlHelper, newImage != null ? newImage : oldImage);
 
             return ApiResponse<ClinicianProfileViewModel>.Ok(resultModel);
         }
@@ -295,6 +313,49 @@ namespace ClinicApi.Services
             var loginResult = await GenerateTokenAsync(user);
 
             return ApiResponse<LoginResultModel>.Ok(loginResult);
+        }
+
+        public async Task<ApiResponse<LoginResultModel>> ResetPassword(
+            ResetPasswordModel resetModel, IEnumerable<Claim> claims)
+        {
+            if (!CheckUserIdInClaims(claims, out int userId))
+            {
+                return ApiResponse<LoginResultModel>.BadRequest();
+            }
+
+            var refreshToken = await _unitOfWork.RefreshTokenRepository.GetFirstAsync(
+                rt => rt.Value == resetModel.RefreshToken);
+            if (refreshToken == null || refreshToken.UserId != userId)
+            {
+                return ApiResponse<LoginResultModel>.BadRequest();
+            }
+
+            var user = await _unitOfWork.UserRepository.GetAsync(userId);
+            if (user == null)
+            {
+                return ApiResponse<LoginResultModel>.BadRequest("Such user doesn't exist");
+            }
+
+            if (!Hashing.VerifyPassword(resetModel.OldPassword, user.PasswordHash))
+            {
+                return ApiResponse<LoginResultModel>.ValidationError("Wrong password");
+            }
+
+            user.PasswordHash = Hashing.HashPassword(resetModel.NewPassword);
+
+            try
+            {
+                _unitOfWork.UserRepository.Update(user);
+                await _unitOfWork.SaveChangesAsync();
+
+                var loginResult = await GenerateTokenAsync(user);
+
+                return ApiResponse<LoginResultModel>.Ok(loginResult);
+            }
+            catch (InvalidOperationException)
+            {
+                return ApiResponse<LoginResultModel>.InternalError();
+            }
         }
 
         public async Task<ApiResponse<LoginResultModel>> RegisterClinicianAsync(HttpRequest request)

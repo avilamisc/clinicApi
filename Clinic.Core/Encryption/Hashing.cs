@@ -2,7 +2,7 @@
 {
     public static class Hashing
     {
-        public static string HashPassword(string password, int complexity = 15)
+        public static string HashPassword(string password, int complexity = 7)
         {
             return BCrypt.Net.BCrypt.HashPassword(password, GenerateRandomSalt(complexity));
         }

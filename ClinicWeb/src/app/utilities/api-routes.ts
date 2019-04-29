@@ -5,6 +5,7 @@ export const ApiRoutes = {
     registerPatient: `${environment.serverUrl}/account/register/patient`,
     registerClinician: `${environment.serverUrl}/account/register/clinician`,
     registerClinic: `${environment.serverUrl}/account/register/admin`,
+    resetPassword: `${environment.serverUrl}/account/password`,
     refreshToken: `${environment.serverUrl}/tokens/refresh`,
     revokeToken: `${environment.serverUrl}/tokens/revoke`,
 
