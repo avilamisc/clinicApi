@@ -13,16 +13,22 @@
           [latitude]="clinic.Lat"
           [longitude]="clinic.Long"
           [markerDraggable]="false"
-          [label]="clinic.ClinicName" >
+          (markerClick)="showClosestWay(clinic.Lat, clinic.Long)" >
           <agm-info-window [disableAutoPan]="true">
             <app-clinic-info [clinic]="clinic"
                              [patient]="isPatient"
-                             (createbooking)="crateNewBooking($event)"></app-clinic-info>
+                             (createbooking)="crateNewBooking($event)">
+            </app-clinic-info>
           </agm-info-window>
         </agm-marker>
+        <agm-direction [origin]="origin" [destination]="destination" [visible]="isClosestWayVisible">
+        </agm-direction>
     </agm-map>
   </div>
 </div>
+
+<div id="map_canvas" style="width:100%;height:100%;">
+  </div>
 
 <app-edit *ngIf="bookingToUpdate"
           [visibility]="isEditWindowOpen"
@@ -33,3 +39,311 @@
           (closeEditWindow)="closeEditWindow()"
           (editCompleted)="aproveCreationBooking($event)">
 </app-edit>
+
+<script type="text/javascript">
+
+  var map;
+  var startPoints = [];
+  var setUpDestinationPoint = false;
+  var markers = [];
+  var movingMarkers = [];
+  var matrix = [];
+  var requestCount = 0;
+  var timeOut = 1000;
+  var directionDisplay;
+  var directionsService;
+  var stepDisplay;
+  var infowindow = null;
+
+  var timerHandle = null;
+
+  function createMarker(latlng, label, html) {
+      var contentString = '<b>' + label + '</b><br>' + html;
+      var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          title: label,
+          icon: {
+              url: "/Content/taxi.png"
+          },
+          zIndex: Math.round(latlng.lat() * -100000) << 5
+      });
+      
+      marker.myname = label;
+
+      movingMarkers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', function () {
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
+      });
+      return marker;
+  }
+
+  function initialize() {
+      infowindow = new google.maps.InfoWindow(
+          {
+              size: new google.maps.Size(150, 50)
+          });
+      // Instantiate a directions service.
+      directionsService = new google.maps.DirectionsService();
+
+      // Create a map and center it on Manhattan.
+      var myOptions = {
+          zoom: 13,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      $.each(startPoints, function (i, element) {
+          placeMarker({ lat: element.Lat, lng: element.Lng })
+      })
+      
+      google.maps.event.addListener(map, 'click', function (event) {
+          placeMarker(event.latLng, true);
+      });
+
+      function placeMarker(location, isPassanger) {
+          var marker = new google.maps.Marker({
+              position: location,
+              map: map
+          });
+          markers.push(marker);
+          if (isPassanger && setUpDestinationPoint) {
+              $(".loader").show();
+              //$("#map_canvas").hide();
+              convertMarkersToMatrix();
+              setUpDestinationPoint = false;
+          } else if (isPassanger){
+              setUpDestinationPoint = true;
+          }
+      }
+
+      address = 'new york'
+      geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': address }, function (results, status) {
+          map.setCenter(results[0].geometry.location);
+      });
+
+      // Create a renderer for directions and bind it to the map.
+      var rendererOptions = {
+          map: map
+      }
+      directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+
+      // Instantiate an info window to hold step text.
+      stepDisplay = new google.maps.InfoWindow();
+  }
+
+  var steps = []
+
+  function calcRoute(data) {
+      $(".loader").hide();
+      //$("#map_canvas").show();
+
+      if (timerHandle) { clearTimeout(timerHandle); }
+      $.each(movingMarkers, function (i, e) {
+          e.setPosition(null);
+      });
+      movingMarkers = [];
+
+      directionsDisplay.setMap(null);
+
+      // Create a renderer for directions and bind it to the map.
+      var rendererOptions = {
+          map: map
+      }
+      directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+
+      for (var i = 0; i < data.length; i++) {
+
+          var start = markers[ data[i][0] ].position;
+          var end = markers[ data[i][data[i].length - 1] ].position;
+         
+          var wayPoints = [];
+          markers.slice(1, data[i].length - 1).forEach(function (element) {
+              wayPoints.push({
+                  location: element.position,
+                  stopover: true
+              });
+          });
+              var travelMode = google.maps.DirectionsTravelMode.DRIVING
+
+              var request = {
+                  origin: start,
+                  destination: end,
+                  travelMode: travelMode,
+                  waypoints: wayPoints
+              };
+
+              // Route the directions and pass the response to a
+              // function to create markers for each step.
+              directionsService.route(request, function (response, status) {
+                  if (status == google.maps.DirectionsStatus.OK) {
+                      directionsDisplay.setDirections(response);
+
+                      var polyline = new google.maps.Polyline({
+                          path: [],
+                          strokeColor: '#FF0000',
+                          strokeWeight: 3
+                      });
+
+                      var poly2 = new google.maps.Polyline({
+                          path: [],
+                          strokeColor: '#FF0000',
+                          strokeWeight: 3
+                      });
+
+                      var bounds = new google.maps.LatLngBounds();
+                      var route = response.routes[0];
+                      startLocation = new Object();
+                      endLocation = new Object();
+                      map.setZoom(18);
+                      
+                      var path = response.routes[0].overview_path;
+                      var legs = response.routes[0].legs;
+                      var marker;
+                      for (i = 0; i < legs.length; i++) {
+                          if (i == 0) {
+                              startLocation.latlng = legs[i].start_location;
+                              startLocation.address = legs[i].start_address;
+                              marker = createMarker(legs[i].start_location, "start", legs[i].start_address, "green");
+                          }
+
+                          var steps = legs[i].steps;
+                          for (j = 0; j < steps.length; j++) {
+                              var nextSegment = steps[j].path;
+                              for (k = 0; k < nextSegment.length; k++) {
+                                  polyline.getPath().push(nextSegment[k]);
+                                  bounds.extend(nextSegment[k]);
+                              }
+                          }
+                      }
+
+                      polyline.setMap(map);
+                      map.fitBounds(bounds);
+                      startAnimation(polyline, poly2, marker);
+                  }
+              });
+      }
+  }
+
+  function convertMarkersToMatrix() {
+      //SIZE without the last one
+      var SIZE = markers.length;
+      var countOfDistanceMatrixRow = 4;
+
+      matrix = new Array();
+
+      for (var i = 0; i < countOfDistanceMatrixRow; i++) {
+          matrix[i] = new Array(SIZE);
+      }
+
+      var promises = [];
+
+      //Calculate distance to pickUp point and arrival point
+      for (var i = 0; i < SIZE; i++) {
+
+          getRouteToNewPoints(i, SIZE).forEach(function (elem, item) {
+              requestCount++;
+              promises.push(new Promise((resolve, reject) => {
+                  setTimeout(calculateRouteDistantApi, requestCount * timeOut, elem, matrix, item, i, resolve);
+              }));
+          });                
+      }
+
+      Promise.all(promises).then(() => {
+          calculateBestRoutes(matrix) 
+      });
+  }
+
+  function getRouteToNewPoints(toPoint, size)
+  {
+      return new Array(
+          {
+              origin: markers[size-1].position,
+              destination: markers[toPoint].position,
+              travelMode: 'DRIVING'
+          },
+          {
+              origin: markers[size - 2].position,
+              destination: markers[toPoint].position,
+              travelMode: 'DRIVING'
+          },
+          {
+              origin: markers[toPoint].position,
+              destination: markers[size - 2].position,
+              travelMode: 'DRIVING'
+          },
+          {
+              origin: markers[toPoint].position,
+              destination: markers[size - 1].position,
+              travelMode: 'DRIVING'
+          });
+  }
+
+  function calculateRouteDistantApi(data, matrix, startPoint, endPoint, resolve) {
+      directionsService.route(data, function (response, status) {
+          if (status === 'OK') {
+              requestCount--;
+              matrix[startPoint][endPoint] = response.routes[0].legs[0].distance.value;
+              resolve();
+          } else {
+              window.alert('Directions request failed due to ' + status);
+          }
+      });
+  }
+
+  function calculateBestRoutes(distanceMap, passangers) {
+      $.ajax({
+          method: 'POST',
+          contentType: "application/json; charset=utf-8",
+          datatype: "json",
+          url: "/api/mapAPI/CalculateBestRoute",
+          data: JSON.stringify(distanceMap)
+      }).done(function (data) {
+          calcRoute(data);
+      })
+  }
+
+  var step = 50;
+  var tick = 100;
+  var eol;
+  var k = 0;
+  var stepnum = 0;
+  var speed = "";
+  var lastVertex = 1;
+
+  //=============== animation functions ======================
+  function updatePoly(d, polyline, poly2) {
+      // Spawn a new polyline every 20 vertices, because updating a 100-vertex poly is too slow
+      if (poly2.getPath().getLength() > 20) {
+          poly2 = new google.maps.Polyline([polyline.getPath().getAt(lastVertex - 1)]);
+           //map.addOverlay(poly2)
+      }
+
+      if (polyline.GetIndexAtDistance(d) < lastVertex + 2) {
+          if (poly2.getPath().getLength() > 1) {
+              poly2.getPath().removeAt(poly2.getPath().getLength() - 1)
+          }
+          poly2.getPath().insertAt(poly2.getPath().getLength(), polyline.GetPointAtDistance(d));
+      } else {
+          poly2.getPath().insertAt(poly2.getPath().getLength(), endLocation.latlng);
+      }
+  }
+
+  function animate(d, polyline, poly2, marker) {
+      var p = polyline.GetPointAtDistance(d);
+      marker.setPosition(p);
+      updatePoly(d, polyline, poly2);
+      timerHandle = setTimeout(animate, tick, (d + step), polyline, poly2, marker);
+  }
+
+  function startAnimation(polyline, poly2, marker) {
+      eol = polyline.Distance();
+      map.setCenter(polyline.getPath().getAt(0));
+      poly2 = new google.maps.Polyline({ path: [polyline.getPath().getAt(0)], strokeColor: "#0000FF", strokeWeight: 10 });
+      setTimeout(animate, 1000, 150, polyline, poly2, marker);  // Allow time for the initial map display
+  }
+
+  //=============== ~animation funcitons =====================
+</script>

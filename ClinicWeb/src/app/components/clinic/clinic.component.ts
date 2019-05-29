@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { ClinicService } from 'src/app/core/services/clinic/clinic.service';
 import { ClinicDistanceModel } from 'src/app/core/models/clinic-clinician.module/clinic-distance.model';
 import { LocationService } from 'src/app/core/services/location.service';
@@ -15,7 +15,7 @@ import { ToastNotificationService } from 'src/app/core/services/notification.ser
   templateUrl: './clinic.component.html',
   styleUrls: ['./clinic.component.styl']
 })
-export class ClinicComponent implements OnInit {
+export class ClinicComponent implements OnInit, OnChanges {
   public clinics: ClinicDistanceModel[] = [];
   public mapType = 'satellite';
   public pagingModel = new LocationPagingModel();
@@ -26,7 +26,11 @@ export class ClinicComponent implements OnInit {
   public isEditWindowOpen = false;
   public selectedClinic: ClinicModel;
   public bookingToUpdate: UpdateBookingModel;
+  public isClosestWayVisible = false;
   private displayedCountOfClinics = 10;
+
+  public origin: any;
+  public destination: any;
 
   constructor(
     private userService: UserService,
@@ -37,9 +41,17 @@ export class ClinicComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initializeLocation();
+    this.getDirection();
+  }
+
+  public ngAfterViewInit() {
+  }
+
+  public ngOnChanges(changes: SimpleChanges) { 
   }
 
   public mapClick(res: any): void {
+    this.isClosestWayVisible = false;
     this.pagingModel.Latitude = res.coords.lat;
     this.pagingModel.Longitude = res.coords.lng;
     this.updateClinics();
@@ -105,5 +117,17 @@ export class ClinicComponent implements OnInit {
             this.clinics = result.Data;
           }
         });
+  }
+
+  public showClosestWay(latitude: number, longitude: number): void {
+    this.destination = { lat: latitude, lng: longitude };
+    this.isClosestWayVisible = true;
+
+    console.log('closest: ', this.destination, this.origin)
+  }
+
+  private getDirection() {
+    this.origin = { lat: this.pagingModel.Latitude, lng: this.pagingModel.Longitude };
+    this.destination = { lat: 24.799524, lng: 120.975017 };
   }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';   // agm-direction
 
 import { ClinicComponent } from 'src/app/components/clinic/clinic.component';
 import { TableModule } from '../shared/table/table.module';
@@ -21,12 +22,13 @@ import { EditBookingModule } from '../booking/edit-booking.module';
     RaitingModule,
     EditBookingModule,
     AgmCoreModule.forRoot({
-      apiKey: ''
+      apiKey: 'AIzaSyDWSgvVWFJ0WkcWReqaAXOuCAn5pReZqCk'
       /* apiKey is required, unless you are a
       premium customer, in which case you can
       use clientId
       */
-    })
+    }),
+    AgmDirectionModule
   ]
 })
 export class ClinicModule { }
