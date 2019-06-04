@@ -15,8 +15,8 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>230</x>
-      <y>180</y>
+      <x>300</x>
+      <y>230</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>590</x>
-      <y>180</y>
+      <x>510</x>
+      <y>230</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -37,8 +37,8 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>600</x>
-      <y>360</y>
+      <x>510</x>
+      <y>340</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -48,8 +48,8 @@
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>220</x>
-      <y>360</y>
+      <x>290</x>
+      <y>340</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -61,43 +61,43 @@
     <coordinates>
       <x>510</x>
       <y>310</y>
-      <w>150</w>
-      <h>70</h>
+      <w>60</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;130.0;50.0</additional_attributes>
+    <additional_attributes>10.0;10.0;40.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>290</x>
-      <y>210</y>
-      <w>150</w>
-      <h>100</h>
+      <x>360</x>
+      <y>260</y>
+      <w>80</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;130.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;60.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>510</x>
-      <y>210</y>
-      <w>150</w>
-      <h>100</h>
+      <y>260</y>
+      <w>70</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>130.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>50.0;10.0;10.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
+      <x>350</x>
       <y>310</y>
-      <w>160</w>
-      <h>70</h>
+      <w>90</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>140.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;30.0</additional_attributes>
   </element>
 </diagram>
